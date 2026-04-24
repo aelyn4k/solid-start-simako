@@ -1,52 +1,54 @@
-import { A } from "@solidjs/router";
+import { A, useLocation } from "@solidjs/router";
+
+const footerLinks = [
+  { href: "/search", label: "Cari Kamar" },
+  { href: "/about", label: "Tentang Kami" },
+  { href: "/contact", label: "Hubungi Kami" }
+];
 
 export default function Footer() {
+  const location = useLocation();
+  const isActive = (href: string) => location.pathname.startsWith(href);
+  const linkClass = (href: string) => `footer-link ${isActive(href) ? "footer-link-active" : ""}`;
+
   return (
-    <footer class="mt-14 border-t border-slate-800/80 bg-[#030B1F]/95">
+    <footer class="site-footer mt-14">
       <div class="layout-shell py-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 class="text-white text-lg font-bold mb-4">SIMAKO</h3>
-            <p class="text-slate-300">
+            <h3 class="ui-title text-lg font-bold mb-4">SIMAKO</h3>
+            <p class="ui-text">
               Platform manajemen kost digital untuk memudahkan pencarian kamar, pembayaran, dan komunikasi.
             </p>
           </div>
           <div>
-            <h3 class="text-white text-lg font-bold mb-4">Navigasi Cepat</h3>
+            <h3 class="ui-title text-lg font-bold mb-4">Navigasi Cepat</h3>
             <ul class="space-y-2">
-              <li>
-                <A href="/search" class="text-slate-300 hover:text-white">
-                  Cari Kamar
-                </A>
-              </li>
-              <li>
-                <A href="/about" class="text-slate-300 hover:text-white">
-                  Tentang Kami
-                </A>
-              </li>
-              <li>
-                <A href="/contact" class="text-slate-300 hover:text-white">
-                  Hubungi Kami
-                </A>
-              </li>
+              {footerLinks.map((item) => (
+                <li>
+                  <A href={item.href} class={linkClass(item.href)}>
+                    {item.label}
+                  </A>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
-            <h3 class="text-white text-lg font-bold mb-4">Kontak</h3>
-            <p class="text-slate-300">Telkom University Purwokerto</p>
-            <p class="text-slate-300">Jl. D.I. Panjaitan No.128, Purwokerto Selatan, Banyumas</p>
-            <p class="text-slate-300">halo@simako.id</p>
+            <h3 class="ui-title text-lg font-bold mb-4">Kontak</h3>
+            <p class="ui-text">Telkom University Purwokerto</p>
+            <p class="ui-text">Jl. D.I. Panjaitan No.128, Purwokerto Selatan, Banyumas</p>
+            <p class="ui-text">halo@simako.id</p>
           </div>
         </div>
-        <div class="mt-8 flex flex-col items-center justify-between border-t border-slate-800 pt-8 sm:flex-row">
-          <p class="text-sm text-slate-400">
+        <div class="footer-bottom mt-8 flex flex-col items-center justify-between pt-8 sm:flex-row">
+          <p class="ui-muted text-sm">
             © {new Date().getFullYear()} SIMAKO Management. Seluruh hak cipta dilindungi.
           </p>
           <div class="mt-4 flex space-x-4 sm:mt-0">
-            <A href="/privacy" class="text-sm text-slate-400 hover:text-white">
+            <A href="/privacy" class="footer-link text-sm">
               Kebijakan Privasi
             </A>
-            <A href="/terms" class="text-sm text-slate-400 hover:text-white">
+            <A href="/terms" class="footer-link text-sm">
               Syarat Layanan
             </A>
           </div>
