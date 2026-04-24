@@ -1,18 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background-rgb: 214, 219, 220;
-  --foreground-rgb: 0, 0, 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-rgb: 0, 0, 0;
-    --foreground-rgb: 255, 255, 255;
-  }
+  --background-rgb: 5, 13, 34;
+  --foreground-rgb: 229, 237, 255;
+  --accent-rgb: 238, 40, 64;
 }
 
 body {
-  background: rgb(var(--background-rgb));
+  margin: 0;
+  font-family: "Poppins", "Inter", sans-serif;
+  background:
+    radial-gradient(circle at 24% 8%, rgba(35, 65, 150, 0.25), transparent 28%),
+    radial-gradient(circle at 76% 18%, rgba(238, 40, 64, 0.12), transparent 26%),
+    rgb(var(--background-rgb));
   color: rgb(var(--foreground-rgb));
+}
+
+.layout-shell {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .layout-shell {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-shell {
+    padding-inline: 2rem;
+  }
+}
+
+.surface-card {
+  border: 1px solid rgba(94, 113, 168, 0.32);
+  border-radius: 1rem;
+  background: linear-gradient(165deg, rgba(7, 19, 49, 0.9), rgba(6, 16, 43, 0.62));
+  box-shadow: 0 20px 48px rgba(2, 8, 28, 0.44);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.7rem;
+  background: rgb(var(--accent-rgb));
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 10px 28px rgba(238, 40, 64, 0.3);
 }

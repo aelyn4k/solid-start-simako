@@ -1,24 +1,17 @@
 import { A } from "@solidjs/router";
-import Counter from "~/components/Counter";
 
 export default function About() {
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">About Page</h1>
-      <Counter />
-      <p class="mt-8">
-        Visit{" "}
-        <a href="https://solidjs.com" target="_blank" class="text-sky-600 hover:underline">
-          solidjs.com
-        </a>{" "}
-        to learn how to build Solid apps.
+    <main class="mx-auto max-w-4xl px-4 py-16 text-slate-100">
+      <h1 class="mb-6 text-center text-4xl font-bold">Tentang SIMAKO</h1>
+      <p class="rounded-xl border border-slate-700 bg-slate-900/60 p-6 leading-7 text-slate-300">
+        SIMAKO adalah platform manajemen kost untuk membantu pemilik kost dan penyewa mengelola kamar,
+        tagihan, dan komunikasi dalam satu aplikasi terpadu.
       </p>
-      <p class="my-4">
-        <A href="/" class="text-sky-600 hover:underline">
-          Home
+      <p class="mt-8 text-center">
+        <A href="/" class="text-red-400 hover:text-red-300 hover:underline">
+          Kembali ke Home
         </A>
-        {" - "}
-        <span>About Page</span>
       </p>
     </main>
   );

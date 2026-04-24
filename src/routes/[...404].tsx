@@ -1,25 +1,26 @@
 import { A } from "@solidjs/router";
+import { Frown, Home } from "lucide-solid";
 
 export default function NotFound() {
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">Not Found</h1>
-      <p class="mt-8">
-        Visit{" "}
-        <a href="https://solidjs.com" target="_blank" class="text-sky-600 hover:underline">
-          solidjs.com
-        </a>{" "}
-        to learn how to build Solid apps.
-      </p>
-      <p class="my-4">
-        <A href="/" class="text-sky-600 hover:underline">
-          Home
+    <main class="layout-shell flex min-h-[68vh] items-center justify-center py-20">
+      <section class="mx-auto flex max-w-xl flex-col items-center text-center">
+        <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-500/20 text-red-500">
+          <Frown size={34} />
+        </div>
+        <p class="text-6xl font-extrabold leading-none text-red-500 md:text-7xl">404</p>
+        <h1 class="mt-4 text-3xl font-bold text-slate-100 md:text-4xl">Halaman Tidak Ditemukan</h1>
+        <p class="mt-4 text-base text-slate-400">
+          Halaman yang Anda cari tidak ada atau telah dipindahkan.
+        </p>
+        <A
+          href="/"
+          class="mt-8 inline-flex items-center rounded-lg bg-red-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-red-500"
+        >
+          <Home class="mr-2" size={16} />
+          Kembali ke Beranda
         </A>
-        {" - "}
-        <A href="/about" class="text-sky-600 hover:underline">
-          About Page
-        </A>
-      </p>
+      </section>
     </main>
   );
 }
