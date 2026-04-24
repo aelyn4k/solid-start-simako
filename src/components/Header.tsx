@@ -11,27 +11,43 @@ const navItems = [
   { href: "/contact", label: "Kontak" }
 ];
 
+const isThemeMode = (value: string | null | undefined): value is ThemeMode =>
+  value === "light" || value === "dark";
+
 const getCurrentTheme = (): ThemeMode => {
   if (typeof document === "undefined") {
     return "dark";
   }
 
   const activeTheme = document.documentElement.dataset.theme;
-  return activeTheme === "light" || activeTheme === "dark" ? activeTheme : "dark";
+  return isThemeMode(activeTheme) ? activeTheme : "dark";
+};
+
+const getStoredTheme = (): ThemeMode | null => {
+  try {
+    const savedTheme = localStorage.getItem("simako-theme");
+    return isThemeMode(savedTheme) ? savedTheme : null;
+  } catch {
+    return null;
+  }
 };
 
 export default function Header() {
   const location = useLocation();
-  const [theme, setTheme] = createSignal<ThemeMode>(getCurrentTheme());
+  const [theme, setTheme] = createSignal<ThemeMode>("dark");
 
   const applyTheme = (mode: ThemeMode) => {
     document.documentElement.dataset.theme = mode;
-    localStorage.setItem("simako-theme", mode);
+
+    try {
+      localStorage.setItem("simako-theme", mode);
+    } catch {
+      // Theme still works for the current session even if storage is unavailable.
+    }
   };
 
   onMount(() => {
-    const savedTheme = localStorage.getItem("simako-theme") as ThemeMode | null;
-    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : getCurrentTheme();
+    const initialTheme = getStoredTheme() ?? getCurrentTheme();
     setTheme(initialTheme);
     applyTheme(initialTheme);
   });
@@ -43,7 +59,7 @@ export default function Header() {
     `nav-link ${isActive(href) ? "nav-link-active" : ""}`;
 
   const toggleTheme = () => {
-    const nextTheme = theme() === "dark" ? "light" : "dark";
+    const nextTheme = getCurrentTheme() === "dark" ? "light" : "dark";
     setTheme(nextTheme);
     applyTheme(nextTheme);
   };
