@@ -16,6 +16,7 @@ export interface Room {
   id: number;
   name: string;
   type: string;
+  ownerName: string;
   price: string;
   status: RoomStatus;
   image: string;
@@ -49,6 +50,7 @@ export const rooms: Room[] = [
     id: 1,
     name: "Kamar 101 - Tipe Premium",
     type: "Premium",
+    ownerName: "Kost Melati",
     price: "Rp 1.500.000 / bulan",
     status: "Tersedia",
     image:
@@ -73,6 +75,7 @@ export const rooms: Room[] = [
     id: 2,
     name: "Kamar 102 - Tipe Reguler",
     type: "Reguler",
+    ownerName: "Kost Melati",
     price: "Rp 1.200.000 / bulan",
     status: "Terisi",
     image:
@@ -97,6 +100,7 @@ export const rooms: Room[] = [
     id: 3,
     name: "Kamar 201 - Tipe Premium",
     type: "Premium",
+    ownerName: "Kost Anggrek",
     price: "Rp 1.600.000 / bulan",
     status: "Tersedia",
     image:
@@ -121,6 +125,7 @@ export const rooms: Room[] = [
     id: 4,
     name: "Kamar 202 - Tipe Reguler",
     type: "Reguler",
+    ownerName: "Kost Anggrek",
     price: "Rp 1.250.000 / bulan",
     status: "Tersedia",
     image:
@@ -145,6 +150,7 @@ export const rooms: Room[] = [
     id: 5,
     name: "Kamar 203 - Tipe Premium",
     type: "Premium",
+    ownerName: "Kost Cendana",
     price: "Rp 1.650.000 / bulan",
     status: "Tersedia",
     image:
@@ -169,6 +175,7 @@ export const rooms: Room[] = [
     id: 6,
     name: "Kamar 301 - Tipe Reguler",
     type: "Reguler",
+    ownerName: "Kost Cendana",
     price: "Rp 1.300.000 / bulan",
     status: "Tersedia",
     image:
@@ -193,6 +200,7 @@ export const rooms: Room[] = [
     id: 7,
     name: "Kamar 302 - Tipe Premium",
     type: "Premium",
+    ownerName: "Kost Purnama",
     price: "Rp 1.700.000 / bulan",
     status: "Terisi",
     image:
@@ -217,6 +225,7 @@ export const rooms: Room[] = [
     id: 8,
     name: "Kamar 303 - Tipe Reguler",
     type: "Reguler",
+    ownerName: "Kost Purnama",
     price: "Rp 1.350.000 / bulan",
     status: "Tersedia",
     image:

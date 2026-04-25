@@ -16,7 +16,7 @@ import {
   Wind,
   Zap
 } from "lucide-solid";
-import { createMemo } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
 import { facilityLabels, rooms, type RoomFacilityKey } from "~/data/rooms";
 
@@ -46,6 +46,16 @@ const facilityIcon = (facility: RoomFacilityKey, size = 18): JSX.Element => {
 export default function RoomDetail() {
   const params = useParams();
   const room = createMemo(() => rooms.find((item) => String(item.id) === params.id));
+  const [selectedImage, setSelectedImage] = createSignal("");
+  const heroImage = createMemo(() => selectedImage() || room()?.image || "");
+
+  createEffect(() => {
+    const activeRoom = room();
+
+    if (activeRoom) {
+      setSelectedImage(activeRoom.image);
+    }
+  });
 
   return (
     <main class="pb-16">
@@ -61,13 +71,20 @@ export default function RoomDetail() {
               <div class="mt-6 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
                 <div class="space-y-4">
                   <div class="surface-card overflow-hidden">
-                    <img src={room()!.image} alt={room()!.name} class="h-[320px] w-full object-cover md:h-[470px]" />
+                    <img src={heroImage()} alt={room()!.name} class="h-[320px] w-full object-cover md:h-[470px]" />
                   </div>
                   <div class="grid grid-cols-3 gap-3">
                     {room()!.gallery.map((image, index) => (
-                      <div class="detail-thumb overflow-hidden rounded-xl">
+                      <button
+                        type="button"
+                        class={`detail-thumb detail-thumb-button overflow-hidden rounded-xl ${
+                          heroImage() === image ? "detail-thumb-active" : ""
+                        }`}
+                        onClick={() => setSelectedImage(image)}
+                        aria-label={`Tampilkan foto ${index + 1}`}
+                      >
                         <img src={image} alt={`${room()!.name} ${index + 1}`} class="h-24 w-full object-cover md:h-32" />
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>

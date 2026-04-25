@@ -2,6 +2,7 @@ import { A } from "@solidjs/router";
 import {
   Bath,
   BedDouble,
+  Building2,
   ChevronLeft,
   ChevronRight,
   MapPin,
@@ -11,13 +12,22 @@ import {
   SlidersHorizontal,
   Tv,
   Wifi,
-  Wind
+  Wind,
 } from "lucide-solid";
 import { createMemo, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
-import { facilityLabels, rooms, type Room, type RoomFacilityKey } from "~/data/rooms";
+import {
+  facilityLabels,
+  rooms,
+  type Room,
+  type RoomFacilityKey,
+} from "~/data/rooms";
 
 const pageSize = 8;
+const allOwners = "Semua pemilik";
+const allPrices = "Semua harga";
+const allStatuses = "Semua status";
+type PageSizeOption = 8 | 12 | "all";
 
 const facilityIcon = (facility: RoomFacilityKey): JSX.Element => {
   switch (facility) {
@@ -42,10 +52,16 @@ function KostCard(props: { room: Room }) {
   return (
     <article class="surface-card search-room-card flex h-full flex-col overflow-hidden">
       <div class="relative overflow-hidden">
-        <img src={props.room.image} alt={props.room.name} class="search-room-image h-44 w-full object-cover" />
+        <img
+          src={props.room.image}
+          alt={props.room.name}
+          class="search-room-image h-44 w-full object-cover"
+        />
         <span
           class={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold ${
-            props.room.status === "Tersedia" ? "bg-green-500 text-white" : "bg-yellow-500 text-gray-900"
+            props.room.status === "Tersedia"
+              ? "bg-green-500 text-white"
+              : "bg-yellow-500 text-gray-900"
           }`}
         >
           {props.room.status}
@@ -56,8 +72,16 @@ function KostCard(props: { room: Room }) {
           <p class="eyebrow">{props.room.type}</p>
           <span class="ui-muted text-xs">{props.room.floor}</span>
         </div>
-        <h2 class="ui-title mt-3 text-lg font-bold leading-snug">{props.room.name}</h2>
-        <p class="mt-2 text-sm font-semibold text-red-400">{props.room.price}</p>
+        <h2 class="ui-title mt-3 text-lg font-bold leading-snug">
+          {props.room.name}
+        </h2>
+        <p class="mt-2 text-sm font-semibold text-red-400">
+          {props.room.price}
+        </p>
+        <div class="mt-3 flex items-center gap-2 text-sm ui-text">
+          <Building2 size={16} class="text-red-400" />
+          <span>{props.room.ownerName}</span>
+        </div>
         <div class="mt-4 flex items-center gap-2 text-sm ui-text">
           <BedDouble size={16} class="text-red-400" />
           <span>{props.room.area}</span>
@@ -70,7 +94,10 @@ function KostCard(props: { room: Room }) {
             </span>
           ))}
         </div>
-        <A href={`/room/${props.room.id}`} class="btn-secondary mt-5 w-full px-4 py-2 text-sm">
+        <A
+          href={`/room/${props.room.id}`}
+          class="btn-secondary mt-5 w-full px-4 py-2 text-sm"
+        >
           Lihat Detail
         </A>
       </div>
@@ -80,8 +107,60 @@ function KostCard(props: { room: Room }) {
 
 export default function SearchPage() {
   const [page, setPage] = createSignal(1);
-  const totalPages = createMemo(() => Math.ceil(rooms.length / pageSize));
-  const visibleRooms = createMemo(() => rooms.slice((page() - 1) * pageSize, page() * pageSize));
+  const [query, setQuery] = createSignal("");
+  const [owner, setOwner] = createSignal(allOwners);
+  const [priceRange, setPriceRange] = createSignal(allPrices);
+  const [status, setStatus] = createSignal(allStatuses);
+  const [rowsPerPage, setRowsPerPage] = createSignal<PageSizeOption>(pageSize);
+
+  const ownerOptions = createMemo(() =>
+    Array.from(new Set(rooms.map((room) => room.ownerName))),
+  );
+  const roomPrice = (room: Room) => Number(room.price.replace(/\D/g, ""));
+  const filteredRooms = createMemo(() => {
+    const normalizedQuery = query().trim().toLowerCase();
+
+    return rooms.filter((room) => {
+      const matchesQuery =
+        !normalizedQuery ||
+        room.name.toLowerCase().includes(normalizedQuery) ||
+        room.type.toLowerCase().includes(normalizedQuery) ||
+        room.ownerName.toLowerCase().includes(normalizedQuery);
+      const matchesOwner = owner() === allOwners || room.ownerName === owner();
+      const matchesStatus =
+        status() === allStatuses || room.status === status();
+      const price = roomPrice(room);
+      const matchesPrice =
+        priceRange() === allPrices ||
+        (priceRange() === "< Rp 1.300.000" && price < 1300000) ||
+        (priceRange() === "Rp 1.300.000 - Rp 1.600.000" &&
+          price >= 1300000 &&
+          price <= 1600000) ||
+        (priceRange() === "> Rp 1.600.000" && price > 1600000);
+
+      return matchesQuery && matchesOwner && matchesStatus && matchesPrice;
+    });
+  });
+  const activePageSize = createMemo(() =>
+    rowsPerPage() === "all" ? Math.max(1, filteredRooms().length) : rowsPerPage(),
+  );
+  const totalPages = createMemo(() =>
+    Math.max(1, Math.ceil(filteredRooms().length / activePageSize())),
+  );
+  const visibleRooms = createMemo(() =>
+    filteredRooms().slice((page() - 1) * activePageSize(), page() * activePageSize()),
+  );
+  const entryStart = createMemo(() =>
+    filteredRooms().length === 0 ? 0 : (page() - 1) * activePageSize() + 1,
+  );
+  const entryEnd = createMemo(() =>
+    Math.min(page() * activePageSize(), filteredRooms().length),
+  );
+
+  const updateFilter = (callback: () => void) => {
+    callback();
+    setPage(1);
+  };
 
   const goToPage = (nextPage: number) => {
     if (nextPage < 1 || nextPage > totalPages()) {
@@ -91,6 +170,11 @@ export default function SearchPage() {
     setPage(nextPage);
   };
 
+  const updateRowsPerPage = (value: string) => {
+    setRowsPerPage(value === "all" ? "all" : Number(value) === 12 ? 12 : 8);
+    setPage(1);
+  };
+
   return (
     <main class="pb-16">
       <section class="section-divider py-10 md:py-14">
@@ -98,9 +182,12 @@ export default function SearchPage() {
           <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p class="eyebrow">Cari Kost</p>
-              <h1 class="ui-heading mt-4 text-4xl font-bold md:text-5xl">Temukan Kamar yang Sesuai</h1>
+              <h1 class="ui-heading mt-4 text-4xl font-bold md:text-5xl">
+                Temukan Kamar yang Sesuai
+              </h1>
               <p class="ui-lead mt-4 max-w-2xl leading-8">
-                Lihat daftar kamar, status ketersediaan, fasilitas utama, dan akses detail sebelum menghubungi pengelola.
+                Lihat daftar kamar, status ketersediaan, fasilitas utama, dan
+                akses detail sebelum menghubungi pengelola.
               </p>
             </div>
             <div class="surface-card flex items-center gap-3 px-4 py-3">
@@ -112,19 +199,53 @@ export default function SearchPage() {
             </div>
           </div>
 
-          <form class="surface-card mt-8 grid gap-3 p-4 md:grid-cols-[1.4fr_1fr_1fr_auto]" onSubmit={(event) => event.preventDefault()}>
-            <div class="relative">
-              <Search class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-red-400" size={17} />
-              <input class="form-control pl-10" placeholder="Cari nomor kamar atau tipe" />
+          <form
+            class="surface-card mt-8 grid gap-3 p-4 md:grid-cols-[1.4fr_1fr_1fr_1fr_auto]"
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <div class="input-with-icon">
+              <Search class="input-icon" size={17} />
+              <input
+                class="form-control form-control-icon"
+                value={query()}
+                onInput={(event) =>
+                  updateFilter(() => setQuery(event.currentTarget.value))
+                }
+                placeholder="Cari kamar, tipe, atau pemilik"
+              />
             </div>
-            <select class="form-control">
-              <option>Semua harga</option>
+            <select
+              class="form-control"
+              value={owner()}
+              onChange={(event) =>
+                updateFilter(() => setOwner(event.currentTarget.value))
+              }
+            >
+              <option>{allOwners}</option>
+              {ownerOptions().map((item) => (
+                <option>{item}</option>
+              ))}
+            </select>
+            <select
+              class="form-control"
+              value={priceRange()}
+              onChange={(event) =>
+                updateFilter(() => setPriceRange(event.currentTarget.value))
+              }
+            >
+              <option>{allPrices}</option>
               <option>&lt; Rp 1.300.000</option>
               <option>Rp 1.300.000 - Rp 1.600.000</option>
               <option>&gt; Rp 1.600.000</option>
             </select>
-            <select class="form-control">
-              <option>Semua status</option>
+            <select
+              class="form-control"
+              value={status()}
+              onChange={(event) =>
+                updateFilter(() => setStatus(event.currentTarget.value))
+              }
+            >
+              <option>{allStatuses}</option>
               <option>Tersedia</option>
               <option>Terisi</option>
             </select>
@@ -139,10 +260,14 @@ export default function SearchPage() {
       <section class="layout-shell py-12">
         <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 class="ui-heading text-2xl font-bold">8 Kamar Tersedia untuk Dicek</h2>
-            <p class="ui-text mt-1 text-sm">Ditampilkan dalam susunan 4 kartu di atas dan 4 kartu di bawah pada layar desktop.</p>
+            <h2 class="ui-heading text-2xl font-bold">
+              {filteredRooms().length} Kamar Tersedia
+            </h2>
+            <p class="ui-text mt-1 text-sm">
+              Cari kamar yang sesuai dengan kebutuhan Anda.
+            </p>
           </div>
-          <p class="ui-muted text-sm">Halaman {page()} dari {totalPages()}</p>
+          <p class="ui-muted text-sm">Filter pemilik: {owner()}</p>
         </div>
 
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
@@ -151,32 +276,55 @@ export default function SearchPage() {
           ))}
         </div>
 
-        <nav class="mt-10 flex items-center justify-center gap-2" aria-label="Pagination kamar">
-          <button
-            type="button"
-            class="pagination-button"
-            disabled={page() === 1}
-            onClick={() => goToPage(page() - 1)}
-          >
-            <ChevronLeft size={16} />
-          </button>
-          {Array.from({ length: totalPages() }, (_, index) => index + 1).map((item) => (
+        <nav class="pagination-bar mt-10" aria-label="Pagination kamar">
+          <div class="pagination-left">
+            <p class="pagination-info">
+              {entryStart()}-{entryEnd()} of {filteredRooms().length} entries
+            </p>
+            <label class="rows-control">
+              <span>Rows</span>
+              <select
+                class="rows-select"
+                value={String(rowsPerPage())}
+                onChange={(event) => updateRowsPerPage(event.currentTarget.value)}
+              >
+                <option value="8">8</option>
+                <option value="12">12</option>
+                <option value="all">Semua</option>
+              </select>
+            </label>
+          </div>
+          <div class="pagination-controls">
             <button
               type="button"
-              class={`pagination-button ${page() === item ? "pagination-button-active" : ""}`}
-              onClick={() => goToPage(item)}
+              class="pagination-button pagination-button-wide"
+              disabled={page() === 1}
+              onClick={() => goToPage(page() - 1)}
             >
-              {item}
+              <ChevronLeft size={14} />
+              Prev
             </button>
-          ))}
-          <button
-            type="button"
-            class="pagination-button"
-            disabled={page() === totalPages()}
-            onClick={() => goToPage(page() + 1)}
-          >
-            <ChevronRight size={16} />
-          </button>
+            {Array.from({ length: totalPages() }, (_, index) => index + 1).map(
+              (item) => (
+                <button
+                  type="button"
+                  class={`pagination-button ${page() === item ? "pagination-button-active" : ""}`}
+                  onClick={() => goToPage(item)}
+                >
+                  {item}
+                </button>
+              ),
+            )}
+            <button
+              type="button"
+              class="pagination-button pagination-button-wide"
+              disabled={page() === totalPages()}
+              onClick={() => goToPage(page() + 1)}
+            >
+              Next
+              <ChevronRight size={14} />
+            </button>
+          </div>
         </nav>
       </section>
     </main>

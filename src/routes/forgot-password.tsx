@@ -5,7 +5,10 @@ export default function ForgotPasswordPage() {
   return (
     <main class="layout-shell flex min-h-[72vh] items-center justify-center py-14">
       <section class="surface-card auth-panel w-full max-w-xl p-6 md:p-8">
-        <A href="/login" class="inline-flex items-center gap-2 text-sm font-semibold text-red-400 transition hover:text-red-300">
+        <A
+          href="/login"
+          class="inline-flex items-center gap-2 text-sm font-semibold text-red-400 transition hover:text-red-300"
+        >
           <ArrowLeft size={16} />
           Kembali ke Login
         </A>
@@ -16,16 +19,24 @@ export default function ForgotPasswordPage() {
           </div>
           <h1 class="ui-heading text-3xl font-bold">Lupa Password</h1>
           <p class="ui-text mt-3 leading-7">
-            Masukkan email akun SIMAKO. Instruksi reset password akan dikirim jika email terdaftar.
+            Masukkan email akun SIMAKO. Instruksi reset password akan dikirim
+            jika email terdaftar.
           </p>
         </div>
 
-        <form class="mt-7 space-y-5" onSubmit={(event) => event.preventDefault()}>
+        <form
+          class="mt-7 space-y-5"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <label class="block">
             <span class="form-label">Email terdaftar</span>
-            <span class="relative mt-2 block">
-              <Mail class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-red-400" size={17} />
-              <input class="form-control pl-10" type="email" placeholder="nama@email.com" />
+            <span class="input-with-icon mt-2 block">
+              <Mail class="input-icon" size={17} />
+              <input
+                class="form-control form-control-icon"
+                type="email"
+                placeholder="nama@email.com"
+              />
             </span>
           </label>
 

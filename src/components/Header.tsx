@@ -8,7 +8,7 @@ const navItems = [
   { href: "/", label: "Beranda" },
   { href: "/search", label: "Cari Kost" },
   { href: "/about", label: "Tentang" },
-  { href: "/contact", label: "Kontak" }
+  { href: "/contact", label: "Kontak" },
 ];
 
 const isThemeMode = (value: string | null | undefined): value is ThemeMode =>
@@ -53,7 +53,9 @@ export default function Header() {
   });
 
   const isActive = (href: string) =>
-    href === "/" ? location.pathname === "/" : location.pathname.startsWith(href);
+    href === "/"
+      ? location.pathname === "/"
+      : location.pathname.startsWith(href);
 
   const navLinkClass = (href: string) =>
     `nav-link ${isActive(href) ? "nav-link-active" : ""}`;
@@ -98,10 +100,7 @@ export default function Header() {
             >
               Masuk
             </A>
-            <A
-              href="/register"
-              class="btn-primary px-4 py-2 text-sm"
-            >
+            <A href="/register" class="btn-primary px-4 py-2 text-sm">
               Daftar
             </A>
           </div>

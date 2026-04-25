@@ -1,5 +1,16 @@
 import { A } from "@solidjs/router";
-import { Building2, CheckCircle2, Mail, Phone, User, UserPlus, Users } from "lucide-solid";
+import {
+  Building2,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  LockKeyhole,
+  Mail,
+  Phone,
+  User,
+  UserPlus,
+  Users,
+} from "lucide-solid";
 import { createSignal } from "solid-js";
 
 type RegisterRole = "tenant" | "owner";
@@ -8,21 +19,33 @@ const roleContent = {
   tenant: {
     label: "Penyewa",
     title: "Daftar sebagai Penyewa",
-    description: "Cari kamar, ajukan booking, dan pantau status pembayaran dari akun penyewa.",
+    description:
+      "Cari kamar, ajukan booking, dan pantau status pembayaran dari akun penyewa.",
     icon: Users,
-    bullets: ["Simpan kamar favorit", "Booking dan survei lebih cepat", "Riwayat tagihan rapi"]
+    bullets: [
+      "Simpan kamar favorit",
+      "Booking dan survei lebih cepat",
+      "Riwayat tagihan rapi",
+    ],
   },
   owner: {
     label: "Pemilik Kost",
     title: "Daftar sebagai Pemilik Kost",
-    description: "Kelola data kamar, penyewa, tagihan, dan komunikasi operasional kost.",
+    description:
+      "Kelola data kamar, penyewa, tagihan, dan komunikasi operasional kost.",
     icon: Building2,
-    bullets: ["Kelola banyak kamar", "Pantau okupansi", "Rekap tagihan penyewa"]
-  }
+    bullets: [
+      "Kelola banyak kamar",
+      "Pantau okupansi",
+      "Rekap tagihan penyewa",
+    ],
+  },
 };
 
 export default function RegisterPage() {
   const [role, setRole] = createSignal<RegisterRole>("tenant");
+  const [showPassword, setShowPassword] = createSignal(false);
+  const [showConfirmPassword, setShowConfirmPassword] = createSignal(false);
   const activeContent = () => roleContent[role()];
 
   return (
@@ -30,9 +53,12 @@ export default function RegisterPage() {
       <section class="mx-auto max-w-5xl">
         <div class="text-center">
           <p class="eyebrow">Daftar SIMAKO</p>
-          <h1 class="ui-heading mt-4 text-4xl font-bold md:text-5xl">Pilih tipe akun yang Anda butuhkan</h1>
+          <h1 class="ui-heading mt-4 text-4xl font-bold md:text-5xl">
+            Pilih tipe akun yang Anda butuhkan
+          </h1>
           <p class="ui-lead mx-auto mt-4 max-w-2xl leading-8">
-            SIMAKO memisahkan alur penyewa dan pemilik kost agar proses daftar, pengelolaan, dan akses fitur lebih tepat.
+            SIMAKO memisahkan alur penyewa dan pemilik kost agar proses daftar,
+            pengelolaan, dan akses fitur lebih tepat.
           </p>
         </div>
 
@@ -52,8 +78,12 @@ export default function RegisterPage() {
                       <Icon size={20} />
                     </span>
                     <span class="text-left">
-                      <span class="ui-title block font-semibold">{roleContent[item].label}</span>
-                      <span class="ui-muted mt-1 block text-sm">{roleContent[item].description}</span>
+                      <span class="ui-title block font-semibold">
+                        {roleContent[item].label}
+                      </span>
+                      <span class="ui-muted mt-1 block text-sm">
+                        {roleContent[item].description}
+                      </span>
                     </span>
                   </button>
                 );
@@ -61,7 +91,9 @@ export default function RegisterPage() {
             </div>
 
             <div class="mt-6 rounded-xl border border-red-400/30 bg-red-500/10 p-4">
-              <h2 class="text-sm font-bold text-red-400">{activeContent().title}</h2>
+              <h2 class="text-sm font-bold text-red-400">
+                {activeContent().title}
+              </h2>
               <div class="mt-3 space-y-2">
                 {activeContent().bullets.map((item) => (
                   <div class="check-row text-sm">
@@ -75,54 +107,104 @@ export default function RegisterPage() {
 
           <section class="surface-card auth-panel p-6 md:p-8">
             <div class="mb-7">
-              <h2 class="ui-heading text-2xl font-bold">{activeContent().title}</h2>
+              <h2 class="ui-heading text-2xl font-bold">
+                {activeContent().title}
+              </h2>
               <p class="ui-text mt-2 text-sm">{activeContent().description}</p>
             </div>
 
-            <form class="grid gap-5 md:grid-cols-2" onSubmit={(event) => event.preventDefault()}>
+            <form
+              class="grid gap-5 md:grid-cols-2"
+              onSubmit={(event) => event.preventDefault()}
+            >
               <label class="block md:col-span-2">
                 <span class="form-label">Nama lengkap</span>
-                <span class="relative mt-2 block">
-                  <User class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-red-400" size={17} />
-                  <input class="form-control pl-10" placeholder="Nama sesuai identitas" />
+                <span class="input-with-icon mt-2 block">
+                  <User class="input-icon" size={17} />
+                  <input
+                    class="form-control form-control-icon"
+                    placeholder="Nama sesuai identitas"
+                  />
                 </span>
               </label>
 
               <label class="block">
                 <span class="form-label">Email</span>
-                <span class="relative mt-2 block">
-                  <Mail class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-red-400" size={17} />
-                  <input class="form-control pl-10" type="email" placeholder="nama@email.com" />
+                <span class="input-with-icon mt-2 block">
+                  <Mail class="input-icon" size={17} />
+                  <input
+                    class="form-control form-control-icon"
+                    type="email"
+                    placeholder="nama@email.com"
+                  />
                 </span>
               </label>
 
               <label class="block">
                 <span class="form-label">Nomor WhatsApp</span>
-                <span class="relative mt-2 block">
-                  <Phone class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-red-400" size={17} />
-                  <input class="form-control pl-10" placeholder="08xxxxxxxxxx" />
+                <span class="input-with-icon mt-2 block">
+                  <Phone class="input-icon" size={17} />
+                  <input
+                    class="form-control form-control-icon"
+                    placeholder="08xxxxxxxxxx"
+                  />
                 </span>
               </label>
 
-              <label class="block md:col-span-2">
-                <span class="form-label">{role() === "tenant" ? "Preferensi lokasi" : "Nama kost"}</span>
-                <input
-                  class="form-control mt-2"
-                  placeholder={role() === "tenant" ? "Contoh: dekat kampus, Purwokerto Selatan" : "Contoh: Kost Melati Purwokerto"}
-                />
-              </label>
+              {role() === "owner" && (
+                <label class="block md:col-span-2">
+                  <span class="form-label">Nama kost</span>
+                  <input
+                    class="form-control mt-2"
+                    placeholder="Contoh: Kost Melati Purwokerto"
+                  />
+                </label>
+              )}
 
               <label class="block">
                 <span class="form-label">Password</span>
-                <input class="form-control mt-2" type="password" placeholder="Minimal 8 karakter" />
+                <span class="input-with-icon mt-2 block">
+                  <LockKeyhole class="input-icon" size={17} />
+                  <input
+                    class="form-control form-control-icon form-control-action"
+                    type={showPassword() ? "text" : "password"}
+                    placeholder="Minimal 8 karakter"
+                  />
+                  <button
+                    type="button"
+                    class="input-action-button"
+                    onClick={() => setShowPassword((value) => !value)}
+                    aria-label={showPassword() ? "Sembunyikan password" : "Tampilkan password"}
+                  >
+                    {showPassword() ? <EyeOff size={17} /> : <Eye size={17} />}
+                  </button>
+                </span>
               </label>
 
               <label class="block">
                 <span class="form-label">Konfirmasi password</span>
-                <input class="form-control mt-2" type="password" placeholder="Ulangi password" />
+                <span class="input-with-icon mt-2 block">
+                  <LockKeyhole class="input-icon" size={17} />
+                  <input
+                    class="form-control form-control-icon form-control-action"
+                    type={showConfirmPassword() ? "text" : "password"}
+                    placeholder="Ulangi password"
+                  />
+                  <button
+                    type="button"
+                    class="input-action-button"
+                    onClick={() => setShowConfirmPassword((value) => !value)}
+                    aria-label={showConfirmPassword() ? "Sembunyikan password" : "Tampilkan password"}
+                  >
+                    {showConfirmPassword() ? <EyeOff size={17} /> : <Eye size={17} />}
+                  </button>
+                </span>
               </label>
 
-              <button type="submit" class="btn-primary md:col-span-2 px-5 py-3 text-sm">
+              <button
+                type="submit"
+                class="btn-primary md:col-span-2 px-5 py-3 text-sm"
+              >
                 <UserPlus size={17} />
                 Daftar sebagai {activeContent().label}
               </button>
@@ -130,7 +212,10 @@ export default function RegisterPage() {
 
             <p class="ui-text mt-6 text-center text-sm">
               Sudah punya akun?{" "}
-              <A href="/login" class="font-semibold text-red-400 transition hover:text-red-300">
+              <A
+                href="/login"
+                class="font-semibold text-red-400 transition hover:text-red-300"
+              >
                 Masuk
               </A>
             </p>

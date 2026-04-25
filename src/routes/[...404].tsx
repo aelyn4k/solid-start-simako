@@ -8,8 +8,12 @@ export default function NotFound() {
         <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-500/20 text-red-500">
           <Frown size={34} />
         </div>
-        <p class="text-6xl font-extrabold leading-none text-red-500 md:text-7xl">404</p>
-        <h1 class="ui-heading mt-4 text-3xl font-bold md:text-4xl">Halaman Tidak Ditemukan</h1>
+        <p class="text-6xl font-extrabold leading-none text-red-500 md:text-7xl">
+          404
+        </p>
+        <h1 class="ui-heading mt-4 text-3xl font-bold md:text-4xl">
+          Halaman Tidak Ditemukan
+        </h1>
         <p class="ui-muted mt-4 text-base">
           Halaman yang Anda cari tidak ada atau telah dipindahkan.
         </p>
