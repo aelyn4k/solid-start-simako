@@ -280,6 +280,12 @@ body {
   box-shadow: 0 0 0 3px rgba(238, 40, 64, 0.12);
 }
 
+.form-label {
+  color: rgb(var(--text-strong-rgb));
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
 .facility-pill {
   display: inline-flex;
   align-items: center;
@@ -339,6 +345,117 @@ body {
 .room-card:hover .room-card-image {
   transform: scale(1.06);
   filter: saturate(1.08) contrast(1.04);
+}
+
+.search-room-card {
+  transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.search-room-card:hover {
+  border-color: rgba(238, 40, 64, 0.56);
+  transform: translateY(-4px);
+  box-shadow: 0 22px 52px rgba(238, 40, 64, 0.14), 0 20px 48px var(--surface-shadow);
+}
+
+.search-room-image {
+  transition: transform 0.4s ease, filter 0.25s ease;
+}
+
+.search-room-card:hover .search-room-image {
+  transform: scale(1.05);
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.pagination-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--control-border);
+  border-radius: 0.75rem;
+  background: var(--control-bg);
+  color: rgb(var(--text-body-rgb));
+  font-weight: 700;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled),
+.pagination-button-active {
+  border-color: rgba(238, 40, 64, 0.68);
+  background: rgba(238, 40, 64, 0.12);
+  color: rgb(var(--accent-rgb));
+  transform: translateY(-1px);
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.auth-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(238, 40, 64, 0.1), transparent 34%);
+}
+
+.auth-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-benefit,
+.role-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.9rem;
+  background: var(--control-bg);
+  color: rgb(var(--text-body-rgb));
+}
+
+.auth-benefit {
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+}
+
+.auth-benefit svg,
+.role-option-icon {
+  color: rgb(var(--accent-rgb));
+}
+
+.role-option {
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.role-option:hover,
+.role-option-active {
+  border-color: rgba(238, 40, 64, 0.62);
+  background: rgba(238, 40, 64, 0.1);
+  transform: translateY(-1px);
+}
+
+.role-option-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 0.8rem;
+  background: var(--surface-solid);
 }
 
 .info-tile {
