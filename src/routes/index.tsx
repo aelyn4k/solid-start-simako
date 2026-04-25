@@ -22,6 +22,7 @@ import type { Component, JSX } from "solid-js";
 import {
   facilityLabels,
   rooms,
+  slugifyOwner,
   type Room,
   type RoomFacilityKey,
 } from "~/data/rooms";
@@ -105,6 +106,12 @@ const RoomCard: Component<{ room: Room }> = (props) => (
         </div>
       </div>
       <p class="mt-2 text-sm font-semibold text-red-400">{props.room.price}</p>
+      <A
+        href={`/owner/${slugifyOwner(props.room.ownerName)}`}
+        class="mt-3 text-sm font-semibold text-red-400 transition hover:text-red-300"
+      >
+        {props.room.ownerName}
+      </A>
       <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
         {props.room.facilities.slice(0, 3).map((facility) => (
           <span class="facility-pill">

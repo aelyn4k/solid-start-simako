@@ -32,6 +32,18 @@ export interface Room {
   rules: string[];
 }
 
+export const slugifyOwner = (ownerName: string) =>
+  ownerName
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+export const getOwnerNames = () => Array.from(new Set(rooms.map((room) => room.ownerName)));
+
+export const getOwnerRoomsBySlug = (ownerSlug: string) =>
+  rooms.filter((room) => slugifyOwner(room.ownerName) === ownerSlug);
+
 export const facilityLabels: Record<RoomFacilityKey, string> = {
   wifi: "Wi-Fi Cepat",
   tv: "TV",

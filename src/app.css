@@ -711,3 +711,20 @@ body {
   background: linear-gradient(135deg, rgba(190, 24, 93, 0.96), rgba(220, 38, 38, 0.94));
   box-shadow: 0 18px 40px rgba(190, 24, 46, 0.28);
 }
+
+.dashboard-card {
+  border: 1px solid var(--surface-border);
+  border-radius: 0.85rem;
+  background: linear-gradient(165deg, var(--surface-start), var(--surface-end));
+  box-shadow: 0 18px 42px var(--surface-shadow);
+}
+
+.dashboard-muted {
+  color: rgb(var(--text-muted-rgb));
+}
+
+.dashboard-blur-target {
+  filter: blur(8px);
+  pointer-events: none;
+  user-select: none;
+}

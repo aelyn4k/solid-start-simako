@@ -1,9 +1,23 @@
-import { A } from "@solidjs/router";
-import { Eye, EyeOff, LockKeyhole, LogIn, Mail, ShieldCheck } from "lucide-solid";
+import { A, useNavigate } from "@solidjs/router";
+import { Eye, EyeOff, LockKeyhole, LogIn, Mail, ShieldCheck, UserCog } from "lucide-solid";
 import { createSignal } from "solid-js";
 
+type LoginRole = "admin" | "pemilik" | "penyewa";
+
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = createSignal(false);
+  const [role, setRole] = createSignal<LoginRole>("penyewa");
+
+  const submitLogin = () => {
+    try {
+      localStorage.setItem("simako-session-role", role());
+    } catch {
+      // Role remains available through this redirect flow even if storage is unavailable.
+    }
+
+    navigate(`/dashboard/${role()}`);
+  };
 
   return (
     <main class="layout-shell grid min-h-[72vh] items-center gap-10 py-14 lg:grid-cols-[0.9fr_1.1fr]">
@@ -36,7 +50,13 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form class="space-y-5" onSubmit={(event) => event.preventDefault()}>
+        <form
+          class="space-y-5"
+          onSubmit={(event) => {
+            event.preventDefault();
+            submitLogin();
+          }}
+        >
           <label class="block">
             <span class="form-label">Email</span>
             <span class="input-with-icon mt-2 block">
@@ -46,6 +66,22 @@ export default function LoginPage() {
                 type="email"
                 placeholder="nama@email.com"
               />
+            </span>
+          </label>
+
+          <label class="block">
+            <span class="form-label">Masuk sebagai</span>
+            <span class="input-with-icon mt-2 block">
+              <UserCog class="input-icon" size={17} />
+              <select
+                class="form-control form-control-icon"
+                value={role()}
+                onChange={(event) => setRole(event.currentTarget.value as LoginRole)}
+              >
+                <option value="penyewa">Penyewa Kost</option>
+                <option value="pemilik">Pemilik Kost</option>
+                <option value="admin">Admin</option>
+              </select>
             </span>
           </label>
 

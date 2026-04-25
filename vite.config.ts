@@ -4,6 +4,9 @@ import { solidStart } from "@solidjs/start/config";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  server: {
+    allowedHosts: ["tup.web.id"]
+  },
   plugins: [
     solidStart(),
     tailwindcss(),

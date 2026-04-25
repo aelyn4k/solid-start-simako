@@ -4,6 +4,7 @@ import {
   Bath,
   BedDouble,
   BookOpen,
+  Building2,
   CalendarCheck,
   CheckCircle2,
   Home,
@@ -18,7 +19,7 @@ import {
 } from "lucide-solid";
 import { createEffect, createMemo, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
-import { facilityLabels, rooms, type RoomFacilityKey } from "~/data/rooms";
+import { facilityLabels, rooms, slugifyOwner, type RoomFacilityKey } from "~/data/rooms";
 
 const facilityIcon = (facility: RoomFacilityKey, size = 18): JSX.Element => {
   switch (facility) {
@@ -103,6 +104,13 @@ export default function RoomDetail() {
 
                   <h1 class="ui-heading mt-5 text-3xl font-bold leading-tight md:text-4xl">{room()!.name}</h1>
                   <p class="mt-3 text-xl font-bold text-red-400">{room()!.price}</p>
+                  <A
+                    href={`/owner/${slugifyOwner(room()!.ownerName)}`}
+                    class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-red-400 transition hover:text-red-300"
+                  >
+                    <Building2 size={16} />
+                    {room()!.ownerName}
+                  </A>
                   <p class="ui-text mt-5 leading-8">{room()!.description}</p>
 
                   <div class="mt-6 grid grid-cols-2 gap-3">

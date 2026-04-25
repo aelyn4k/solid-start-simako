@@ -18,6 +18,7 @@ import { createMemo, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
 import {
   facilityLabels,
+  slugifyOwner,
   rooms,
   type Room,
   type RoomFacilityKey,
@@ -80,7 +81,9 @@ function KostCard(props: { room: Room }) {
         </p>
         <div class="mt-3 flex items-center gap-2 text-sm ui-text">
           <Building2 size={16} class="text-red-400" />
-          <span>{props.room.ownerName}</span>
+          <A href={`/owner/${slugifyOwner(props.room.ownerName)}`} class="font-semibold text-red-400 transition hover:text-red-300">
+            {props.room.ownerName}
+          </A>
         </div>
         <div class="mt-4 flex items-center gap-2 text-sm ui-text">
           <BedDouble size={16} class="text-red-400" />
