@@ -43,12 +43,12 @@ const staticSeo: Record<string, Omit<SeoData, "canonical" | "jsonLd">> = {
     keywords: "tentang SIMAKO, platform kost, aplikasi kost, manajemen kost digital"
   },
   "/contact": {
-    title: "Kontak dan CS SIMAKO - Bantuan Akun dan Booking",
+    title: "Kontak SIMAKO - Bantuan via Email dan Instagram",
     description:
-      "Hubungi CS SIMAKO untuk bantuan akun, login, register, booking kamar, pembayaran, atau kendala penggunaan platform.",
+      "Hubungi SIMAKO melalui email atau Instagram untuk bantuan akun, booking kamar, pembayaran, atau kendala penggunaan platform.",
     image: defaultImage,
     type: "website",
-    keywords: "kontak SIMAKO, CS SIMAKO, bantuan akun kost, bantuan booking kost"
+    keywords: "kontak SIMAKO, email SIMAKO, Instagram SIMAKO, bantuan akun kost, bantuan booking kost"
   },
   "/login": {
     title: "Login SIMAKO - Masuk ke Akun Penyewa atau Pemilik Kost",

@@ -97,6 +97,51 @@ body {
   color: rgb(var(--text-body-rgb));
 }
 
+.page-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 3px;
+  width: 100%;
+  background: rgb(var(--accent-rgb));
+  box-shadow: 0 0 22px rgba(238, 40, 64, 0.5);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 0.16s ease;
+}
+
+.page-loading-active .page-loading-bar {
+  opacity: 1;
+  animation: page-progress 0.76s ease-in-out both;
+}
+
+.route-loading-space {
+  min-height: 42vh;
+}
+
+@keyframes page-progress {
+  0% {
+    transform: scaleX(0);
+  }
+
+  55% {
+    transform: scaleX(0.74);
+  }
+
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loading-bar {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 .layout-shell {
   width: 100%;
   max-width: 1240px;

@@ -4,6 +4,7 @@ import { Suspense } from "solid-js";
 import type { JSX } from "solid-js";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
+import PageLoading from "~/components/PageLoading";
 import SeoManager from "~/components/SeoManager";
 import "./app.css";
 
@@ -14,9 +15,10 @@ function AppFrame(props: { children: JSX.Element }) {
   return (
     <div class="app-shell min-h-screen flex flex-col">
       <SeoManager />
+      <PageLoading />
       {!isDashboard() && <Header />}
       <main class="flex-grow">
-        <Suspense>{props.children}</Suspense>
+        <Suspense fallback={<div class="route-loading-space" />}>{props.children}</Suspense>
       </main>
       {!isDashboard() && <Footer />}
     </div>

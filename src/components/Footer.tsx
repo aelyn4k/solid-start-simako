@@ -1,4 +1,5 @@
 import { A, useLocation } from "@solidjs/router";
+import { Mail, MapPin, MessageCircle } from "lucide-solid";
 
 const footerLinks = [
   { href: "/search", label: "Cari Kamar" },
@@ -37,11 +38,29 @@ export default function Footer() {
           </div>
           <div>
             <h3 class="ui-title text-lg font-bold mb-4">Kontak</h3>
-            <p class="ui-text">Telkom University Purwokerto</p>
-            <p class="ui-text">
-              Jl. D.I. Panjaitan No.128, Purwokerto Selatan, Banyumas
-            </p>
-            <p class="ui-text">simako@gmail.com</p>
+            <div class="space-y-3">
+              <div class="flex items-start gap-2">
+                <Mail class="mt-1 shrink-0 text-red-400" size={16} />
+                <A href="mailto:simako@gmail.com" class="footer-link leading-6">
+                  simako@gmail.com
+                </A>
+              </div>
+              <div class="flex items-start gap-2">
+                <MapPin class="mt-1 shrink-0 text-red-400" size={16} />
+                <p class="ui-text leading-6">Telkom University Purwokerto, Jl. D.I. Panjaitan No.128, Purwokerto Selatan, Banyumas</p>
+              </div>
+              <div class="flex items-start gap-2">
+                <MessageCircle class="mt-1 shrink-0 text-red-400" size={16} />
+                <A
+                  href="https://instagram.com/simako.id"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="footer-link leading-6"
+                >
+                  simako.id
+                </A>
+              </div>
+            </div>
           </div>
         </div>
         <div class="footer-bottom mt-8 flex flex-col items-center justify-between pt-8 sm:flex-row">
