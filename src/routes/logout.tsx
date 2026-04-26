@@ -37,7 +37,6 @@ export default function LogoutPage() {
             <div class="feature-icon mx-auto mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl text-red-400">
               <ShieldQuestion size={26} />
             </div>
-            <p class="eyebrow">Konfirmasi Logout</p>
             <h1 class="ui-heading mt-4 text-3xl font-bold">
               Yakin ingin keluar?
             </h1>

@@ -12,6 +12,7 @@ import {
   Users,
 } from "lucide-solid";
 import { createSignal } from "solid-js";
+import { saveUserRole, type AuthRole } from "~/lib/auth";
 
 type RegisterRole = "tenant" | "owner";
 
@@ -44,25 +45,19 @@ const roleContent = {
 
 export default function RegisterPage() {
   const [role, setRole] = createSignal<RegisterRole>("tenant");
+  const [email, setEmail] = createSignal("");
   const [showPassword, setShowPassword] = createSignal(false);
   const [showConfirmPassword, setShowConfirmPassword] = createSignal(false);
   const activeContent = () => roleContent[role()];
+  const authRole = (): AuthRole => (role() === "owner" ? "pemilik" : "penyewa");
+  const submitRegister = () => {
+    saveUserRole(email(), authRole());
+  };
 
   return (
-    <main class="layout-shell py-14">
-      <section class="mx-auto max-w-5xl">
-        <div class="text-center">
-          <p class="eyebrow">Daftar SIMAKO</p>
-          <h1 class="ui-heading mt-4 text-4xl font-bold md:text-5xl">
-            Pilih tipe akun yang Anda butuhkan
-          </h1>
-          <p class="ui-lead mx-auto mt-4 max-w-2xl leading-8">
-            SIMAKO memisahkan alur penyewa dan pemilik kost agar proses daftar,
-            pengelolaan, dan akses fitur lebih tepat.
-          </p>
-        </div>
-
-        <div class="mt-9 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+    <main class="layout-shell flex min-h-[72vh] items-center justify-center py-14">
+      <section class="w-full max-w-5xl">
+        <div class="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <aside class="surface-card p-5 md:p-6">
             <div class="grid gap-3">
               {(["tenant", "owner"] as RegisterRole[]).map((item) => {
@@ -115,7 +110,10 @@ export default function RegisterPage() {
 
             <form
               class="grid gap-5 md:grid-cols-2"
-              onSubmit={(event) => event.preventDefault()}
+              onSubmit={(event) => {
+                event.preventDefault();
+                submitRegister();
+              }}
             >
               <label class="block md:col-span-2">
                 <span class="form-label">Nama lengkap</span>
@@ -135,7 +133,10 @@ export default function RegisterPage() {
                   <input
                     class="form-control form-control-icon"
                     type="email"
+                    value={email()}
+                    onInput={(event) => setEmail(event.currentTarget.value)}
                     placeholder="nama@email.com"
+                    required
                   />
                 </span>
               </label>
@@ -174,7 +175,11 @@ export default function RegisterPage() {
                     type="button"
                     class="input-action-button"
                     onClick={() => setShowPassword((value) => !value)}
-                    aria-label={showPassword() ? "Sembunyikan password" : "Tampilkan password"}
+                    aria-label={
+                      showPassword()
+                        ? "Sembunyikan password"
+                        : "Tampilkan password"
+                    }
                   >
                     {showPassword() ? <EyeOff size={17} /> : <Eye size={17} />}
                   </button>
@@ -194,9 +199,17 @@ export default function RegisterPage() {
                     type="button"
                     class="input-action-button"
                     onClick={() => setShowConfirmPassword((value) => !value)}
-                    aria-label={showConfirmPassword() ? "Sembunyikan password" : "Tampilkan password"}
+                    aria-label={
+                      showConfirmPassword()
+                        ? "Sembunyikan password"
+                        : "Tampilkan password"
+                    }
                   >
-                    {showConfirmPassword() ? <EyeOff size={17} /> : <Eye size={17} />}
+                    {showConfirmPassword() ? (
+                      <EyeOff size={17} />
+                    ) : (
+                      <Eye size={17} />
+                    )}
                   </button>
                 </span>
               </label>

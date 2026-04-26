@@ -21,7 +21,6 @@ export default function OwnerDetailPage() {
               </A>
               <div class="mt-7 grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-start">
                 <div>
-                  <p class="eyebrow">Pemilik Kost</p>
                   <h1 class="ui-heading mt-4 text-4xl font-bold leading-tight md:text-5xl">{ownerName()}</h1>
                   <p class="ui-lead mt-5 max-w-2xl leading-8">
                     Lihat daftar kamar dari {ownerName()}, status ketersediaan, fasilitas utama, dan detail harga sewa sebelum menghubungi pengelola.

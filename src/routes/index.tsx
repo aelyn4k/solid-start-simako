@@ -7,17 +7,14 @@ import {
   Phone,
   ReceiptText,
   Search,
-  Send,
   ShieldCheck,
   Shirt,
-  Star,
   Tv,
   Users,
   Wifi,
   Wind,
   Zap,
 } from "lucide-solid";
-import { createSignal, onMount } from "solid-js";
 import type { Component, JSX } from "solid-js";
 import {
   facilityLabels,
@@ -26,7 +23,6 @@ import {
   type Room,
   type RoomFacilityKey,
 } from "~/data/rooms";
-import { initialTestimonials, type Testimonial } from "~/data/testimonials";
 
 interface Feature {
   icon: JSX.Element;
@@ -57,38 +53,8 @@ const facilityIcon = (facility: RoomFacilityKey, size = 14) => {
   }
 };
 
-const handleRoomPointerMove: JSX.EventHandler<HTMLElement, PointerEvent> = (
-  event,
-) => {
-  const card = event.currentTarget;
-  const rect = card.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
-  const rotateX = (y / rect.height - 0.5) * -5;
-  const rotateY = (x / rect.width - 0.5) * 5;
-
-  card.style.setProperty("--mouse-x", `${x}px`);
-  card.style.setProperty("--mouse-y", `${y}px`);
-  card.style.setProperty("--tilt-x", `${rotateX}deg`);
-  card.style.setProperty("--tilt-y", `${rotateY}deg`);
-};
-
-const handleRoomPointerLeave: JSX.EventHandler<HTMLElement, PointerEvent> = (
-  event,
-) => {
-  const card = event.currentTarget;
-  card.style.setProperty("--mouse-x", "50%");
-  card.style.setProperty("--mouse-y", "0%");
-  card.style.setProperty("--tilt-x", "0deg");
-  card.style.setProperty("--tilt-y", "0deg");
-};
-
 const RoomCard: Component<{ room: Room }> = (props) => (
-  <article
-    onPointerMove={handleRoomPointerMove}
-    onPointerLeave={handleRoomPointerLeave}
-    class="surface-card room-card relative flex h-full flex-col overflow-hidden transition duration-300"
-  >
+  <article class="surface-card room-card relative flex h-full flex-col overflow-hidden">
     <div class="overflow-hidden">
       <img
         src={props.room.image}
@@ -142,56 +108,6 @@ const RoomCard: Component<{ room: Room }> = (props) => (
 );
 
 export default function Home() {
-  const [testimonials, setTestimonials] = createSignal<Testimonial[]>(initialTestimonials);
-  const [testimonialName, setTestimonialName] = createSignal("");
-  const [testimonialRoom, setTestimonialRoom] = createSignal("");
-  const [testimonialMessage, setTestimonialMessage] = createSignal("");
-
-  onMount(() => {
-    try {
-      const savedTestimonials = localStorage.getItem("simako-testimonials");
-
-      if (savedTestimonials) {
-        const parsedTestimonials = JSON.parse(savedTestimonials) as Testimonial[];
-
-        if (Array.isArray(parsedTestimonials)) {
-          setTestimonials([...initialTestimonials, ...parsedTestimonials]);
-        }
-      }
-    } catch {
-      setTestimonials(initialTestimonials);
-    }
-  });
-
-  const addTestimonial = () => {
-    const name = testimonialName().trim();
-    const room = testimonialRoom().trim();
-    const message = testimonialMessage().trim();
-
-    if (!name || !room || !message) {
-      return;
-    }
-
-    const newTestimonial: Testimonial = {
-      name,
-      room,
-      message,
-      role: "Penyewa"
-    };
-
-    const userTestimonials = [newTestimonial, ...testimonials().filter((item) => !initialTestimonials.includes(item))];
-    setTestimonials([...initialTestimonials, ...userTestimonials]);
-    setTestimonialName("");
-    setTestimonialRoom("");
-    setTestimonialMessage("");
-
-    try {
-      localStorage.setItem("simako-testimonials", JSON.stringify(userTestimonials));
-    } catch {
-      // Testimonial tetap tampil pada sesi saat ini jika penyimpanan browser tidak tersedia.
-    }
-  };
-
   const features: Feature[] = [
     {
       icon: <ShieldCheck size={24} class="text-red-300" />,
@@ -224,7 +140,6 @@ export default function Home() {
       <section class="section-divider py-14 md:py-20">
         <div class="layout-shell grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <p class="eyebrow">SIMAKO</p>
             <h1 class="ui-heading mt-5 text-4xl font-bold leading-tight md:text-6xl">
               Temukan Kost Nyaman dan Kelola Semua Lebih Praktis
             </h1>
@@ -244,29 +159,7 @@ export default function Home() {
               </A>
             </div>
 
-            <div class="mt-8 surface-card p-4 md:p-5">
-              <form
-                class="grid gap-3 md:grid-cols-4"
-                onSubmit={(e) => e.preventDefault()}
-              >
-                <input type="text" placeholder="Lokasi" class="form-control" />
-                <select class="form-control">
-                  <option>Harga</option>
-                  <option>&lt; Rp 1.200.000</option>
-                  <option>Rp 1.200.000 - Rp 1.500.000</option>
-                  <option>&gt; Rp 1.500.000</option>
-                </select>
-                <select class="form-control">
-                  <option>Tipe Kamar</option>
-                  <option>Putra</option>
-                  <option>Putri</option>
-                  <option>Campur</option>
-                </select>
-                <button type="submit" class="btn-primary px-4 py-2 text-sm">
-                  Cari Sekarang
-                </button>
-              </form>
-            </div>
+
           </div>
 
           <div class="surface-card overflow-hidden">
@@ -313,7 +206,7 @@ export default function Home() {
         </div>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
           {features.map((feature) => (
-            <article class="surface-card h-full p-6 transition duration-300 hover:-translate-y-1 hover:border-red-400/50">
+            <article class="surface-card h-full p-6">
               <div class="feature-icon mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl">
                 {feature.icon}
               </div>
@@ -323,79 +216,6 @@ export default function Home() {
               </p>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section class="layout-shell py-12 md:py-16">
-        <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 class="ui-heading text-3xl font-bold md:text-4xl">Testimoni Penyewa</h2>
-            <p class="ui-text mt-3 max-w-2xl">
-              Cerita dari penyewa dan pengelola yang sudah menggunakan SIMAKO untuk mencari atau mengelola kamar.
-            </p>
-          </div>
-          <p class="ui-muted text-sm">{testimonials().length} testimoni tampil</p>
-        </div>
-
-        <div class="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <div class="grid gap-5 md:grid-cols-2">
-            {testimonials().map((item) => (
-              <article class="surface-card testimonial-card p-5">
-                <div class="mb-4 flex items-center gap-1 text-red-400">
-                  {Array.from({ length: 5 }).map(() => (
-                    <Star size={15} fill="currentColor" />
-                  ))}
-                </div>
-                <p class="ui-text leading-7">"{item.message}"</p>
-                <div class="mt-5 border-t border-[var(--divider)] pt-4">
-                  <h3 class="ui-title font-bold">{item.name}</h3>
-                  <p class="ui-muted mt-1 text-sm">
-                    {item.role} - {item.room}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <form class="surface-card auth-panel p-6" onSubmit={(event) => event.preventDefault()}>
-            <h3 class="ui-heading text-2xl font-bold">Tambah Testimoni</h3>
-            <p class="ui-text mt-2 text-sm leading-7">
-              Testimoni baru akan langsung tampil dan tersimpan di browser Anda.
-            </p>
-            <div class="mt-5 space-y-4">
-              <label class="block">
-                <span class="form-label">Nama penyewa</span>
-                <input
-                  class="form-control mt-2"
-                  value={testimonialName()}
-                  onInput={(event) => setTestimonialName(event.currentTarget.value)}
-                  placeholder="Nama lengkap"
-                />
-              </label>
-              <label class="block">
-                <span class="form-label">Kamar / kost</span>
-                <input
-                  class="form-control mt-2"
-                  value={testimonialRoom()}
-                  onInput={(event) => setTestimonialRoom(event.currentTarget.value)}
-                  placeholder="Contoh: Kamar 101"
-                />
-              </label>
-              <label class="block">
-                <span class="form-label">Testimoni</span>
-                <textarea
-                  class="form-control mt-2 min-h-28 resize-y"
-                  value={testimonialMessage()}
-                  onInput={(event) => setTestimonialMessage(event.currentTarget.value)}
-                  placeholder="Ceritakan pengalaman Anda menggunakan SIMAKO."
-                />
-              </label>
-              <button type="button" class="btn-primary w-full px-5 py-3 text-sm" onClick={addTestimonial}>
-                <Send size={17} />
-                Tambahkan Testimoni
-              </button>
-            </div>
-          </form>
         </div>
       </section>
 

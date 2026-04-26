@@ -25,7 +25,6 @@ export default function About() {
       <section class="section-divider py-12 md:py-16">
         <div class="layout-shell grid gap-10 lg:grid-cols-[1fr_0.85fr] lg:items-center">
           <div>
-            <p class="eyebrow">Tentang SIMAKO</p>
             <h1 class="ui-heading mt-5 text-4xl font-bold leading-tight md:text-5xl">
               Platform kost digital untuk pencarian kamar dan pengelolaan yang lebih rapi.
             </h1>

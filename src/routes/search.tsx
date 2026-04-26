@@ -81,7 +81,10 @@ function KostCard(props: { room: Room }) {
         </p>
         <div class="mt-3 flex items-center gap-2 text-sm ui-text">
           <Building2 size={16} class="text-red-400" />
-          <A href={`/owner/${slugifyOwner(props.room.ownerName)}`} class="font-semibold text-red-400 transition hover:text-red-300">
+          <A
+            href={`/owner/${slugifyOwner(props.room.ownerName)}`}
+            class="font-semibold text-red-400 transition hover:text-red-300"
+          >
             {props.room.ownerName}
           </A>
         </div>
@@ -145,13 +148,18 @@ export default function SearchPage() {
     });
   });
   const activePageSize = createMemo(() =>
-    rowsPerPage() === "all" ? Math.max(1, filteredRooms().length) : rowsPerPage(),
+    rowsPerPage() === "all"
+      ? Math.max(1, filteredRooms().length)
+      : rowsPerPage(),
   );
   const totalPages = createMemo(() =>
     Math.max(1, Math.ceil(filteredRooms().length / activePageSize())),
   );
   const visibleRooms = createMemo(() =>
-    filteredRooms().slice((page() - 1) * activePageSize(), page() * activePageSize()),
+    filteredRooms().slice(
+      (page() - 1) * activePageSize(),
+      page() * activePageSize(),
+    ),
   );
   const entryStart = createMemo(() =>
     filteredRooms().length === 0 ? 0 : (page() - 1) * activePageSize() + 1,
@@ -184,22 +192,14 @@ export default function SearchPage() {
         <div class="layout-shell">
           <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p class="eyebrow">Cari Kost</p>
               <h1 class="ui-heading mt-4 text-4xl font-bold md:text-5xl">
-                Temukan Kamar yang Sesuai
+                Temukan Kamar Kost Impianmu
               </h1>
               <p class="ui-lead mt-4 max-w-2xl leading-8">
-                Lihat daftar kamar, status ketersediaan, fasilitas utama, dan
-                akses detail sebelum menghubungi pengelola.
+                Jelajahi berbagai pilihan kamar kost yang tersedia dan temukan.
               </p>
             </div>
-            <div class="surface-card flex items-center gap-3 px-4 py-3">
-              <MapPin size={18} class="text-red-400" />
-              <div>
-                <p class="ui-muted text-xs">Area pencarian</p>
-                <p class="ui-title text-sm font-semibold">Purwokerto Selatan</p>
-              </div>
-            </div>
+            <div class="flex items-center gap-4"></div>
           </div>
 
           <form
@@ -252,10 +252,6 @@ export default function SearchPage() {
               <option>Tersedia</option>
               <option>Terisi</option>
             </select>
-            <button type="submit" class="btn-primary px-5 py-2 text-sm">
-              <SlidersHorizontal size={16} />
-              Terapkan
-            </button>
           </form>
         </div>
       </section>
@@ -270,7 +266,18 @@ export default function SearchPage() {
               Cari kamar yang sesuai dengan kebutuhan Anda.
             </p>
           </div>
-          <p class="ui-muted text-sm">Filter pemilik: {owner()}</p>
+          <label class="rows-control">
+            <span>Rows</span>
+            <select
+              class="rows-select"
+              value={String(rowsPerPage())}
+              onChange={(event) => updateRowsPerPage(event.currentTarget.value)}
+            >
+              <option value="8">8</option>
+              <option value="12">12</option>
+              <option value="all">Semua</option>
+            </select>
+          </label>
         </div>
 
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
@@ -284,18 +291,6 @@ export default function SearchPage() {
             <p class="pagination-info">
               {entryStart()}-{entryEnd()} of {filteredRooms().length} entries
             </p>
-            <label class="rows-control">
-              <span>Rows</span>
-              <select
-                class="rows-select"
-                value={String(rowsPerPage())}
-                onChange={(event) => updateRowsPerPage(event.currentTarget.value)}
-              >
-                <option value="8">8</option>
-                <option value="12">12</option>
-                <option value="all">Semua</option>
-              </select>
-            </label>
           </div>
           <div class="pagination-controls">
             <button

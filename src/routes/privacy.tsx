@@ -34,7 +34,6 @@ export default function PrivacyPage() {
       <section class="section-divider py-12 md:py-16">
         <div class="layout-shell grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-start">
           <div>
-            <p class="eyebrow">Kebijakan Privasi</p>
             <h1 class="ui-heading mt-5 text-4xl font-bold leading-tight md:text-5xl">
               Cara SIMAKO menjaga dan menggunakan data Anda.
             </h1>

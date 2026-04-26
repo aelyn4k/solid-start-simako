@@ -31,7 +31,6 @@ export default function ContactPage() {
       <section class="section-divider py-12 md:py-16">
         <div class="layout-shell grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <p class="eyebrow">Kontak & CS</p>
             <h1 class="ui-heading mt-5 text-4xl font-bold leading-tight md:text-5xl">
               Ada kendala akun atau booking? Tim SIMAKO siap membantu.
             </h1>

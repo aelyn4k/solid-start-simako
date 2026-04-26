@@ -1,48 +1,28 @@
 import { A, useNavigate } from "@solidjs/router";
-import { Eye, EyeOff, LockKeyhole, LogIn, Mail, ShieldCheck, UserCog } from "lucide-solid";
+import { Eye, EyeOff, LockKeyhole, LogIn, Mail } from "lucide-solid";
 import { createSignal } from "solid-js";
-
-type LoginRole = "admin" | "pemilik" | "penyewa";
+import { resolveUserRole } from "~/lib/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [email, setEmail] = createSignal("");
   const [showPassword, setShowPassword] = createSignal(false);
-  const [role, setRole] = createSignal<LoginRole>("penyewa");
 
   const submitLogin = () => {
+    const authorizedRole = resolveUserRole(email());
+
     try {
-      localStorage.setItem("simako-session-role", role());
+      localStorage.setItem("simako-session-role", authorizedRole);
     } catch {
       // Role remains available through this redirect flow even if storage is unavailable.
     }
 
-    navigate(`/dashboard/${role()}`);
+    navigate(`/dashboard/${authorizedRole}`);
   };
 
   return (
-    <main class="layout-shell grid min-h-[72vh] items-center gap-10 py-14 lg:grid-cols-[0.9fr_1.1fr]">
-      <section>
-        <p class="eyebrow">Masuk SIMAKO</p>
-        <h1 class="ui-heading mt-4 text-4xl font-bold leading-tight md:text-5xl">
-          Kelola kost dan booking kamar dari satu akun.
-        </h1>
-        <p class="ui-lead mt-5 max-w-xl leading-8">
-          Masuk untuk memantau status kamar, tagihan, data penyewa, dan proses
-          booking tanpa berpindah platform.
-        </p>
-        <div class="mt-8 grid gap-3 sm:grid-cols-2">
-          <div class="auth-benefit">
-            <ShieldCheck size={18} />
-            <span>Data akun terlindungi</span>
-          </div>
-          <div class="auth-benefit">
-            <LogIn size={18} />
-            <span>Akses cepat ke dashboard</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="surface-card auth-panel p-6 md:p-8">
+    <main class="layout-shell flex min-h-[72vh] items-center justify-center py-14">
+      <section class="surface-card auth-panel w-full max-w-md p-6 md:p-8">
         <div class="mb-7">
           <h2 class="ui-heading text-2xl font-bold">Masuk ke Akun</h2>
           <p class="ui-text mt-2 text-sm">
@@ -64,24 +44,11 @@ export default function LoginPage() {
               <input
                 class="form-control form-control-icon"
                 type="email"
+                value={email()}
+                onInput={(event) => setEmail(event.currentTarget.value)}
                 placeholder="nama@email.com"
+                required
               />
-            </span>
-          </label>
-
-          <label class="block">
-            <span class="form-label">Masuk sebagai</span>
-            <span class="input-with-icon mt-2 block">
-              <UserCog class="input-icon" size={17} />
-              <select
-                class="form-control form-control-icon"
-                value={role()}
-                onChange={(event) => setRole(event.currentTarget.value as LoginRole)}
-              >
-                <option value="penyewa">Penyewa Kost</option>
-                <option value="pemilik">Pemilik Kost</option>
-                <option value="admin">Admin</option>
-              </select>
             </span>
           </label>
 
