@@ -1,4 +1,4 @@
-import { A, useNavigate, useParams } from "@solidjs/router";
+import { A, Navigate, useNavigate, useParams } from "@solidjs/router";
 import {
   AlertTriangle,
   BedDouble,
@@ -29,6 +29,7 @@ import {
 } from "lucide-solid";
 import { createEffect, createMemo, createSignal, onMount } from "solid-js";
 import type { Component } from "solid-js";
+import { rooms as roomCatalog } from "~/data/rooms";
 
 type RoleKey = "admin" | "pemilik" | "penyewa";
 type ThemeMode = "dark" | "light";
@@ -140,6 +141,40 @@ const tenantReportRows = [
   { type: "Air", date: "10 Feb 2026", description: "Tekanan air kecil", status: "Selesai" },
 ];
 
+const adminApplicantRows = [
+  { owner: "Dewi Lestari", kost: "Kost Cendana Baru", submittedAt: "04 Mei 2026", status: "Pending" },
+  { owner: "Agus Pranata", kost: "Kost Semesta", submittedAt: "03 Mei 2026", status: "Disetujui" },
+  { owner: "Maya Salsabila", kost: "Kost Pelangi", submittedAt: "02 Mei 2026", status: "Pending" },
+  { owner: "Indra Wijaya", kost: "Kost Mandiri", submittedAt: "29 Apr 2026", status: "Ditolak" },
+];
+
+const adminRoomRows = roomCatalog.map((room) => ({
+  room: room.name,
+  type: room.type,
+  owner: room.ownerName,
+  price: room.price,
+  status: room.status,
+}));
+
+const adminComplaintRows = [
+  { reporter: "Nadia Putri", title: "Air kamar mandi kecil", date: "04 Mei 2026", status: "Masuk" },
+  { reporter: "Raka Pratama", title: "Lampu lorong mati", date: "03 Mei 2026", status: "Diproses" },
+  { reporter: "Aulia Rahma", title: "Wi-Fi tidak stabil", date: "02 Mei 2026", status: "Masuk" },
+  { reporter: "Fajar Maulana", title: "Kunci kamar macet", date: "28 Apr 2026", status: "Selesai" },
+];
+
+const adminSettingRows = [
+  { setting: "Registrasi Pemilik", value: "Manual verification", status: "Aktif" },
+  { setting: "Email Notifikasi", value: "Enabled", status: "Aktif" },
+  { setting: "Maintenance Mode", value: "Disabled", status: "Nonaktif" },
+];
+
+const adminLogRows = [
+  { time: "04 Mei 2026 09:12", user: "admin@simako.id", action: "Membuka dashboard admin", status: "Selesai" },
+  { time: "04 Mei 2026 08:44", user: "dewi@simako.id", action: "Mengirim pendaftaran kost", status: "Pending" },
+  { time: "03 Mei 2026 21:10", user: "raka@mail.com", action: "Mengirim keluhan", status: "Masuk" },
+];
+
 const accountFields: FormField[] = [
   { key: "name", label: "Nama", placeholder: "Nama lengkap" },
   { key: "email", label: "Email", placeholder: "nama@email.com", type: "email" },
@@ -159,6 +194,10 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
       { label: "Dashboard", icon: Home },
       { label: "Akun Pemilik", icon: UserCog },
       { label: "Akun Penyewa", icon: Users },
+      { label: "Pendaftar Kost", icon: ListChecks },
+      { label: "Semua Kamar", icon: BedDouble },
+      { label: "Tagihan", icon: ReceiptText },
+      { label: "Keluhan", icon: AlertTriangle },
       { label: "Settings", icon: Settings },
       { label: "Logs", icon: FileText },
     ],
@@ -223,6 +262,115 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         canCreate: true,
         canEdit: true,
         canDelete: true,
+      },
+      {
+        key: "applicants",
+        menuLabel: "Pendaftar Kost",
+        title: "Data Pendaftar Kost",
+        description: "Admin melihat semua pendaftaran kost yang masuk untuk proses verifikasi.",
+        actionLabel: "Tambah Pendaftar",
+        columns: [
+          { key: "owner", label: "Pemilik" },
+          { key: "kost", label: "Nama Kost" },
+          { key: "submittedAt", label: "Tanggal Daftar" },
+          { key: "status", label: "Status" },
+        ],
+        fields: [],
+        initialRows: adminApplicantRows,
+        canCreate: false,
+        canEdit: false,
+        canDelete: false,
+      },
+      {
+        key: "all-rooms",
+        menuLabel: "Semua Kamar",
+        title: "Semua Kamar Kost",
+        description: "Admin melihat semua kamar dari seluruh pemilik kost di SIMAKO.",
+        actionLabel: "Tambah Kamar",
+        columns: [
+          { key: "room", label: "Kamar" },
+          { key: "type", label: "Tipe" },
+          { key: "owner", label: "Pemilik" },
+          { key: "price", label: "Harga" },
+          { key: "status", label: "Status" },
+        ],
+        fields: [],
+        initialRows: adminRoomRows,
+        canCreate: false,
+        canEdit: false,
+        canDelete: false,
+      },
+      {
+        key: "all-bills",
+        menuLabel: "Tagihan",
+        title: "Semua Tagihan",
+        description: "Admin melihat semua tagihan penyewa dari seluruh pemilik kost.",
+        actionLabel: "Buat Tagihan",
+        columns: [
+          { key: "tenant", label: "Penyewa" },
+          { key: "room", label: "Kamar" },
+          { key: "amount", label: "Nominal" },
+          { key: "dueDate", label: "Jatuh Tempo" },
+          { key: "status", label: "Status" },
+        ],
+        fields: [],
+        initialRows: ownerBillRows,
+        canCreate: false,
+        canEdit: false,
+        canDelete: false,
+      },
+      {
+        key: "complaints",
+        menuLabel: "Keluhan",
+        title: "Semua Keluhan",
+        description: "Admin melihat semua keluhan yang masuk dari penyewa dan pemilik kost.",
+        actionLabel: "Tambah Keluhan",
+        columns: [
+          { key: "reporter", label: "Pelapor" },
+          { key: "title", label: "Keluhan" },
+          { key: "date", label: "Tanggal" },
+          { key: "status", label: "Status" },
+        ],
+        fields: [],
+        initialRows: adminComplaintRows,
+        canCreate: false,
+        canEdit: false,
+        canDelete: false,
+      },
+      {
+        key: "settings",
+        menuLabel: "Settings",
+        title: "Settings",
+        description: "Admin mengakses konfigurasi sistem utama SIMAKO.",
+        actionLabel: "Tambah Setting",
+        columns: [
+          { key: "setting", label: "Setting" },
+          { key: "value", label: "Value" },
+          { key: "status", label: "Status" },
+        ],
+        fields: [],
+        initialRows: adminSettingRows,
+        canCreate: false,
+        canEdit: false,
+        canDelete: false,
+      },
+      {
+        key: "logs",
+        menuLabel: "Logs",
+        title: "System Logs",
+        description: "Admin mengakses log aktivitas sistem SIMAKO.",
+        actionLabel: "Tambah Log",
+        columns: [
+          { key: "time", label: "Waktu" },
+          { key: "user", label: "User" },
+          { key: "action", label: "Aktivitas" },
+          { key: "status", label: "Status" },
+        ],
+        fields: [],
+        initialRows: adminLogRows,
+        canCreate: false,
+        canEdit: false,
+        canDelete: false,
       },
     ],
   },
@@ -538,12 +686,17 @@ function rowMatches(row: Record<string, string>, query: string) {
 export default function RoleDashboardPage() {
   const navigate = useNavigate();
   const params = useParams();
-  const config = createMemo(() => (isRoleKey(params.role) ? roleConfigs[params.role] : roleConfigs.admin));
+
+  if (params.role === "admin") {
+    return <Navigate href="/admin/dashboard" />;
+  }
+
+  const config = createMemo(() => (isRoleKey(params.role) ? roleConfigs[params.role] : roleConfigs.pemilik));
   const [activeMenu, setActiveMenu] = createSignal("Dashboard");
   const [sidebarOpen, setSidebarOpen] = createSignal(false);
   const [theme, setTheme] = createSignal<ThemeMode>("dark");
   const [sessionRole, setSessionRole] = createSignal<RoleKey | null>(null);
-  const [rows, setRows] = createSignal<ResourceRows>(createInitialRows(roleConfigs.admin));
+  const [rows, setRows] = createSignal<ResourceRows>(createInitialRows(roleConfigs.pemilik));
   const [query, setQuery] = createSignal("");
   const [modalOpen, setModalOpen] = createSignal(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = createSignal(false);

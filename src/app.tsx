@@ -10,7 +10,7 @@ import "./app.css";
 
 function AppFrame(props: { children: JSX.Element }) {
   const location = useLocation();
-  const isDashboard = () => location.pathname.startsWith("/dashboard");
+  const isDashboard = () => location.pathname.startsWith("/dashboard") || location.pathname.startsWith("/admin");
 
   return (
     <div class="app-shell min-h-screen flex flex-col">

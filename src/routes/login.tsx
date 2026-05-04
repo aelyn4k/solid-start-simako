@@ -2,6 +2,7 @@ import { A, useNavigate } from "@solidjs/router";
 import { Eye, EyeOff, LockKeyhole, LogIn, Mail } from "lucide-solid";
 import { createSignal } from "solid-js";
 import { resolveUserRole } from "~/lib/auth";
+import { getDashboardPathByRole } from "~/utils/roleAccess";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function LoginPage() {
       // Role remains available through this redirect flow even if storage is unavailable.
     }
 
-    navigate(`/dashboard/${authorizedRole}`);
+    navigate(getDashboardPathByRole(authorizedRole));
   };
 
   return (
