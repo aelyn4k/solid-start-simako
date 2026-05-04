@@ -107,6 +107,8 @@ const RoomCard: Component<{ room: Room }> = (props) => (
   </article>
 );
 
+const featuredRooms = rooms.slice(0, 8);
+
 export default function Home() {
   const features: Feature[] = [
     {
@@ -189,7 +191,7 @@ export default function Home() {
           </A>
         </div>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {rooms.map((room) => (
+          {featuredRooms.map((room) => (
             <RoomCard room={room} />
           ))}
         </div>

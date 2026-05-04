@@ -8,3 +8,17 @@
   [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
 [vite] connected.
+[2m09.34.38[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/owner/[slug].tsx?pick=default&pick=$css[22m
+[2m09.34.38[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/rooms.ts[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m09.37.02[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m09.37.02[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/index.tsx?pick=default&pick=$css[22m
+[2m09.37.02[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/index.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
