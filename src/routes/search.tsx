@@ -203,7 +203,7 @@ export default function SearchPage() {
           </div>
 
           <form
-            class="surface-card mt-8 grid gap-3 p-4 md:grid-cols-[1.4fr_1fr_1fr_1fr_auto]"
+            class="surface-card mt-7 grid gap-2.5 p-3 md:grid-cols-[1.35fr_0.95fr_1.05fr_0.9fr] md:p-4"
             onSubmit={(event) => event.preventDefault()}
           >
             <div class="input-with-icon">

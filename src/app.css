@@ -352,6 +352,42 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.form-control:is(select),
+.rows-select {
+  appearance: none;
+  cursor: pointer;
+  background-color: var(--control-bg);
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgb(var(--accent-rgb)) 50%),
+    linear-gradient(135deg, rgb(var(--accent-rgb)) 50%, transparent 50%);
+  background-position:
+    calc(100% - 1rem) 50%,
+    calc(100% - 0.72rem) 50%;
+  background-repeat: no-repeat;
+  background-size: 0.32rem 0.32rem, 0.32rem 0.32rem;
+  color: rgb(var(--text-strong-rgb));
+  line-height: 1.35;
+  padding-right: 2.45rem;
+}
+
+.form-control:is(select):hover,
+.rows-select:hover {
+  border-color: rgba(238, 40, 64, 0.6);
+  box-shadow: 0 10px 26px rgba(2, 8, 28, 0.12);
+}
+
+.form-control:is(select) option,
+.rows-select option {
+  background: rgb(var(--background-rgb));
+  color: rgb(var(--text-strong-rgb));
+}
+
+.form-control:is(select) option:checked,
+.rows-select option:checked {
+  background: rgb(var(--accent-rgb));
+  color: #ffffff;
+}
+
 .input-with-icon {
   position: relative;
 }
@@ -512,12 +548,11 @@ body {
   height: 2.15rem;
   border: 1px solid var(--control-border);
   border-radius: 0.4rem;
-  background: var(--control-bg);
-  color: rgb(var(--text-strong-rgb));
   font-size: 0.8125rem;
   font-weight: 700;
-  padding-inline: 0.55rem;
+  padding-left: 0.65rem;
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pagination-controls {
