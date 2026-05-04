@@ -1,6 +1,8 @@
 import { A, useLocation } from "@solidjs/router";
 import { Moon, Sun } from "lucide-solid";
-import { createSignal, onMount } from "solid-js";
+import { createMemo, createSignal, onMount } from "solid-js";
+import type { AuthRole } from "~/lib/auth";
+import { getDashboardPathByRole, getSessionRole } from "~/utils/roleAccess";
 
 type ThemeMode = "dark" | "light";
 
@@ -34,6 +36,10 @@ const getStoredTheme = (): ThemeMode | null => {
 export default function Header() {
   const location = useLocation();
   const [theme, setTheme] = createSignal<ThemeMode>("dark");
+  const [sessionRole, setSessionRole] = createSignal<AuthRole | null>(null);
+  const dashboardHref = createMemo(() =>
+    sessionRole() ? getDashboardPathByRole(sessionRole()!) : null,
+  );
 
   const applyTheme = (mode: ThemeMode) => {
     document.documentElement.dataset.theme = mode;
@@ -49,6 +55,7 @@ export default function Header() {
     const initialTheme = getStoredTheme() ?? getCurrentTheme();
     setTheme(initialTheme);
     applyTheme(initialTheme);
+    setSessionRole(getSessionRole());
   });
 
   const isActive = (href: string) =>
@@ -93,15 +100,23 @@ export default function Header() {
             >
               {theme() === "dark" ? <Moon size={20} /> : <Sun size={20} />}
             </button>
-            <A
-              href="/login"
-              class="nav-action rounded-lg px-3 py-2 text-sm font-medium"
-            >
-              Masuk
-            </A>
-            <A href="/register" class="btn-primary px-4 py-2 text-sm">
-              Daftar
-            </A>
+            {dashboardHref() ? (
+              <A href={dashboardHref()!} class="btn-primary px-4 py-2 text-sm">
+                Masuk Dashboard
+              </A>
+            ) : (
+              <>
+                <A
+                  href="/login"
+                  class="nav-action rounded-lg px-3 py-2 text-sm font-medium"
+                >
+                  Masuk
+                </A>
+                <A href="/register" class="btn-primary px-4 py-2 text-sm">
+                  Daftar
+                </A>
+              </>
+            )}
           </div>
         </div>
       </nav>
