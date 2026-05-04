@@ -292,3 +292,102 @@ Error: <A> and 'use' router primitives can be only used inside a Route.
     at Object.completed (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:703:19)
     at notifySuspense (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:671:7)
     at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:652:9
+Error: <A> and 'use' router primitives can be only used inside a Route.
+    at invariant (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\utils.js:29:15)
+    at useRouter (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:9:41)
+    at useRoute (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:11:75)
+    at path (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:13:19)
+    at A (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\components.jsx:14:16)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at KostCard (D:\CODING\solid-start-simako\src\routes\search.tsx:83:30)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at room (D:\CODING\solid-start-simako\src\routes\search.tsx:284:36)
+    at Array.map (<anonymous>)
+    at Promise.SearchPage (D:\CODING\solid-start-simako\src\routes\search.tsx:284:27)
+    at wrap (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:639:30)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at Object.outlet (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:545:30)
+    at Object.get children (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:91:64)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:35
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:49
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at children (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:16)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:14
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at provider (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:201:12)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at child (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:91:13)
+    at Show (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:464:68)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at eval (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:90:12)
+    at Routes (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:87:52)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at Object.children (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:18:40)
+    at Object.get children (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:34:18)
+    at Object.children (D:\CODING\solid-start-simako\src\app.tsx:31:41)
+    at Object.get children (D:\CODING\solid-start-simako\src\app.tsx:21:73)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:725:39
+    at catchError (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:144:12)
+    at get children (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:725:16)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:35
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:49
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at children (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:16)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:14
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at provider (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:201:12)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:722:34
+    at runWithOwner (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:180:12)
+    at runSuspense (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:722:12)
+    at Object.completed (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:703:19)
+    at notifySuspense (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:671:7)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:652:9
+Error: <A> and 'use' router primitives can be only used inside a Route.
+    at invariant (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\utils.js:29:15)
+    at useRouter (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:9:41)
+    at useRoute (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:11:75)
+    at path (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:13:19)
+    at A (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\components.jsx:14:16)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at Promise.About (D:\CODING\solid-start-simako\src\routes\about.tsx:23:3)
+    at wrap (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:639:30)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at Object.outlet (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routing.js:545:30)
+    at Object.get children (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:91:64)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:35
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:49
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at children (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:16)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:14
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at provider (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:201:12)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at child (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:91:13)
+    at Show (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:464:68)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at eval (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:90:12)
+    at Routes (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:87:52)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at Object.children (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:18:40)
+    at Object.get children (D:\CODING\solid-start-simako\node_modules\@solidjs\router\dist\routers\components.jsx:34:18)
+    at Object.children (D:\CODING\solid-start-simako\src\app.tsx:31:41)
+    at Object.get children (D:\CODING\solid-start-simako\src\app.tsx:21:73)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:725:39
+    at catchError (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:144:12)
+    at get children (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:725:16)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:35
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:49
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at children (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:169:16)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:206:14
+    at createMemo (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:88:9)
+    at provider (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:201:12)
+    at createComponent (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:398:15)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:722:34
+    at runWithOwner (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:180:12)
+    at runSuspense (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:722:12)
+    at Object.completed (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:703:19)
+    at notifySuspense (file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:671:7)
+    at file:///D:/CODING/solid-start-simako/node_modules/solid-js/dist/server.js:652:9
+    at async Promise.allSettled (index 0)

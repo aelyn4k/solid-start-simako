@@ -33,7 +33,7 @@ export default createHandler(() => (
             <script type="application/ld+json" data-simako-seo="true">
               {JSON.stringify(seo.jsonLd)}
             </script>
-            <link rel="icon" href="/favicon.ico" />
+            <link rel="icon" href="/favicon.png" />
             <script>
               {`(() => {
                 try {
