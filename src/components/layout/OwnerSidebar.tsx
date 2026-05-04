@@ -173,23 +173,36 @@ export default function OwnerSidebar(props: { title: string; subtitle: string; c
         </aside>
 
         <section class="lg:pl-[260px]">
-          <div class="mx-auto max-w-[1220px] px-5 py-8 md:px-8">
+          <div class="sticky top-0 z-20 flex h-[70px] items-center justify-between border-b border-[var(--divider)] bg-[var(--header-bg)] px-5 lg:hidden">
+            <button
+              type="button"
+              class="icon-button h-10 w-10"
+              aria-label="Buka menu dashboard"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
+            <A href="/" class="flex items-center gap-3">
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-red-600 text-white">
+                <UserCog size={18} />
+              </span>
+              <span>
+                <span class="ui-heading block text-sm font-bold">SIMAKO</span>
+                <span class="dashboard-muted block text-xs">Pemilik Kost</span>
+              </span>
+            </A>
+            <button type="button" class="icon-button h-10 w-10" aria-label="Ganti tema" onClick={toggleTheme}>
+              {theme() === "dark" ? <Moon size={17} /> : <Sun size={17} />}
+            </button>
+          </div>
+
+          <div class="mx-auto max-w-[1220px] px-5 py-6 md:px-8 lg:py-8">
             <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-              <div class="flex gap-3">
-                <button
-                  type="button"
-                  class="icon-button mt-1 lg:hidden"
-                  aria-label="Buka sidebar"
-                  onClick={() => setSidebarOpen(true)}
-                >
-                  <Menu size={20} />
-                </button>
-                <div>
-                  <h1 class="ui-heading text-3xl font-bold md:text-4xl">{props.title}</h1>
-                  <p class="dashboard-muted mt-3 text-sm">{props.subtitle}</p>
-                </div>
+              <div>
+                <h1 class="ui-heading text-3xl font-bold md:text-4xl">{props.title}</h1>
+                <p class="dashboard-muted mt-3 text-sm">{props.subtitle}</p>
               </div>
-              <div class="rounded-lg border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-2 text-xs font-bold text-[rgb(var(--text-body-rgb))]">
+              <div class="hidden rounded-lg border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-2 text-xs font-bold text-[rgb(var(--text-body-rgb))] md:block">
                 Role: <span class="text-red-400">Pemilik Kost</span>
               </div>
             </div>
