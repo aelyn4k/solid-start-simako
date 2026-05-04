@@ -1,6 +1,7 @@
 import { Edit3, ExternalLink, Eye, ImageOff, MapPin, Plus, Save, Search, Trash2, X } from "lucide-solid";
 import { createMemo, createSignal } from "solid-js";
 import ConfirmDialog from "~/components/ConfirmDialog";
+import ImageUpload from "~/components/common/ImageUpload";
 import {
   bankAccounts,
   contactInfo,
@@ -477,40 +478,20 @@ export function OwnerRoomsPage() {
                 </select>
                 <FieldError message={errors().status_kost} />
               </label>
-              <label class="block">
-                <span class="form-label">Foto Kamar</span>
-                <input
-                  class="form-control mt-2"
-                  type="file"
-                  multiple
-                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                  onChange={(event) => void handlePhotoChange(event.currentTarget.files)}
-                />
-                <FieldError message={errors().foto_kamar} />
-                <p class="dashboard-muted mt-2 text-xs">Opsional. Maksimal 4 gambar, format JPG/JPEG/PNG/WEBP, ukuran tiap foto maksimal 2MB.</p>
-              </label>
               <div class="lg:col-span-2">
-                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  {form().foto_kamar.length > 0 ? (
-                    form().foto_kamar.map((photo, index) => (
-                      <div class="relative overflow-hidden rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)]">
-                        <img src={photo} alt={`Preview foto kamar ${index + 1}`} class="h-28 w-full object-cover" />
-                        <button
-                          type="button"
-                          class="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-slate-950/70 text-white"
-                          aria-label="Hapus foto"
-                          onClick={() => setDeletePhotoIndex(index)}
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    ))
-                  ) : (
-                    <div class="flex h-28 items-center justify-center rounded-xl border border-dashed border-[var(--surface-border)] bg-[var(--control-bg)] text-sm text-[rgb(var(--text-muted-rgb))] sm:col-span-2 lg:col-span-4">
-                      Tidak ada foto
-                    </div>
-                  )}
+                <span class="form-label">Foto Kamar</span>
+                <div class="mt-2">
+                  <ImageUpload
+                    value={form().foto_kamar}
+                    maxFiles={4}
+                    onChange={(images) => {
+                      setForm({ ...form(), foto_kamar: images });
+                      const { foto_kamar: _photoError, ...remainingErrors } = errors();
+                      setErrors(remainingErrors);
+                    }}
+                  />
                 </div>
+                <FieldError message={errors().foto_kamar} />
               </div>
               <label class="block lg:col-span-2">
                 <span class="form-label">Deskripsi Kamar</span>

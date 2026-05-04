@@ -1,13 +1,13 @@
-import OwnerSidebar from "~/components/layout/OwnerSidebar";
-import { OwnerFacilitiesPage } from "~/pages/owner/OwnerManagementPages";
+import DashboardLayout from "~/components/layout/DashboardLayout";
+import OwnerFacilities from "~/pages/owner/OwnerFacilities";
 
 export default function OwnerFacilitiesRoute() {
   return (
-    <OwnerSidebar
+    <DashboardLayout
       title="Fasilitas Umum"
       subtitle="Kelola fasilitas umum yang tersedia di kost milik akun ini."
     >
-      <OwnerFacilitiesPage />
-    </OwnerSidebar>
+      <OwnerFacilities />
+    </DashboardLayout>
   );
 }

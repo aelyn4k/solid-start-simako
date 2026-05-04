@@ -4,11 +4,11 @@ import {
   CheckCircle2,
   ClipboardList,
   Home,
-  Settings,
 } from "lucide-solid";
 import { createMemo, createSignal, onMount } from "solid-js";
 import type { Component } from "solid-js";
-import { bankAccounts, facilities, ownerRooms, rules } from "~/data/ownerData";
+import { ownerRooms, roomBills } from "~/data/ownerData";
+import { formatCurrency } from "~/utils/format";
 import { readOwnerRooms } from "~/utils/ownerRoomsStorage";
 import { getCurrentOwnerId } from "~/utils/ownerSession";
 
@@ -74,12 +74,8 @@ export default function OwnerDashboard() {
   const [roomSource, setRoomSource] = createSignal(ownerRooms);
   const ownerId = createMemo(() => getCurrentOwnerId());
   const rooms = createMemo(() => roomSource().filter((room) => room.owner_id === ownerId()));
-  const ownerFacilities = createMemo(() =>
-    facilities.filter((facility) => facility.owner_id === ownerId()),
-  );
-  const ownerRules = createMemo(() => rules.filter((rule) => rule.owner_id === ownerId()));
-  const ownerBankAccounts = createMemo(() =>
-    bankAccounts.filter((account) => account.owner_id === ownerId()),
+  const ownerBills = createMemo(() =>
+    roomBills.filter((bill) => bill.owner_id === ownerId()),
   );
   const availableRooms = createMemo(() =>
     rooms().filter((room) => room.status_kost === "tersedia"),
@@ -87,11 +83,18 @@ export default function OwnerDashboard() {
   const occupiedRooms = createMemo(() =>
     rooms().filter((room) => room.status_kost === "berpenghuni"),
   );
-  const activeRules = createMemo(() => ownerRules().filter((rule) => rule.status_aktif));
+  const currentRevenue = createMemo(() =>
+    occupiedRooms().reduce((total, room) => total + room.harga_perbulan, 0),
+  );
+  const unpaidRevenue = createMemo(() =>
+    ownerBills()
+      .filter((bill) => bill.status_tagihan === "aktif")
+      .reduce((total, bill) => total + bill.nominal_tagihan, 0),
+  );
 
   const stats = createMemo<StatCard[]>(() => [
     {
-      label: "Total Jumlah Kamar",
+      label: "Kamar yang Tersedia",
       value: formatNumber(rooms().length),
       tone: "red",
       icon: BedDouble,
@@ -109,22 +112,16 @@ export default function OwnerDashboard() {
       icon: Home,
     },
     {
-      label: "Total Fasilitas Umum",
-      value: formatNumber(ownerFacilities().length),
+      label: "Total Rupiah Pendapatan Saat Ini",
+      value: formatCurrency(currentRevenue()),
       tone: "orange",
-      icon: Settings,
+      icon: Banknote,
     },
     {
-      label: "Total Aturan Aktif",
-      value: formatNumber(activeRules().length),
+      label: "Total Pendapatan Belum Dibayarkan",
+      value: formatCurrency(unpaidRevenue()),
       tone: "green",
       icon: ClipboardList,
-    },
-    {
-      label: "Total Rekening Pembayaran",
-      value: formatNumber(ownerBankAccounts().length),
-      tone: "blue",
-      icon: Banknote,
     },
   ]);
 
@@ -138,44 +135,6 @@ export default function OwnerDashboard() {
         {stats().map((stat) => (
           <StatCardItem stat={stat} />
         ))}
-      </section>
-
-      <section class="mt-8 grid gap-6 lg:grid-cols-3">
-        <article class="dashboard-card p-6">
-          <h2 class="ui-heading text-lg font-bold">Ringkasan Kamar</h2>
-          <div class="mt-5 space-y-3">
-            <div class="flex items-center justify-between rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <span class="ui-heading font-bold">Total kamar</span>
-              <strong class="text-red-400">{formatNumber(rooms().length)}</strong>
-            </div>
-            <div class="flex items-center justify-between rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <span class="ui-heading font-bold">Kamar kosong</span>
-              <strong class="text-emerald-400">{formatNumber(availableRooms().length)}</strong>
-            </div>
-            <div class="flex items-center justify-between rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <span class="ui-heading font-bold">Kamar terisi</span>
-              <strong class="text-sky-400">{formatNumber(occupiedRooms().length)}</strong>
-            </div>
-          </div>
-        </article>
-
-        <article class="dashboard-card p-6 lg:col-span-2">
-          <h2 class="ui-heading text-lg font-bold">Data Dinamis Pemilik</h2>
-          <div class="mt-5 grid gap-4 sm:grid-cols-3">
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-sm">owner_id aktif</p>
-              <p class="mt-2 text-2xl font-bold text-red-400">{ownerId()}</p>
-            </div>
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-sm">Aturan aktif</p>
-              <p class="mt-2 text-2xl font-bold text-emerald-400">{activeRules().length}</p>
-            </div>
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-sm">Rekening tersedia</p>
-              <p class="mt-2 text-2xl font-bold text-sky-400">{ownerBankAccounts().length}</p>
-            </div>
-          </div>
-        </article>
       </section>
     </>
   );

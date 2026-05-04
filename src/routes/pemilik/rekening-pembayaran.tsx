@@ -1,13 +1,13 @@
-import OwnerSidebar from "~/components/layout/OwnerSidebar";
-import { OwnerBankAccountsPage } from "~/pages/owner/OwnerManagementPages";
+import DashboardLayout from "~/components/layout/DashboardLayout";
+import OwnerBankAccounts from "~/pages/owner/OwnerBankAccounts";
 
 export default function OwnerBankAccountsRoute() {
   return (
-    <OwnerSidebar
+    <DashboardLayout
       title="Rekening Pembayaran"
       subtitle="Kelola rekening pembayaran yang digunakan oleh penyewa."
     >
-      <OwnerBankAccountsPage />
-    </OwnerSidebar>
+      <OwnerBankAccounts />
+    </DashboardLayout>
   );
 }

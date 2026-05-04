@@ -179,3 +179,26 @@ export const accessLogs: AccessLog[] = [
     ip_address: "103.164.12.77",
   },
 ];
+
+export {
+  bankAccounts,
+  contactInfo,
+  facilities,
+  kostInfo,
+  ownerRooms,
+  roomBills,
+  rules,
+} from "./ownerData";
+
+export type {
+  BankAccount,
+  ContactInfo,
+  KostInfo,
+  KostRule,
+  OwnerBillStatus,
+  OwnerKostType,
+  OwnerRoom,
+  OwnerRoomStatus,
+  PublicFacility,
+  RoomBill,
+} from "./ownerData";

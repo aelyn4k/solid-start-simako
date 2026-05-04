@@ -1,13 +1,13 @@
-import OwnerSidebar from "~/components/layout/OwnerSidebar";
-import { OwnerRulesPage } from "~/pages/owner/OwnerManagementPages";
+import DashboardLayout from "~/components/layout/DashboardLayout";
+import OwnerRules from "~/pages/owner/OwnerRules";
 
 export default function OwnerRulesRoute() {
   return (
-    <OwnerSidebar
+    <DashboardLayout
       title="Aturan Kost"
       subtitle="Kelola aturan penyewa untuk kost milik akun ini."
     >
-      <OwnerRulesPage />
-    </OwnerSidebar>
+      <OwnerRules />
+    </DashboardLayout>
   );
 }

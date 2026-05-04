@@ -1,13 +1,13 @@
-import OwnerSidebar from "~/components/layout/OwnerSidebar";
-import { OwnerRoomBillsPage } from "~/pages/owner/OwnerManagementPages";
+import DashboardLayout from "~/components/layout/DashboardLayout";
+import OwnerRoomBills from "~/pages/owner/OwnerRoomBills";
 
 export default function OwnerRoomBillsRoute() {
   return (
-    <OwnerSidebar
+    <DashboardLayout
       title="Tagihan Kamar"
       subtitle="Kelola jadwal dan status tagihan kamar milik akun pemilik."
     >
-      <OwnerRoomBillsPage />
-    </OwnerSidebar>
+      <OwnerRoomBills />
+    </DashboardLayout>
   );
 }
