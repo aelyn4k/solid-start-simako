@@ -51,7 +51,7 @@ const facilityIcon = (facility: RoomFacilityKey): JSX.Element => {
 
 function KostCard(props: { room: Room }) {
   return (
-    <article class="surface-card search-room-card flex h-full flex-col overflow-hidden">
+    <article class="surface-card search-room-card flex h-full flex-col overflow-hidden border-2 border-transparent transition-all hover:scale-[1.03] hover:border-red-500">
       <div class="relative overflow-hidden">
         <img
           src={props.room.image}

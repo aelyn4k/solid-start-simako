@@ -19,7 +19,7 @@ import {
 } from "lucide-solid";
 import { createEffect, createMemo, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
-import { facilityLabels, rooms, slugifyOwner, type RoomFacilityKey } from "~/data/rooms";
+import { facilityLabels, findRoomById, slugifyOwner, type RoomFacilityKey } from "~/data/rooms";
 
 const facilityIcon = (facility: RoomFacilityKey, size = 18): JSX.Element => {
   switch (facility) {
@@ -46,7 +46,7 @@ const facilityIcon = (facility: RoomFacilityKey, size = 18): JSX.Element => {
 
 export default function RoomDetail() {
   const params = useParams();
-  const room = createMemo(() => rooms.find((item) => String(item.id) === params.id));
+  const room = createMemo(() => findRoomById(params.id));
   const [selectedImage, setSelectedImage] = createSignal("");
   const heroImage = createMemo(() => selectedImage() || room()?.image || "");
 

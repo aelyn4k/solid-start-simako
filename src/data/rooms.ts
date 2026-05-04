@@ -44,6 +44,19 @@ export const getOwnerNames = () => Array.from(new Set(rooms.map((room) => room.o
 export const getOwnerRoomsBySlug = (ownerSlug: string) =>
   rooms.filter((room) => slugifyOwner(room.ownerName) === ownerSlug);
 
+export const createRandomRoomId = (existingIds = rooms.map((room) => room.id)) => {
+  let id = 0;
+
+  do {
+    id = Math.floor(100_000_000 + Math.random() * 900_000_000);
+  } while (existingIds.includes(id));
+
+  return id;
+};
+
+export const findRoomById = (roomId: string | number) =>
+  rooms.find((room) => String(room.id) === String(roomId));
+
 export const facilityLabels: Record<RoomFacilityKey, string> = {
   wifi: "Wi-Fi Cepat",
   tv: "TV",
@@ -59,7 +72,7 @@ export const facilityLabels: Record<RoomFacilityKey, string> = {
 
 export const rooms: Room[] = [
   {
-    id: 1,
+    id: 847293615,
     name: "Kamar 101 - Tipe Premium",
     type: "Premium",
     ownerName: "Kost Melati",
@@ -84,7 +97,7 @@ export const rooms: Room[] = [
     rules: ["Maksimal 1 penghuni", "Tamu wajib lapor pengelola", "Pembayaran dilakukan sebelum tanggal 10"]
   },
   {
-    id: 2,
+    id: 296184730,
     name: "Kamar 102 - Tipe Reguler",
     type: "Reguler",
     ownerName: "Kost Melati",
@@ -109,7 +122,7 @@ export const rooms: Room[] = [
     rules: ["Jaga kebersihan area bersama", "Jam tamu sampai 21.00 WIB", "Tidak membawa hewan peliharaan"]
   },
   {
-    id: 3,
+    id: 638502947,
     name: "Kamar 201 - Tipe Premium",
     type: "Premium",
     ownerName: "Kost Anggrek",
@@ -134,7 +147,7 @@ export const rooms: Room[] = [
     rules: ["Maksimal 1 penghuni", "Tidak merokok di dalam kamar", "Tidak mengubah instalasi listrik"]
   },
   {
-    id: 4,
+    id: 914706258,
     name: "Kamar 202 - Tipe Reguler",
     type: "Reguler",
     ownerName: "Kost Anggrek",
@@ -159,7 +172,7 @@ export const rooms: Room[] = [
     rules: ["Jaga ketenangan setelah 22.00 WIB", "Tamu wajib lapor", "Pembayaran sebelum tanggal 10"]
   },
   {
-    id: 5,
+    id: 375829104,
     name: "Kamar 203 - Tipe Premium",
     type: "Premium",
     ownerName: "Kost Cendana",
@@ -184,7 +197,7 @@ export const rooms: Room[] = [
     rules: ["Maksimal 1 penghuni", "Tidak merokok di kamar", "Pembayaran sebelum tanggal 10"]
   },
   {
-    id: 6,
+    id: 752460913,
     name: "Kamar 301 - Tipe Reguler",
     type: "Reguler",
     ownerName: "Kost Cendana",
@@ -209,7 +222,7 @@ export const rooms: Room[] = [
     rules: ["Jaga kebersihan area bersama", "Tidak membuat bising setelah 22.00 WIB", "Tamu wajib lapor"]
   },
   {
-    id: 7,
+    id: 481937620,
     name: "Kamar 302 - Tipe Premium",
     type: "Premium",
     ownerName: "Kost Purnama",
@@ -234,7 +247,7 @@ export const rooms: Room[] = [
     rules: ["Maksimal 1 penghuni", "Tidak mengubah tata letak besar", "Pembayaran sebelum tanggal 10"]
   },
   {
-    id: 8,
+    id: 609258371,
     name: "Kamar 303 - Tipe Reguler",
     type: "Reguler",
     ownerName: "Kost Purnama",

@@ -54,7 +54,7 @@ const facilityIcon = (facility: RoomFacilityKey, size = 14) => {
 };
 
 const RoomCard: Component<{ room: Room }> = (props) => (
-  <article class="surface-card room-card relative flex h-full flex-col overflow-hidden">
+  <article class="surface-card room-card relative flex h-full flex-col overflow-hidden border-2 border-transparent transition-all hover:scale-[1.03] hover:border-red-500">
     <div class="overflow-hidden">
       <img
         src={props.room.image}

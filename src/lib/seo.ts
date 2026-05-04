@@ -1,4 +1,4 @@
-import { getOwnerRoomsBySlug, rooms, slugifyOwner, type Room } from "~/data/rooms";
+import { findRoomById, getOwnerRoomsBySlug, rooms, slugifyOwner, type Room } from "~/data/rooms";
 
 const siteUrl = "https://simako.id";
 const siteName = "SIMAKO";
@@ -173,7 +173,7 @@ export const getSeoForPath = (pathname: string): SeoData => {
   const ownerMatch = normalizedPath.match(/^\/owner\/([^/]+)$/);
 
   if (roomMatch) {
-    const room = rooms.find((item) => String(item.id) === roomMatch[1]);
+    const room = findRoomById(roomMatch[1]);
 
     if (room) {
       return roomSeo(room);
