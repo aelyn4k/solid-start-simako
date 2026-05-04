@@ -86,7 +86,7 @@ const statIconClass = (tone: Tone) => {
 
 function StatCardItem(props: { stat: StatCard }) {
   const Icon = props.stat.icon;
-  const valueSizeClass = props.stat.value.startsWith("Rp") ? "text-2xl leading-tight" : "text-3xl";
+  const valueSizeClass = props.stat.value.startsWith("Rp") ? "text-3xl leading-tight" : "text-3xl";
 
   return (
     <article class="dashboard-card relative min-h-[126px] overflow-hidden p-5">
@@ -188,10 +188,17 @@ export default function OwnerDashboard() {
 
   return (
     <>
-      <section class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
-        {stats().map((stat) => (
-          <StatCardItem stat={stat} />
-        ))}
+      <section class="grid gap-5">
+        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {stats().slice(0, 3).map((stat) => (
+            <StatCardItem stat={stat} />
+          ))}
+        </div>
+        <div class="grid gap-5 xl:grid-cols-2">
+          {stats().slice(3).map((stat) => (
+            <StatCardItem stat={stat} />
+          ))}
+        </div>
       </section>
 
       <section class="mt-8">
