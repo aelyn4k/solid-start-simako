@@ -83,9 +83,6 @@ export default function TermsPage() {
           <A href="/privacy" class="btn-secondary px-6 py-3 text-sm">
             Kebijakan Privasi
           </A>
-          <A href="/contact" class="btn-primary px-6 py-3 text-sm">
-            Hubungi CS
-          </A>
         </div>
       </section>
     </main>

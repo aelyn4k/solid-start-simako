@@ -34,9 +34,6 @@ export default function About() {
             <A href="/search" class="btn-primary px-6 py-3 text-sm">
               Cari Kamar
             </A>
-            <A href="/contact" class="btn-secondary px-6 py-3 text-sm">
-              Bantuan
-            </A>
           </div>
         </div>
       </section>

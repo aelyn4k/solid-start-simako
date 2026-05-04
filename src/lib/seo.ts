@@ -42,14 +42,6 @@ const staticSeo: Record<string, Omit<SeoData, "canonical" | "jsonLd">> = {
     type: "website",
     keywords: "tentang SIMAKO, platform kost, aplikasi kost, manajemen kost digital"
   },
-  "/contact": {
-    title: "Kontak SIMAKO - Bantuan via Email dan Instagram",
-    description:
-      "Hubungi SIMAKO melalui email atau Instagram untuk bantuan akun, booking kamar, pembayaran, atau kendala penggunaan platform.",
-    image: defaultImage,
-    type: "website",
-    keywords: "kontak SIMAKO, email SIMAKO, Instagram SIMAKO, bantuan akun kost, bantuan booking kost"
-  },
   "/login": {
     title: "Login SIMAKO - Masuk ke Akun Penyewa atau Pemilik Kost",
     description:

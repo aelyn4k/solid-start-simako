@@ -4,7 +4,6 @@ import { Mail, MapPin, MessageCircle } from "lucide-solid";
 const footerLinks = [
   { href: "/search", label: "Cari Kamar" },
   { href: "/about", label: "Tentang Kami" },
-  { href: "/contact", label: "Hubungi Kami" },
 ];
 
 export default function Footer() {

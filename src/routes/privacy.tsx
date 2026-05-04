@@ -1,5 +1,4 @@
-import { A } from "@solidjs/router";
-import { Database, Eye, LockKeyhole, Mail, ShieldCheck, UserCheck } from "lucide-solid";
+import { Database, Eye, LockKeyhole, ShieldCheck, UserCheck } from "lucide-solid";
 
 const privacySections = [
   {
@@ -79,10 +78,6 @@ export default function PrivacyPage() {
                 Hubungi CS jika Anda ingin mengoreksi data akun, melaporkan akses tidak sah, atau menanyakan penggunaan data.
               </p>
             </div>
-            <A href="/contact" class="btn-primary px-6 py-3 text-sm">
-              <Mail size={17} />
-              Hubungi CS
-            </A>
           </div>
         </div>
       </section>

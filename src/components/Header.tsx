@@ -8,7 +8,6 @@ const navItems = [
   { href: "/", label: "Beranda" },
   { href: "/search", label: "Cari Kost" },
   { href: "/about", label: "Tentang" },
-  { href: "/contact", label: "Kontak" },
 ];
 
 const isThemeMode = (value: string | null | undefined): value is ThemeMode =>
