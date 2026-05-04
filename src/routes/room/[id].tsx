@@ -70,11 +70,11 @@ export default function RoomDetail() {
           <section class="section-divider py-8 md:py-12">
             <div class="layout-shell">
               <A
-                href="/"
+                href="/search"
                 class="inline-flex items-center gap-2 text-sm font-semibold text-red-400 transition hover:text-red-300"
               >
                 <ArrowLeft size={16} />
-                Kembali ke Beranda
+                Kembali
               </A>
 
               <div class="mt-6 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
@@ -250,8 +250,8 @@ export default function RoomDetail() {
             <p class="ui-text mt-3">
               Data kamar yang Anda buka tidak tersedia atau sudah dipindahkan.
             </p>
-            <A href="/" class="btn-primary mt-6 px-6 py-3 text-sm">
-              Kembali ke Beranda
+            <A href="/search" class="btn-primary mt-6 px-6 py-3 text-sm">
+              Kembali
             </A>
           </div>
         </section>

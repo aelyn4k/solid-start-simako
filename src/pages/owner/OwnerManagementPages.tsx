@@ -13,6 +13,7 @@ import {
   facilities,
   kostInfo,
   ownerRooms,
+  ownerTenants,
   roomBills,
   rules,
   type BankAccount,
@@ -147,6 +148,7 @@ function FieldError(props: { message?: string }) {
 
 export function OwnerRoomsPage() {
   const ownerId = getCurrentOwnerId();
+  const ownerTenantRows = ownerTenants.filter((tenant) => tenant.owner_id === ownerId);
   const [rows, setRows] = createSignal<OwnerRoom[]>(
     readOwnerRooms().filter((room) => room.owner_id === ownerId),
   );
@@ -180,18 +182,27 @@ export function OwnerRoomsPage() {
     setFormOpen(false);
   };
 
+  const getOccupantPhone = (room: OwnerRoom) =>
+    ownerTenantRows.find(
+      (tenant) =>
+        tenant.room_id === room.id &&
+        tenant.status_penyewa !== "selesai" &&
+        (!room.email_penghuni || tenant.email_penyewa === room.email_penghuni),
+    )?.nomor_hp_penyewa ?? "-";
+
   const filteredRows = createMemo(() => {
     const normalizedQuery = searchQuery().trim().toLowerCase();
 
     return rows().filter((room) => {
+      const occupantPhone = getOccupantPhone(room).toLowerCase();
       const matchesStatus = statusFilter() === "semua" || room.status_kost === statusFilter();
       const matchesType = kostTypeFilter() === "semua" || room.jenis_kost === kostTypeFilter();
       const matchesSearch =
         !normalizedQuery ||
         room.nama_kamar.toLowerCase().includes(normalizedQuery) ||
-        room.spesifikasi_kamar.toLowerCase().includes(normalizedQuery) ||
         room.nama_penghuni.toLowerCase().includes(normalizedQuery) ||
-        room.email_penghuni.toLowerCase().includes(normalizedQuery);
+        room.email_penghuni.toLowerCase().includes(normalizedQuery) ||
+        occupantPhone.includes(normalizedQuery);
 
       return matchesStatus && matchesType && matchesSearch;
     });
@@ -398,8 +409,8 @@ export function OwnerRoomsPage() {
   return (
     <div class="grid gap-6">
       {formOpen() && (
-        <div class="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
-          <section class="dashboard-card my-6 w-full max-w-5xl p-6">
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-5xl p-6">
             <div class="mb-5 flex items-start justify-between gap-4">
               <div>
                 <h2 class="ui-heading text-xl font-bold">{editingId() ? "Edit Kamar Kost" : "Tambah Kamar Kost"}</h2>
@@ -557,50 +568,82 @@ export function OwnerRoomsPage() {
       )}
 
       {detailRoom() && (
-        <section class="dashboard-card p-6">
-          <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div class="flex gap-4">
-              {(detailRoom()?.foto_kamar.length ?? 0) > 0 ? (
-                <img src={detailRoom()?.foto_kamar[0]} alt={detailRoom()?.nama_kamar} class="h-28 w-40 rounded-xl object-cover" />
-              ) : (
-                <div class="flex h-28 w-40 flex-col items-center justify-center rounded-xl border border-dashed border-[var(--surface-border)] bg-[var(--control-bg)] text-xs text-[rgb(var(--text-muted-rgb))]">
-                  <ImageOff size={20} />
-                  <span class="mt-2">Tidak ada foto</span>
-                </div>
-              )}
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-4xl p-6">
+            <div class="mb-5 flex items-start justify-between gap-4">
               <div>
-                <h2 class="ui-heading text-xl font-bold">{detailRoom()?.nama_kamar}</h2>
+                <h2 class="ui-heading text-xl font-bold">Detail Kamar Kost</h2>
+                <p class="dashboard-muted mt-2 text-sm">
+                  Informasi lengkap {detailRoom()?.nama_kamar}.
+                </p>
+              </div>
+              <button type="button" class="icon-button h-9 w-9" aria-label="Tutup detail kamar" onClick={() => setDetailRoom(null)}>
+                <X size={17} />
+              </button>
+            </div>
+
+            <div class="flex flex-col gap-4 lg:flex-row">
+              <div class="w-full lg:w-64">
+                {(detailRoom()?.foto_kamar.length ?? 0) > 0 ? (
+                  <img src={detailRoom()?.foto_kamar[0]} alt={detailRoom()?.nama_kamar} class="h-44 w-full rounded-xl object-cover" />
+                ) : (
+                  <div class="flex h-44 w-full flex-col items-center justify-center rounded-xl border border-dashed border-[var(--surface-border)] bg-[var(--control-bg)] text-xs text-[rgb(var(--text-muted-rgb))]">
+                    <ImageOff size={20} />
+                    <span class="mt-2">Tidak ada foto</span>
+                  </div>
+                )}
+              </div>
+              <div class="flex-1">
+                <h3 class="ui-heading text-lg font-bold">{detailRoom()?.nama_kamar}</h3>
                 <p class="dashboard-muted mt-2 text-sm">{detailRoom()?.spesifikasi_kamar}</p>
-                <p class="ui-text mt-3 max-w-3xl text-sm leading-7">{detailRoom()?.deskripsi_kamar}</p>
+                <p class="ui-text mt-3 text-sm leading-7">{detailRoom()?.deskripsi_kamar}</p>
               </div>
             </div>
-            <button type="button" class="btn-secondary px-4 py-2 text-sm" onClick={() => setDetailRoom(null)}>
-              Tutup Detail
-            </button>
-          </div>
-          <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-xs">Harga Bulan</p>
-              <p class="ui-heading mt-1 font-bold">{formatCurrency(detailRoom()?.harga_perbulan ?? 0)}</p>
+
+            <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Jenis Kost</p>
+                <p class="ui-heading mt-1 font-bold capitalize">{detailRoom()?.jenis_kost}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Status Kost</p>
+                <div class="mt-2">
+                  <StatusBadge value={detailRoom()?.status_kost === "tersedia" ? "Tersedia" : "Berpenghuni"} tone={detailRoom()?.status_kost === "tersedia" ? "success" : "info"} />
+                </div>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Harga Bulan</p>
+                <p class="ui-heading mt-1 font-bold">{formatCurrency(detailRoom()?.harga_perbulan ?? 0)}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Harga Semester</p>
+                <p class="ui-heading mt-1 font-bold">{formatCurrency(detailRoom()?.harga_persemester ?? 0)}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Harga Tahun</p>
+                <p class="ui-heading mt-1 font-bold">{formatCurrency(detailRoom()?.harga_pertahun ?? 0)}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Nama Penghuni</p>
+                <p class="ui-heading mt-1 font-bold">{detailRoom()?.nama_penghuni || "-"}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Email Penghuni</p>
+                <p class="ui-heading mt-1 break-all font-bold">{detailRoom()?.email_penghuni || "-"}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Nomor HP Penghuni</p>
+                <p class="ui-heading mt-1 font-bold">{detailRoom() ? getOccupantPhone(detailRoom()!) : "-"}</p>
+              </div>
             </div>
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-xs">Harga Semester</p>
-              <p class="ui-heading mt-1 font-bold">{formatCurrency(detailRoom()?.harga_persemester ?? 0)}</p>
+
+            <div class="mt-6 flex justify-end">
+              <button type="button" class="btn-secondary px-4 py-2 text-sm" onClick={() => setDetailRoom(null)}>
+                Tutup Detail
+              </button>
             </div>
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-xs">Harga Tahun</p>
-              <p class="ui-heading mt-1 font-bold">{formatCurrency(detailRoom()?.harga_pertahun ?? 0)}</p>
-            </div>
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-xs">Penghuni</p>
-              <p class="ui-heading mt-1 font-bold">{detailRoom()?.nama_penghuni || "-"}</p>
-            </div>
-            <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-              <p class="dashboard-muted text-xs">Email Penghuni</p>
-              <p class="ui-heading mt-1 break-all font-bold">{detailRoom()?.email_penghuni || "-"}</p>
-            </div>
-          </div>
-        </section>
+          </section>
+        </div>
       )}
 
       <section class="dashboard-card overflow-hidden">
@@ -614,7 +657,7 @@ export function OwnerRoomsPage() {
                 setSearchQuery(event.currentTarget.value);
                 setPage(1);
               }}
-              placeholder="Cari nama kamar, spesifikasi, penghuni, atau email"
+              placeholder="Cari nama kamar, penghuni, email, atau nomor HP"
             />
           </div>
           <select class="form-control" value={statusFilter()} onInput={(event) => {
@@ -640,46 +683,29 @@ export function OwnerRoomsPage() {
           </button>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full min-w-[1380px] text-left text-sm">
+          <table class="w-full min-w-[980px] text-left text-sm">
             <thead class="bg-[rgba(148,163,184,0.08)] text-xs uppercase text-[rgb(var(--text-muted-rgb))]">
               <tr>
-                <th class="px-5 py-3 font-bold">Foto</th>
                 <th class="px-5 py-3 font-bold">Nama/Nomor Kamar</th>
-                <th class="px-5 py-3 font-bold">Spesifikasi</th>
                 <th class="px-5 py-3 font-bold">Jenis Kost</th>
-                <th class="px-5 py-3 font-bold">Harga Bulan</th>
-                <th class="px-5 py-3 font-bold">Harga Semester</th>
-                <th class="px-5 py-3 font-bold">Harga Tahun</th>
                 <th class="px-5 py-3 font-bold">Status Kost</th>
                 <th class="px-5 py-3 font-bold">Nama Penghuni</th>
                 <th class="px-5 py-3 font-bold">Email Penghuni</th>
+                <th class="px-5 py-3 font-bold">Nomor HP Penghuni</th>
                 <th class="px-5 py-3 font-bold">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {paginatedRows().map((room) => (
                 <tr class="border-t border-[var(--divider)]">
-                  <td class="px-5 py-4">
-                    {room.foto_kamar.length > 0 ? (
-                      <img src={room.foto_kamar[0]} alt={room.nama_kamar} class="h-14 w-20 rounded-lg object-cover" />
-                    ) : (
-                      <div class="flex h-14 w-20 flex-col items-center justify-center rounded-lg border border-dashed border-[var(--surface-border)] bg-[var(--control-bg)] text-[10px] text-[rgb(var(--text-muted-rgb))]">
-                        <ImageOff size={15} />
-                        <span>Tidak ada foto</span>
-                      </div>
-                    )}
-                  </td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{room.nama_kamar}</td>
-                  <td class="max-w-[260px] px-5 py-4 text-[rgb(var(--text-body-rgb))]">{room.spesifikasi_kamar}</td>
+                  <td class="px-5 py-4 font-bold text-[rgb(var(--text-body-rgb))]">{room.nama_kamar}</td>
                   <td class="px-5 py-4 capitalize text-[rgb(var(--text-body-rgb))]">{room.jenis_kost}</td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{formatCurrency(room.harga_perbulan)}</td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{formatCurrency(room.harga_persemester)}</td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{formatCurrency(room.harga_pertahun)}</td>
                   <td class="px-5 py-4">
                     <StatusBadge value={room.status_kost === "tersedia" ? "Tersedia" : "Berpenghuni"} tone={room.status_kost === "tersedia" ? "success" : "info"} />
                   </td>
                   <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{room.nama_penghuni || "-"}</td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{room.email_penghuni || "-"}</td>
+                  <td class="px-5 py-4 break-all text-[rgb(var(--text-body-rgb))]">{room.email_penghuni || "-"}</td>
+                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{getOccupantPhone(room)}</td>
                   <td class="px-5 py-4">
                     <div class="flex gap-2">
                       <button type="button" class="icon-button h-9 w-9" aria-label="Detail kamar" onClick={() => setDetailRoom(room)}>
