@@ -1,8 +1,13 @@
 import { Eye } from "lucide-solid";
-import { createMemo, createSignal, onMount } from "solid-js";
+import { createEffect, createMemo, createSignal, onMount } from "solid-js";
 import DataTable, { type DataTableColumn } from "~/components/common/DataTable";
 import FilterSelect from "~/components/common/FilterSelect";
 import FormModal from "~/components/common/FormModal";
+import Pagination, {
+  getPaginatedRows,
+  getTotalPages,
+  type RowsPerPageOption,
+} from "~/components/common/Pagination";
 import SearchInput from "~/components/common/SearchInput";
 import StatusBadge, { type StatusBadgeTone } from "~/components/common/StatusBadge";
 import {
@@ -68,6 +73,8 @@ export default function OwnerTenants() {
   const [searchQuery, setSearchQuery] = createSignal("");
   const [statusFilter, setStatusFilter] = createSignal<TenantStatusFilter>("semua");
   const [detailTenant, setDetailTenant] = createSignal<TenantRow | null>(null);
+  const [page, setPage] = createSignal(1);
+  const [rowsPerPage, setRowsPerPage] = createSignal<RowsPerPageOption>(10);
 
   const ownerRoomRows = createMemo(() =>
     roomSource().filter((room) => room.owner_id === ownerId),
@@ -108,6 +115,9 @@ export default function OwnerTenants() {
       return matchesStatus && matchesSearch;
     });
   });
+  const paginatedTenants = createMemo(() =>
+    getPaginatedRows(filteredTenants(), page(), rowsPerPage()),
+  );
   const detailBillCount = createMemo(() => {
     const tenant = detailTenant();
 
@@ -178,6 +188,13 @@ export default function OwnerTenants() {
     setRoomSource(readOwnerRooms());
   });
 
+  createEffect(() => {
+    const totalPages = getTotalPages(filteredTenants().length, rowsPerPage());
+    if (page() > totalPages) {
+      setPage(totalPages);
+    }
+  });
+
   return (
     <div class="grid gap-6">
       <section class="dashboard-card overflow-hidden">
@@ -197,7 +214,10 @@ export default function OwnerTenants() {
           <SearchInput
             value={searchQuery()}
             placeholder="Cari nama, email, nomor HP, atau kamar"
-            onInput={setSearchQuery}
+            onInput={(value) => {
+              setSearchQuery(value);
+              setPage(1);
+            }}
           />
           <FilterSelect<TenantStatusFilter>
             value={statusFilter()}
@@ -208,16 +228,32 @@ export default function OwnerTenants() {
               { label: "Selesai", value: "selesai" },
               { label: "Pending", value: "pending" },
             ]}
-            onChange={setStatusFilter}
+            onChange={(value) => {
+              setStatusFilter(value);
+              setPage(1);
+            }}
           />
         </div>
 
         <DataTable
-          rows={filteredTenants()}
+          rows={paginatedTenants()}
           columns={columns}
           minWidthClass="min-w-[1120px]"
           emptyText="Belum ada penyewa kost"
         />
+        <div class="p-4">
+          <Pagination
+            ariaLabel="Pagination list penyewa"
+            page={page()}
+            totalItems={filteredTenants().length}
+            rowsPerPage={rowsPerPage()}
+            onPageChange={setPage}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       {detailTenant() && (

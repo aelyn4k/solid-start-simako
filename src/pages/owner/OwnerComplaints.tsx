@@ -1,8 +1,13 @@
 import { Eye, Save } from "lucide-solid";
-import { createMemo, createSignal, onMount } from "solid-js";
+import { createEffect, createMemo, createSignal, onMount } from "solid-js";
 import DataTable, { type DataTableColumn } from "~/components/common/DataTable";
 import FilterSelect from "~/components/common/FilterSelect";
 import FormModal from "~/components/common/FormModal";
+import Pagination, {
+  getPaginatedRows,
+  getTotalPages,
+  type RowsPerPageOption,
+} from "~/components/common/Pagination";
 import SearchInput from "~/components/common/SearchInput";
 import StatusBadge, { type StatusBadgeTone } from "~/components/common/StatusBadge";
 import {
@@ -68,6 +73,8 @@ export default function OwnerComplaints() {
     catatan_pemilik: "",
   });
   const [formError, setFormError] = createSignal("");
+  const [page, setPage] = createSignal(1);
+  const [rowsPerPage, setRowsPerPage] = createSignal<RowsPerPageOption>(10);
 
   const ownerRoomIds = createMemo(
     () => new Set(roomSource().filter((room) => room.owner_id === ownerId).map((room) => room.id)),
@@ -98,6 +105,9 @@ export default function OwnerComplaints() {
       return matchesStatus && matchesSearch;
     });
   });
+  const paginatedComplaints = createMemo(() =>
+    getPaginatedRows(filteredComplaints(), page(), rowsPerPage()),
+  );
 
   const openUpdateForm = (complaint: ComplaintRow) => {
     setUpdatingComplaint(complaint);
@@ -201,6 +211,13 @@ export default function OwnerComplaints() {
     setRoomSource(readOwnerRooms());
   });
 
+  createEffect(() => {
+    const totalPages = getTotalPages(filteredComplaints().length, rowsPerPage());
+    if (page() > totalPages) {
+      setPage(totalPages);
+    }
+  });
+
   return (
     <div class="grid gap-6">
       <section class="dashboard-card overflow-hidden">
@@ -220,7 +237,10 @@ export default function OwnerComplaints() {
           <SearchInput
             value={searchQuery()}
             placeholder="Cari judul, isi keluhan, penyewa, email, atau kamar"
-            onInput={setSearchQuery}
+            onInput={(value) => {
+              setSearchQuery(value);
+              setPage(1);
+            }}
           />
           <FilterSelect<ComplaintStatusFilter>
             value={statusFilter()}
@@ -231,16 +251,32 @@ export default function OwnerComplaints() {
               { label: "Diproses", value: "diproses" },
               { label: "Selesai", value: "selesai" },
             ]}
-            onChange={setStatusFilter}
+            onChange={(value) => {
+              setStatusFilter(value);
+              setPage(1);
+            }}
           />
         </div>
 
         <DataTable
-          rows={filteredComplaints()}
+          rows={paginatedComplaints()}
           columns={columns}
           minWidthClass="min-w-[1120px]"
           emptyText="Belum ada keluhan dari penyewa"
         />
+        <div class="p-4">
+          <Pagination
+            ariaLabel="Pagination keluhan penyewa"
+            page={page()}
+            totalItems={filteredComplaints().length}
+            rowsPerPage={rowsPerPage()}
+            onPageChange={setPage}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       {selectedComplaint() && (

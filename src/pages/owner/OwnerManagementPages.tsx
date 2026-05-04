@@ -1,7 +1,12 @@
 import { Edit3, ExternalLink, Eye, ImageOff, MapPin, Plus, Save, Search, Trash2, X } from "lucide-solid";
-import { createMemo, createSignal } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import ConfirmDialog from "~/components/ConfirmDialog";
 import ImageUpload from "~/components/common/ImageUpload";
+import Pagination, {
+  getPaginatedRows,
+  getTotalPages,
+  type RowsPerPageOption,
+} from "~/components/common/Pagination";
 import {
   bankAccounts,
   contactInfo,
@@ -155,6 +160,8 @@ export function OwnerRoomsPage() {
   const [statusFilter, setStatusFilter] = createSignal<RoomFilterStatus>("semua");
   const [kostTypeFilter, setKostTypeFilter] = createSignal<RoomFilterKostType>("semua");
   const [searchQuery, setSearchQuery] = createSignal("");
+  const [page, setPage] = createSignal(1);
+  const [rowsPerPage, setRowsPerPage] = createSignal<RowsPerPageOption>(10);
 
   const resetForm = () => {
     setEditingId(null);
@@ -188,6 +195,16 @@ export function OwnerRoomsPage() {
 
       return matchesStatus && matchesType && matchesSearch;
     });
+  });
+  const paginatedRows = createMemo(() =>
+    getPaginatedRows(filteredRows(), page(), rowsPerPage()),
+  );
+
+  createEffect(() => {
+    const totalPages = getTotalPages(filteredRows().length, rowsPerPage());
+    if (page() > totalPages) {
+      setPage(totalPages);
+    }
   });
 
   const updateRows = (updater: (items: OwnerRoom[]) => OwnerRoom[]) => {
@@ -593,16 +610,25 @@ export function OwnerRoomsPage() {
             <input
               class="form-control form-control-icon"
               value={searchQuery()}
-              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              onInput={(event) => {
+                setSearchQuery(event.currentTarget.value);
+                setPage(1);
+              }}
               placeholder="Cari nama kamar, spesifikasi, penghuni, atau email"
             />
           </div>
-          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as RoomFilterStatus)}>
+          <select class="form-control" value={statusFilter()} onInput={(event) => {
+            setStatusFilter(event.currentTarget.value as RoomFilterStatus);
+            setPage(1);
+          }}>
             <option value="semua">Semua status</option>
             <option value="tersedia">Tersedia</option>
             <option value="berpenghuni">Berpenghuni</option>
           </select>
-          <select class="form-control" value={kostTypeFilter()} onInput={(event) => setKostTypeFilter(event.currentTarget.value as RoomFilterKostType)}>
+          <select class="form-control" value={kostTypeFilter()} onInput={(event) => {
+            setKostTypeFilter(event.currentTarget.value as RoomFilterKostType);
+            setPage(1);
+          }}>
             <option value="semua">Semua jenis</option>
             <option value="putra">Putra</option>
             <option value="putri">Putri</option>
@@ -631,7 +657,7 @@ export function OwnerRoomsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredRows().map((room) => (
+              {paginatedRows().map((room) => (
                 <tr class="border-t border-[var(--divider)]">
                   <td class="px-5 py-4">
                     {room.foto_kamar.length > 0 ? (
@@ -673,6 +699,19 @@ export function OwnerRoomsPage() {
           </table>
         </div>
         {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada kamar yang cocok dengan filter." /></div>}
+        <div class="p-4">
+          <Pagination
+            ariaLabel="Pagination data kamar"
+            page={page()}
+            totalItems={filteredRows().length}
+            rowsPerPage={rowsPerPage()}
+            onPageChange={setPage}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       {deletePhotoIndex() !== null && (
@@ -1074,6 +1113,8 @@ export function OwnerRoomBillsPage() {
   const [deleteBill, setDeleteBill] = createSignal<RoomBill | null>(null);
   const [statusFilter, setStatusFilter] = createSignal<"semua" | OwnerBillStatus>("semua");
   const [searchQuery, setSearchQuery] = createSignal("");
+  const [page, setPage] = createSignal(1);
+  const [rowsPerPage, setRowsPerPage] = createSignal<RowsPerPageOption>(10);
 
   const selectRoom = (roomId: number) => {
     const room = ownerRoomOptions.find((item) => item.id === roomId);
@@ -1118,6 +1159,16 @@ export function OwnerRoomBillsPage() {
 
       return matchesStatus && matchesSearch;
     });
+  });
+  const paginatedRows = createMemo(() =>
+    getPaginatedRows(filteredRows(), page(), rowsPerPage()),
+  );
+
+  createEffect(() => {
+    const totalPages = getTotalPages(filteredRows().length, rowsPerPage());
+    if (page() > totalPages) {
+      setPage(totalPages);
+    }
   });
 
   const validateBill = () => {
@@ -1410,11 +1461,17 @@ export function OwnerRoomBillsPage() {
             <input
               class="form-control form-control-icon"
               value={searchQuery()}
-              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              onInput={(event) => {
+                setSearchQuery(event.currentTarget.value);
+                setPage(1);
+              }}
               placeholder="Cari nama kamar, periode tagihan, atau catatan"
             />
           </div>
-          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as "semua" | OwnerBillStatus)}>
+          <select class="form-control" value={statusFilter()} onInput={(event) => {
+            setStatusFilter(event.currentTarget.value as "semua" | OwnerBillStatus);
+            setPage(1);
+          }}>
             <option value="semua">Semua status</option>
             <option value="aktif">Aktif</option>
             <option value="nonaktif">Nonaktif</option>
@@ -1435,7 +1492,7 @@ export function OwnerRoomBillsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredRows().map((bill) => (
+              {paginatedRows().map((bill) => (
                 <tr class="border-t border-[var(--divider)]">
                   <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{bill.nama_kamar}</td>
                   <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{bill.periode_tagihan}</td>
@@ -1465,6 +1522,19 @@ export function OwnerRoomBillsPage() {
           </table>
         </div>
         {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada tagihan yang cocok dengan filter." /></div>}
+        <div class="p-4">
+          <Pagination
+            ariaLabel="Pagination tagihan kamar"
+            page={page()}
+            totalItems={filteredRows().length}
+            rowsPerPage={rowsPerPage()}
+            onPageChange={setPage}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       {deleteBill() && (
@@ -1611,6 +1681,8 @@ export function OwnerRulesPage() {
   const [deleteRule, setDeleteRule] = createSignal<KostRule | null>(null);
   const [statusFilter, setStatusFilter] = createSignal<"semua" | "aktif" | "nonaktif">("semua");
   const [searchQuery, setSearchQuery] = createSignal("");
+  const [page, setPage] = createSignal(1);
+  const [rowsPerPage, setRowsPerPage] = createSignal<RowsPerPageOption>(10);
 
   const resetForm = () => {
     setEditingId(null);
@@ -1641,6 +1713,16 @@ export function OwnerRulesPage() {
 
       return matchesStatus && matchesSearch;
     });
+  });
+  const paginatedRows = createMemo(() =>
+    getPaginatedRows(filteredRows(), page(), rowsPerPage()),
+  );
+
+  createEffect(() => {
+    const totalPages = getTotalPages(filteredRows().length, rowsPerPage());
+    if (page() > totalPages) {
+      setPage(totalPages);
+    }
   });
 
   const validateRule = () => {
@@ -1864,11 +1946,17 @@ export function OwnerRulesPage() {
             <input
               class="form-control form-control-icon"
               value={searchQuery()}
-              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              onInput={(event) => {
+                setSearchQuery(event.currentTarget.value);
+                setPage(1);
+              }}
               placeholder="Cari judul aturan atau isi aturan"
             />
           </div>
-          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif")}>
+          <select class="form-control" value={statusFilter()} onInput={(event) => {
+            setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif");
+            setPage(1);
+          }}>
             <option value="semua">Semua status</option>
             <option value="aktif">Aktif</option>
             <option value="nonaktif">Nonaktif</option>
@@ -1886,7 +1974,7 @@ export function OwnerRulesPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredRows().map((rule) => (
+              {paginatedRows().map((rule) => (
                 <tr class="border-t border-[var(--divider)]">
                   <td class="px-5 py-4 font-bold text-[rgb(var(--text-body-rgb))]">{rule.judul_aturan}</td>
                   <td class="max-w-[420px] px-5 py-4 text-[rgb(var(--text-body-rgb))]">{rule.isi_aturan}</td>
@@ -1916,6 +2004,19 @@ export function OwnerRulesPage() {
         </div>
 
         {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada aturan yang cocok dengan filter." /></div>}
+        <div class="p-4">
+          <Pagination
+            ariaLabel="Pagination aturan kost"
+            page={page()}
+            totalItems={filteredRows().length}
+            rowsPerPage={rowsPerPage()}
+            onPageChange={setPage}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       {deleteRule() && (
@@ -1946,6 +2047,8 @@ export function OwnerFacilitiesPage() {
   const [deleteFacility, setDeleteFacility] = createSignal<PublicFacility | null>(null);
   const [statusFilter, setStatusFilter] = createSignal<"semua" | "aktif" | "nonaktif">("semua");
   const [searchQuery, setSearchQuery] = createSignal("");
+  const [page, setPage] = createSignal(1);
+  const [rowsPerPage, setRowsPerPage] = createSignal<RowsPerPageOption>(10);
 
   const resetForm = () => {
     setEditingId(null);
@@ -1976,6 +2079,16 @@ export function OwnerFacilitiesPage() {
 
       return matchesStatus && matchesSearch;
     });
+  });
+  const paginatedRows = createMemo(() =>
+    getPaginatedRows(filteredRows(), page(), rowsPerPage()),
+  );
+
+  createEffect(() => {
+    const totalPages = getTotalPages(filteredRows().length, rowsPerPage());
+    if (page() > totalPages) {
+      setPage(totalPages);
+    }
   });
 
   const validateFacility = () => {
@@ -2195,11 +2308,17 @@ export function OwnerFacilitiesPage() {
             <input
               class="form-control form-control-icon"
               value={searchQuery()}
-              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              onInput={(event) => {
+                setSearchQuery(event.currentTarget.value);
+                setPage(1);
+              }}
               placeholder="Cari nama fasilitas atau deskripsi fasilitas"
             />
           </div>
-          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif")}>
+          <select class="form-control" value={statusFilter()} onInput={(event) => {
+            setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif");
+            setPage(1);
+          }}>
             <option value="semua">Semua status</option>
             <option value="aktif">Aktif</option>
             <option value="nonaktif">Nonaktif</option>
@@ -2217,7 +2336,7 @@ export function OwnerFacilitiesPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredRows().map((facility) => (
+              {paginatedRows().map((facility) => (
                 <tr class="border-t border-[var(--divider)]">
                   <td class="px-5 py-4 font-bold text-[rgb(var(--text-body-rgb))]">{facility.nama_fasilitas}</td>
                   <td class="max-w-[420px] px-5 py-4 text-[rgb(var(--text-body-rgb))]">{facility.deskripsi_fasilitas || "-"}</td>
@@ -2247,6 +2366,19 @@ export function OwnerFacilitiesPage() {
         </div>
 
         {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada fasilitas yang cocok dengan filter." /></div>}
+        <div class="p-4">
+          <Pagination
+            ariaLabel="Pagination fasilitas umum"
+            page={page()}
+            totalItems={filteredRows().length}
+            rowsPerPage={rowsPerPage()}
+            onPageChange={setPage}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       {deleteFacility() && (
@@ -2281,6 +2413,8 @@ export function OwnerBankAccountsPage() {
   const [deleteAccount, setDeleteAccount] = createSignal<BankAccount | null>(null);
   const [statusFilter, setStatusFilter] = createSignal<"semua" | "aktif" | "nonaktif">("semua");
   const [searchQuery, setSearchQuery] = createSignal("");
+  const [page, setPage] = createSignal(1);
+  const [rowsPerPage, setRowsPerPage] = createSignal<RowsPerPageOption>(10);
 
   const resetForm = () => {
     setEditingId(null);
@@ -2312,6 +2446,16 @@ export function OwnerBankAccountsPage() {
 
       return matchesStatus && matchesSearch;
     });
+  });
+  const paginatedRows = createMemo(() =>
+    getPaginatedRows(filteredRows(), page(), rowsPerPage()),
+  );
+
+  createEffect(() => {
+    const totalPages = getTotalPages(filteredRows().length, rowsPerPage());
+    if (page() > totalPages) {
+      setPage(totalPages);
+    }
   });
 
   const validateAccount = () => {
@@ -2573,11 +2717,17 @@ export function OwnerBankAccountsPage() {
             <input
               class="form-control form-control-icon"
               value={searchQuery()}
-              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              onInput={(event) => {
+                setSearchQuery(event.currentTarget.value);
+                setPage(1);
+              }}
               placeholder="Cari nama bank, nomor rekening, atau nama pemilik"
             />
           </div>
-          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif")}>
+          <select class="form-control" value={statusFilter()} onInput={(event) => {
+            setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif");
+            setPage(1);
+          }}>
             <option value="semua">Semua status</option>
             <option value="aktif">Aktif</option>
             <option value="nonaktif">Nonaktif</option>
@@ -2597,7 +2747,7 @@ export function OwnerBankAccountsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredRows().map((account) => (
+              {paginatedRows().map((account) => (
                 <tr class="border-t border-[var(--divider)]">
                   <td class="px-5 py-4 font-bold text-[rgb(var(--text-body-rgb))]">{account.nama_bank}</td>
                   <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{account.nomor_rekening}</td>
@@ -2629,6 +2779,19 @@ export function OwnerBankAccountsPage() {
         </div>
 
         {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada rekening yang cocok dengan filter." /></div>}
+        <div class="p-4">
+          <Pagination
+            ariaLabel="Pagination rekening pembayaran"
+            page={page()}
+            totalItems={filteredRows().length}
+            rowsPerPage={rowsPerPage()}
+            onPageChange={setPage}
+            onRowsPerPageChange={(rows) => {
+              setRowsPerPage(rows);
+              setPage(1);
+            }}
+          />
+        </div>
       </section>
 
       {deleteAccount() && (
