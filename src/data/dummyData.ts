@@ -186,8 +186,10 @@ export {
   facilities,
   kostInfo,
   ownerRooms,
+  ownerTenants,
   roomBills,
   rules,
+  tenantComplaints,
 } from "./ownerData";
 
 export type {
@@ -196,9 +198,14 @@ export type {
   KostInfo,
   KostRule,
   OwnerBillStatus,
+  OwnerComplaintStatus,
   OwnerKostType,
   OwnerRoom,
   OwnerRoomStatus,
+  OwnerTenant,
+  OwnerTenantComplaint,
+  OwnerTenantPaymentStatus,
+  OwnerTenantStatus,
   PublicFacility,
   RoomBill,
 } from "./ownerData";

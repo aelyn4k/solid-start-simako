@@ -1,6 +1,9 @@
 export type OwnerRoomStatus = "tersedia" | "berpenghuni";
 export type OwnerBillStatus = "aktif" | "nonaktif";
 export type OwnerKostType = "putra" | "putri" | "campur";
+export type OwnerTenantStatus = "aktif" | "selesai" | "pending";
+export type OwnerTenantPaymentStatus = "belum_dibayar" | "pending" | "lunas";
+export type OwnerComplaintStatus = "baru" | "diproses" | "selesai";
 
 export interface OwnerRoom {
   id: number;
@@ -52,6 +55,42 @@ export interface RoomBill {
   nominal_tagihan: number;
   status_tagihan: OwnerBillStatus;
   catatan: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OwnerTenant {
+  id: number;
+  owner_id: number;
+  room_id: number;
+  nama_kamar: string;
+  nama_penyewa: string;
+  email_penyewa: string;
+  nomor_hp_penyewa: string;
+  tanggal_mulai_sewa: string;
+  tanggal_akhir_sewa: string;
+  status_sewa?: OwnerTenantStatus;
+  status_pembayaran: OwnerTenantPaymentStatus;
+  status_penyewa: OwnerTenantStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OwnerTenantComplaint {
+  id: number;
+  owner_id: number;
+  tenant_id: number;
+  room_id: number;
+  nama_kamar: string;
+  nama_penyewa: string;
+  email_penyewa?: string;
+  kategori_keluhan: string;
+  judul_keluhan: string;
+  isi_keluhan: string;
+  foto_keluhan?: string[];
+  status_keluhan: OwnerComplaintStatus;
+  tanggal_keluhan: string;
+  catatan_pemilik: string;
   created_at: string;
   updated_at: string;
 }
@@ -293,6 +332,148 @@ export const roomBills: RoomBill[] = [
     catatan: "",
     created_at: "2026-05-01T08:20:00+07:00",
     updated_at: "2026-05-01T08:20:00+07:00",
+  },
+];
+
+export const ownerTenants: OwnerTenant[] = [
+  {
+    id: 701,
+    owner_id: 2,
+    room_id: 102,
+    nama_kamar: "Kamar 102",
+    nama_penyewa: "Nadia Putri",
+    email_penyewa: "nadia@mail.com",
+    nomor_hp_penyewa: "0813 9000 1122",
+    tanggal_mulai_sewa: "2025-10-01",
+    tanggal_akhir_sewa: "2026-10-01",
+    status_sewa: "aktif",
+    status_pembayaran: "belum_dibayar",
+    status_penyewa: "aktif",
+    created_at: "2026-05-01T08:30:00+07:00",
+    updated_at: "2026-05-01T08:30:00+07:00",
+  },
+  {
+    id: 702,
+    owner_id: 2,
+    room_id: 103,
+    nama_kamar: "Kamar 103",
+    nama_penyewa: "Raka Pratama",
+    email_penyewa: "raka@mail.com",
+    nomor_hp_penyewa: "0822 1122 7788",
+    tanggal_mulai_sewa: "2026-01-15",
+    tanggal_akhir_sewa: "2027-01-15",
+    status_sewa: "pending",
+    status_pembayaran: "pending",
+    status_penyewa: "pending",
+    created_at: "2026-05-01T08:40:00+07:00",
+    updated_at: "2026-05-01T08:40:00+07:00",
+  },
+  {
+    id: 704,
+    owner_id: 2,
+    room_id: 104,
+    nama_kamar: "Kamar 104",
+    nama_penyewa: "Aulia Rahma",
+    email_penyewa: "aulia@mail.com",
+    nomor_hp_penyewa: "0819 7744 3201",
+    tanggal_mulai_sewa: "2025-05-01",
+    tanggal_akhir_sewa: "2026-04-30",
+    status_sewa: "selesai",
+    status_pembayaran: "lunas",
+    status_penyewa: "selesai",
+    created_at: "2026-04-30T13:40:00+07:00",
+    updated_at: "2026-04-30T13:40:00+07:00",
+  },
+  {
+    id: 703,
+    owner_id: 3,
+    room_id: 201,
+    nama_kamar: "Kamar A1",
+    nama_penyewa: "Bima Saputra",
+    email_penyewa: "bima@mail.com",
+    nomor_hp_penyewa: "0858 2211 9090",
+    tanggal_mulai_sewa: "2026-04-01",
+    tanggal_akhir_sewa: "2027-04-01",
+    status_sewa: "aktif",
+    status_pembayaran: "lunas",
+    status_penyewa: "aktif",
+    created_at: "2026-05-01T08:50:00+07:00",
+    updated_at: "2026-05-01T08:50:00+07:00",
+  },
+];
+
+export const tenantComplaints: OwnerTenantComplaint[] = [
+  {
+    id: 801,
+    owner_id: 2,
+    tenant_id: 701,
+    room_id: 102,
+    nama_kamar: "Kamar 102",
+    nama_penyewa: "Nadia Putri",
+    email_penyewa: "nadia@mail.com",
+    kategori_keluhan: "Fasilitas",
+    judul_keluhan: "Kipas angin berisik",
+    isi_keluhan: "Kipas angin kamar berbunyi cukup keras saat malam dan mengganggu istirahat.",
+    foto_keluhan: [],
+    status_keluhan: "baru",
+    tanggal_keluhan: "2026-05-03",
+    catatan_pemilik: "",
+    created_at: "2026-05-03T19:30:00+07:00",
+    updated_at: "2026-05-03T19:30:00+07:00",
+  },
+  {
+    id: 802,
+    owner_id: 2,
+    tenant_id: 702,
+    room_id: 103,
+    nama_kamar: "Kamar 103",
+    nama_penyewa: "Raka Pratama",
+    email_penyewa: "raka@mail.com",
+    kategori_keluhan: "Air",
+    judul_keluhan: "Tekanan air kecil",
+    isi_keluhan: "Tekanan air di kamar mandi kecil sejak pagi.",
+    foto_keluhan: ["https://images.unsplash.com/photo-1584466977773-e625c37cdd50?q=80&w=900&auto=format&fit=crop"],
+    status_keluhan: "diproses",
+    tanggal_keluhan: "2026-05-02",
+    catatan_pemilik: "Sudah dijadwalkan pengecekan pompa air.",
+    created_at: "2026-05-02T07:20:00+07:00",
+    updated_at: "2026-05-02T15:10:00+07:00",
+  },
+  {
+    id: 803,
+    owner_id: 2,
+    tenant_id: 701,
+    room_id: 102,
+    nama_kamar: "Kamar 102",
+    nama_penyewa: "Nadia Putri",
+    email_penyewa: "nadia@mail.com",
+    kategori_keluhan: "Listrik",
+    judul_keluhan: "Stop kontak longgar",
+    isi_keluhan: "Stop kontak dekat meja belajar longgar dan perlu diperbaiki.",
+    foto_keluhan: [],
+    status_keluhan: "selesai",
+    tanggal_keluhan: "2026-04-25",
+    catatan_pemilik: "Stop kontak sudah diganti.",
+    created_at: "2026-04-25T10:15:00+07:00",
+    updated_at: "2026-04-26T13:00:00+07:00",
+  },
+  {
+    id: 804,
+    owner_id: 3,
+    tenant_id: 703,
+    room_id: 201,
+    nama_kamar: "Kamar A1",
+    nama_penyewa: "Bima Saputra",
+    email_penyewa: "bima@mail.com",
+    kategori_keluhan: "Kebersihan",
+    judul_keluhan: "Koridor perlu dibersihkan",
+    isi_keluhan: "Koridor lantai dua perlu dibersihkan setelah hujan.",
+    foto_keluhan: [],
+    status_keluhan: "baru",
+    tanggal_keluhan: "2026-05-04",
+    catatan_pemilik: "",
+    created_at: "2026-05-04T08:10:00+07:00",
+    updated_at: "2026-05-04T08:10:00+07:00",
   },
 ];
 

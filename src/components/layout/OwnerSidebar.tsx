@@ -8,11 +8,13 @@ import {
   LogOut,
   MapPinned,
   Menu,
+  MessageSquareWarning,
   Moon,
   Phone,
   Settings,
   Sun,
   UserCog,
+  Users,
 } from "lucide-solid";
 import { createSignal, onMount } from "solid-js";
 import type { JSX } from "solid-js";
@@ -25,9 +27,11 @@ type ThemeMode = "dark" | "light";
 const ownerMenu = [
   { href: "/pemilik/dashboard", label: "Dashboard", icon: Home },
   { href: "/pemilik/data-kamar", label: "Data Kamar", icon: Building2 },
+  { href: "/pemilik/list-penyewa", label: "List Penyewa", icon: Users },
   { href: "/pemilik/informasi-kost", label: "Informasi Kost", icon: MapPinned },
   { href: "/pemilik/kontak-pemilik", label: "Kontak Pemilik", icon: Phone },
   { href: "/pemilik/tagihan-kamar", label: "Tagihan Kamar", icon: CreditCard },
+  { href: "/pemilik/keluhan-penyewa", label: "Keluhan Penyewa", icon: MessageSquareWarning },
   { href: "/pemilik/aturan-kost", label: "Aturan Kost", icon: ClipboardList },
   { href: "/pemilik/fasilitas-umum", label: "Fasilitas Umum", icon: Settings },
   { href: "/pemilik/rekening-pembayaran", label: "Rekening Pembayaran", icon: Banknote },
