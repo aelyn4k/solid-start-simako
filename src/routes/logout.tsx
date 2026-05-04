@@ -17,7 +17,7 @@ export default function LogoutPage() {
 
   return (
     <main class="layout-shell flex min-h-[72vh] items-center justify-center py-14">
-      <section class="surface-card auth-panel w-full max-w-lg p-6 text-center md:p-8">
+      <section class="surface-card auth-panel modal-panel-animate w-full max-w-lg p-6 text-center md:p-8">
         {confirmed() ? (
           <>
             <div class="feature-icon mx-auto mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl text-red-400">

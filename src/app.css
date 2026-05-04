@@ -81,14 +81,22 @@ body {
   font-family: "Poppins", "Inter", sans-serif;
   background:
     radial-gradient(circle at 24% 8%, rgba(35, 65, 150, 0.22), transparent 28%),
-    radial-gradient(circle at 76% 18%, rgba(238, 40, 64, 0.12), transparent 26%),
+    radial-gradient(
+      circle at 76% 18%,
+      rgba(238, 40, 64, 0.12),
+      transparent 26%
+    ),
     rgb(var(--background-rgb));
   color: rgb(var(--foreground-rgb));
 }
 
 :root[data-theme="light"] body {
   background:
-    radial-gradient(circle at 18% 6%, rgba(14, 165, 233, 0.13), transparent 30%),
+    radial-gradient(
+      circle at 18% 6%,
+      rgba(14, 165, 233, 0.13),
+      transparent 30%
+    ),
     radial-gradient(circle at 82% 12%, rgba(238, 40, 64, 0.1), transparent 25%),
     rgb(var(--background-rgb));
 }
@@ -209,7 +217,12 @@ body {
   gap: 0.5rem;
   border-radius: 0.7rem;
   font-weight: 600;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
 }
 
 .btn-primary {
@@ -245,7 +258,10 @@ body {
   border-radius: 0.7rem;
   background: var(--control-bg);
   color: rgb(var(--text-body-rgb));
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .icon-button:hover {
@@ -262,7 +278,9 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
   padding: 0.5rem 0.75rem;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
 
 .nav-link:hover,
@@ -299,7 +317,9 @@ body {
   position: relative;
   display: inline-flex;
   color: rgb(var(--text-body-rgb));
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .footer-link::after {
@@ -349,7 +369,9 @@ body {
   font-size: 0.875rem;
   padding: 0.625rem 0.75rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .form-control:is(select),
@@ -364,7 +386,9 @@ body {
     calc(100% - 1rem) 50%,
     calc(100% - 0.72rem) 50%;
   background-repeat: no-repeat;
-  background-size: 0.32rem 0.32rem, 0.32rem 0.32rem;
+  background-size:
+    0.32rem 0.32rem,
+    0.32rem 0.32rem;
   color: rgb(var(--text-strong-rgb));
   line-height: 1.35;
   padding-right: 2.45rem;
@@ -435,7 +459,9 @@ body {
   background: transparent;
   color: rgb(var(--text-muted-rgb));
   transform: translateY(-50%);
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .input-action-button:hover {
@@ -485,7 +511,10 @@ body {
   display: block;
   width: 100%;
   background: var(--control-bg);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .detail-thumb-button:hover,
@@ -552,7 +581,9 @@ body {
   font-weight: 700;
   padding-left: 0.65rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .pagination-controls {
@@ -574,7 +605,10 @@ body {
   color: rgb(var(--text-body-rgb));
   font-weight: 700;
   font-size: 0.8125rem;
-  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .pagination-button-wide {
@@ -656,7 +690,10 @@ body {
   width: 100%;
   padding: 1rem;
   text-align: left;
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .role-option:hover,
@@ -737,7 +774,11 @@ body {
 
 .cta-band {
   border: 1px solid rgba(248, 113, 113, 0.48);
-  background: linear-gradient(135deg, rgba(190, 24, 93, 0.96), rgba(220, 38, 38, 0.94));
+  background: linear-gradient(
+    135deg,
+    rgba(190, 24, 93, 0.96),
+    rgba(220, 38, 38, 0.94)
+  );
   box-shadow: 0 18px 40px rgba(190, 24, 46, 0.28);
 }
 
@@ -756,4 +797,42 @@ body {
   filter: blur(8px);
   pointer-events: none;
   user-select: none;
+}
+
+.modal-backdrop-animate {
+  animation: modal-backdrop-in 0.18s ease-out both;
+}
+
+.modal-panel-animate {
+  transform-origin: center;
+  animation: modal-pop-in 0.22s cubic-bezier(0.2, 0.82, 0.25, 1) both;
+}
+
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop-animate,
+  .modal-panel-animate {
+    animation: none !important;
+  }
 }

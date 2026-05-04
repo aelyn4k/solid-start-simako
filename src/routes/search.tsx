@@ -14,10 +14,11 @@ import {
   Wifi,
   Wind,
 } from "lucide-solid";
-import { createMemo, createSignal } from "solid-js";
+import { createMemo, createSignal, onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import {
   facilityLabels,
+  getPublicRooms,
   slugifyOwner,
   rooms,
   type Room,
@@ -112,6 +113,7 @@ function KostCard(props: { room: Room }) {
 }
 
 export default function SearchPage() {
+  const [roomSource, setRoomSource] = createSignal<Room[]>(rooms);
   const [page, setPage] = createSignal(1);
   const [query, setQuery] = createSignal("");
   const [owner, setOwner] = createSignal(allOwners);
@@ -119,14 +121,18 @@ export default function SearchPage() {
   const [status, setStatus] = createSignal(allStatuses);
   const [rowsPerPage, setRowsPerPage] = createSignal<PageSizeOption>(pageSize);
 
+  onMount(() => {
+    setRoomSource(getPublicRooms());
+  });
+
   const ownerOptions = createMemo(() =>
-    Array.from(new Set(rooms.map((room) => room.ownerName))),
+    Array.from(new Set(roomSource().map((room) => room.ownerName))),
   );
   const roomPrice = (room: Room) => Number(room.price.replace(/\D/g, ""));
   const filteredRooms = createMemo(() => {
     const normalizedQuery = query().trim().toLowerCase();
 
-    return rooms.filter((room) => {
+    return roomSource().filter((room) => {
       const matchesQuery =
         !normalizedQuery ||
         room.name.toLowerCase().includes(normalizedQuery) ||

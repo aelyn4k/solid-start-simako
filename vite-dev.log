@@ -102,3 +102,226 @@
 [vite] program reload
 [vite] program reload
 [vite] program reload
+[2m11.13.34[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/admin/AdminDashboard.tsx[22m
+[2m11.13.34[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/admin/AdminDashboard.tsx[22m
+[vite] program reload
+[2m11.13.35[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/admin/AdminDashboard.tsx[22m
+[2m11.13.35[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/admin/AdminDashboard.tsx[22m
+[2m11.13.42[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/admin/AdminDashboard.tsx[22m
+[2m11.13.42[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/admin/AdminDashboard.tsx[22m
+[vite] program reload
+[2m11.20.55[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.20.55[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/login.tsx?pick=default&pick=$css[22m
+[2m11.20.55[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/login.tsx[22m
+[2m11.22.18[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/admin/AdminDashboard.tsx[22m
+[2m11.22.18[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/admin/AdminDashboard.tsx[22m
+[vite] program reload
+[2m11.22.29[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/admin/AdminDashboard.tsx[22m
+[2m11.22.29[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/admin/AdminDashboard.tsx[22m
+[2m11.22.47[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.22.47[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m11.22.47[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m11.29.18[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/layout/Sidebar.tsx, /src/routes/login.tsx?pick=default&pick=$css[22m
+[2m11.29.18[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/utils/roleAccess.ts[22m
+[vite] program reload
+[2m11.29.21[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx, /src/app.css[22m
+[2m11.29.21[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/app.tsx[22m
+[2m11.29.21[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.29.21[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m11.29.21[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[vite] program reload
+[2m11.29.56[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerDashboard.tsx[22m
+[2m11.29.56[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerDashboard.tsx[22m
+[2m11.30.05[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.05[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/admin/akun-pemilik.tsx?pick=default&pick=$css[22m
+[2m11.30.11[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.11[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/admin/akun-penyewa.tsx?pick=default&pick=$css[22m
+[2m11.30.15[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.19[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.19[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/admin/logs.tsx?pick=default&pick=$css[22m
+[2m11.30.25[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.25[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/admin/settings.tsx?pick=default&pick=$css[22m
+[2m11.30.32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m11.30.32[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[2m11.30.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/owner/[slug].tsx?pick=default&pick=$css[22m
+[2m11.30.48[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.30.48[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/room/[id].tsx?pick=default&pick=$css[22m
+[2m11.30.48[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/room/[id].tsx[22m
+[2m11.32.52[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerDashboard.tsx[22m
+[2m11.32.52[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerDashboard.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.35.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m11.40.01[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.40.01[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/about.tsx?pick=default&pick=$css[22m
+[2m11.40.01[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/about.tsx[22m
+[2m11.40.07[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.40.08[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/index.tsx?pick=default&pick=$css[22m
+[2m11.40.08[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/index.tsx[22m
+[2m11.40.11[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.40.17[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.40.17[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css[22m
+[2m11.40.17[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/privacy.tsx[22m
+[2m11.40.30[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.40.30[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css[22m
+[2m11.40.30[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/terms.tsx[22m
+[2m11.40.53[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/layout/Sidebar.tsx, /src/routes/login.tsx?pick=default&pick=$css, /src/components/layout/OwnerSidebar.tsx[22m
+[2m11.40.53[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/utils/roleAccess.ts[22m
+[vite] program reload
+[vite] program reload
+[2m11.40.59[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerDashboard.tsx, /src/components/layout/OwnerSidebar.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m11.41.03[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css[22m
+[2m11.41.03[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/app.css[22m
+[vite] program reload
+[2m11.41.05[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[2m11.41.06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx, /src/app.css[22m
+[2m11.41.06[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/app.tsx[22m
+[vite] program reload
+[2m11.41.10[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/owner/[slug].tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m11.41.10[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/rooms.ts[22m
+[vite] program reload
+[2m11.41.14[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/entry-server.tsx[22m
+[vite] program reload
+[2m11.41.20[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.41.20[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m11.41.20[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/index.tsx?pick=default&pick=$css[22m
+[2m11.41.20[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/index.tsx[22m
+[2m11.41.20[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/search.tsx?pick=default&pick=$css[22m
+[2m11.41.20[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/search.tsx[22m
+[2m11.42.02[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m11.42.02[22m [36m[1m[vite][22m[39m server restarted.
+[vite] connected.
+[vite] program reload
+[vite] program reload
+[2m11.43.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerDashboard.tsx[22m
+[2m11.43.41[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerDashboard.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m11.49.43[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m11.49.43[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m11.49.58[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m11.49.58[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/utils/ownerRoomsStorage.ts[22m
+[vite] program reload
+[2m11.51.59[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m11.51.59[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.04.18[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.04.18[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m12.04.19[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.04.19[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/utils/ownerRoomsStorage.ts[22m
+[vite] program reload
+[2m12.04.58[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.04.58[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.05.48[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.05.48[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.11.30[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.11.30[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m12.12.21[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.12.21[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.17.34[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.17.34[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m12.19.08[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.19.08[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.22.32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.22.32[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.27.29[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css[22m
+[2m12.27.29[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/app.css[22m
+[vite] program reload
+[2m12.27.54[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.27.54[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.27.59[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.27.59[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.06[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.12[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.12[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.35[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.35[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.41[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[2m12.28.51[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.28.51[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[2m12.29.02[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.29.02[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.29.25[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.29.25[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.29.42[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/layout/OwnerSidebar.tsx[22m
+[2m12.29.42[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/components/layout/OwnerSidebar.tsx[22m
+[vite] program reload
+[2m12.30.09[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m12.30.09[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m12.30.09[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[2m12.30.21[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m12.30.21[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m12.30.21[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[2m12.30.25[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m12.30.25[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m12.30.25[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[2m12.30.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m12.30.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m12.30.41[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[2m12.30.50[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m12.30.50[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css[22m
+[2m12.30.50[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/logout.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.35.54[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/layout/OwnerSidebar.tsx[22m
+[2m12.35.54[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/components/layout/OwnerSidebar.tsx[22m
+[vite] program reload
+[vite] program reload
+[2m12.36.01[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m12.36.01[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/dashboard/[role].tsx?pick=default&pick=$css[22m
+[2m12.36.01[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/dashboard/[role].tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload

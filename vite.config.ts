@@ -5,11 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   server: {
-    allowedHosts: ["tup.web.id"]
+    allowedHosts: ["tup.web.id"],
   },
-  plugins: [
-    solidStart(),
-    tailwindcss(),
-    nitro()
-  ]
+  plugins: [solidStart(), tailwindcss(), nitro()],
 });

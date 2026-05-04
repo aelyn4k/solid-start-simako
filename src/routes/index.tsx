@@ -15,9 +15,11 @@ import {
   Wind,
   Zap,
 } from "lucide-solid";
+import { createSignal, onMount } from "solid-js";
 import type { Component, JSX } from "solid-js";
 import {
   facilityLabels,
+  getPublicRooms,
   rooms,
   slugifyOwner,
   type Room,
@@ -107,9 +109,14 @@ const RoomCard: Component<{ room: Room }> = (props) => (
   </article>
 );
 
-const featuredRooms = rooms.slice(0, 8);
-
 export default function Home() {
+  const [landingRooms, setLandingRooms] = createSignal<Room[]>(rooms);
+  const featuredRooms = () => landingRooms().slice(0, 8);
+
+  onMount(() => {
+    setLandingRooms(getPublicRooms());
+  });
+
   const features: Feature[] = [
     {
       icon: <ShieldCheck size={24} class="text-red-300" />,
@@ -160,8 +167,6 @@ export default function Home() {
                 Daftar Sekarang
               </A>
             </div>
-
-
           </div>
 
           <div class="surface-card overflow-hidden">
@@ -191,7 +196,7 @@ export default function Home() {
           </A>
         </div>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {featuredRooms.map((room) => (
+          {featuredRooms().map((room) => (
             <RoomCard room={room} />
           ))}
         </div>
@@ -203,7 +208,8 @@ export default function Home() {
             Fitur Unggulan SIMAKO
           </h2>
           <p class="ui-text mx-auto mt-3 max-w-3xl">
-            SIMAKO dilengkapi dengan fitur-fitur yang dirancang untuk memudahkan pencarian kamar dan pengelolaan kost.
+            SIMAKO dilengkapi dengan fitur-fitur yang dirancang untuk memudahkan
+            pencarian kamar dan pengelolaan kost.
           </p>
         </div>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">

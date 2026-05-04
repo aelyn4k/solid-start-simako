@@ -10,7 +10,10 @@ import "./app.css";
 
 function AppFrame(props: { children: JSX.Element }) {
   const location = useLocation();
-  const isDashboard = () => location.pathname.startsWith("/dashboard") || location.pathname.startsWith("/admin");
+  const isDashboard = () =>
+    location.pathname.startsWith("/dashboard") ||
+    location.pathname.startsWith("/admin") ||
+    location.pathname.startsWith("/pemilik");
 
   return (
     <div class="app-shell min-h-screen flex flex-col">
@@ -18,7 +21,9 @@ function AppFrame(props: { children: JSX.Element }) {
       <PageLoading />
       {!isDashboard() && <Header />}
       <main class="flex-grow">
-        <Suspense fallback={<div class="route-loading-space" />}>{props.children}</Suspense>
+        <Suspense fallback={<div class="route-loading-space" />}>
+          {props.children}
+        </Suspense>
       </main>
       {!isDashboard() && <Footer />}
     </div>
@@ -27,9 +32,7 @@ function AppFrame(props: { children: JSX.Element }) {
 
 export default function App() {
   return (
-    <Router
-      root={(props) => <AppFrame>{props.children}</AppFrame>}
-    >
+    <Router root={(props) => <AppFrame>{props.children}</AppFrame>}>
       <FileRoutes />
     </Router>
   );

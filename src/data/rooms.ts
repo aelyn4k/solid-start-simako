@@ -1,3 +1,5 @@
+import { getPublicOwnerRooms } from "~/utils/ownerRoomsStorage";
+
 export type RoomStatus = "Tersedia" | "Terisi";
 
 export type RoomFacilityKey =
@@ -39,10 +41,12 @@ export const slugifyOwner = (ownerName: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
-export const getOwnerNames = () => Array.from(new Set(rooms.map((room) => room.ownerName)));
+export const getPublicRooms = () => [...getPublicOwnerRooms(), ...rooms];
+
+export const getOwnerNames = () => Array.from(new Set(getPublicRooms().map((room) => room.ownerName)));
 
 export const getOwnerRoomsBySlug = (ownerSlug: string) =>
-  rooms.filter((room) => slugifyOwner(room.ownerName) === ownerSlug);
+  getPublicRooms().filter((room) => slugifyOwner(room.ownerName) === ownerSlug);
 
 export const createRandomRoomId = (existingIds = rooms.map((room) => room.id)) => {
   let id = 0;
@@ -55,7 +59,7 @@ export const createRandomRoomId = (existingIds = rooms.map((room) => room.id)) =
 };
 
 export const findRoomById = (roomId: string | number) =>
-  rooms.find((room) => String(room.id) === String(roomId));
+  getPublicRooms().find((room) => String(room.id) === String(roomId));
 
 export const facilityLabels: Record<RoomFacilityKey, string> = {
   wifi: "Wi-Fi Cepat",

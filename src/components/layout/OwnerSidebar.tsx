@@ -1,18 +1,36 @@
 import { A, useLocation, useNavigate } from "@solidjs/router";
-import { FileText, Home, LogOut, Menu, Moon, Settings, Sun, UserCog, Users } from "lucide-solid";
+import {
+  Banknote,
+  Building2,
+  ClipboardList,
+  CreditCard,
+  Home,
+  LogOut,
+  MapPinned,
+  Menu,
+  Moon,
+  Phone,
+  Settings,
+  Sun,
+  UserCog,
+} from "lucide-solid";
 import { createSignal, onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import ConfirmDialog from "~/components/ConfirmDialog";
-import { requireAdmin, sessionRoleKey } from "~/utils/roleAccess";
+import { getCurrentOwner } from "~/utils/ownerSession";
+import { requireOwner, sessionRoleKey } from "~/utils/roleAccess";
 
 type ThemeMode = "dark" | "light";
 
-const adminMenu = [
-  { href: "/admin/dashboard", label: "Dashboard", icon: Home },
-  { href: "/admin/akun-pemilik", label: "Akun Pemilik", icon: UserCog },
-  { href: "/admin/akun-penyewa", label: "Akun Penyewa", icon: Users },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
-  { href: "/admin/logs", label: "Logs", icon: FileText },
+const ownerMenu = [
+  { href: "/pemilik/dashboard", label: "Dashboard", icon: Home },
+  { href: "/pemilik/data-kamar", label: "Data Kamar", icon: Building2 },
+  { href: "/pemilik/informasi-kost", label: "Informasi Kost", icon: MapPinned },
+  { href: "/pemilik/kontak-pemilik", label: "Kontak Pemilik", icon: Phone },
+  { href: "/pemilik/tagihan-kamar", label: "Tagihan Kamar", icon: CreditCard },
+  { href: "/pemilik/aturan-kost", label: "Aturan Kost", icon: ClipboardList },
+  { href: "/pemilik/fasilitas-umum", label: "Fasilitas Umum", icon: Settings },
+  { href: "/pemilik/rekening-pembayaran", label: "Rekening Pembayaran", icon: Banknote },
 ];
 
 const getStoredTheme = (): ThemeMode => {
@@ -33,15 +51,16 @@ const applyTheme = (mode: ThemeMode) => {
   }
 };
 
-export default function Sidebar(props: { title: string; subtitle: string; children: JSX.Element }) {
+export default function OwnerSidebar(props: { title: string; subtitle: string; children: JSX.Element }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = createSignal(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = createSignal(false);
   const [theme, setTheme] = createSignal<ThemeMode>("dark");
+  const owner = () => getCurrentOwner();
 
   onMount(() => {
-    if (!requireAdmin(navigate)) {
+    if (!requireOwner(navigate)) {
       return;
     }
 
@@ -62,6 +81,7 @@ export default function Sidebar(props: { title: string; subtitle: string; childr
   const confirmLogout = () => {
     try {
       localStorage.removeItem(sessionRoleKey);
+      localStorage.removeItem("simako-session-email");
     } catch {
       // Redirect still proceeds if storage cleanup fails.
     }
@@ -94,12 +114,12 @@ export default function Sidebar(props: { title: string; subtitle: string; childr
               <A href="/" class="ui-heading text-lg font-bold">
                 SIMAKO
               </A>
-              <p class="dashboard-muted text-xs">Admin Panel</p>
+              <p class="dashboard-muted text-xs">Pemilik Kost Panel</p>
             </div>
           </div>
 
           <nav class="flex-1 space-y-2 overflow-y-auto px-4 py-4">
-            {adminMenu.map((item) => {
+            {ownerMenu.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
 
@@ -124,11 +144,11 @@ export default function Sidebar(props: { title: string; subtitle: string; childr
             <div class="flex items-center justify-between rounded-lg bg-[var(--control-bg)] p-3">
               <div class="flex items-center gap-3">
                 <div class="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">
-                  A
+                  {owner()?.name.charAt(0) ?? "P"}
                 </div>
                 <div>
-                  <p class="ui-heading text-sm font-bold">Admin SIMAKO</p>
-                  <p class="dashboard-muted text-xs">superadmin</p>
+                  <p class="ui-heading text-sm font-bold">{owner()?.name ?? "Pemilik Kost"}</p>
+                  <p class="dashboard-muted text-xs">pemilik_kost</p>
                 </div>
               </div>
               <button type="button" class="icon-button h-8 w-8" aria-label="Ganti tema" onClick={toggleTheme}>
@@ -164,7 +184,7 @@ export default function Sidebar(props: { title: string; subtitle: string; childr
                 </div>
               </div>
               <div class="rounded-lg border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-2 text-xs font-bold text-[rgb(var(--text-body-rgb))]">
-                Role: <span class="text-red-400">Admin</span>
+                Role: <span class="text-red-400">Pemilik Kost</span>
               </div>
             </div>
 
@@ -175,10 +195,9 @@ export default function Sidebar(props: { title: string; subtitle: string; childr
 
       {logoutConfirmOpen() && (
         <ConfirmDialog
-          title="Logout Confirmation"
-          message="Are you sure you want to logout? You will need to login again to access the admin panel."
+          title="Konfirmasi Logout"
+          message="Anda yakin ingin keluar dari panel pemilik kost?"
           confirmLabel="Logout"
-          cancelLabel="Cancel"
           tone="info"
           zIndexClass="z-[60]"
           onCancel={() => setLogoutConfirmOpen(false)}

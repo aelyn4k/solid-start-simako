@@ -20,10 +20,18 @@ export const getDashboardPathByRole = (role: AuthRole) => {
     return "/admin/dashboard";
   }
 
+  if (role === "pemilik") {
+    return "/pemilik/dashboard";
+  }
+
   return `/dashboard/${role}`;
 };
 
-export const redirectByRole = (navigate: NavigateFunction, role: AuthRole, replace = true) => {
+export const redirectByRole = (
+  navigate: NavigateFunction,
+  role: AuthRole,
+  replace = true,
+) => {
   navigate(getDashboardPathByRole(role), { replace });
 };
 
@@ -36,6 +44,22 @@ export const requireAdmin = (navigate: NavigateFunction) => {
   }
 
   if (role !== "admin") {
+    redirectByRole(navigate, role);
+    return false;
+  }
+
+  return true;
+};
+
+export const requireOwner = (navigate: NavigateFunction) => {
+  const role = getSessionRole();
+
+  if (!role) {
+    navigate("/login", { replace: true });
+    return false;
+  }
+
+  if (role !== "pemilik") {
     redirectByRole(navigate, role);
     return false;
   }

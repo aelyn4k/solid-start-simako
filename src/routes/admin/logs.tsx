@@ -1,11 +1,18 @@
 import { createMemo } from "solid-js";
 import Sidebar from "~/components/layout/Sidebar";
 import { accessLogs } from "~/data/dummyData";
-import { accessStatusTone, formatDateTime, roleLabel, StatusBadge } from "~/pages/admin/AdminDashboard";
+import {
+  accessStatusTone,
+  formatDateTime,
+  roleLabel,
+  StatusBadge,
+} from "~/pages/admin/AdminDashboard";
 
 export default function AdminLogsRoute() {
   const sortedLogs = createMemo(() =>
-    [...accessLogs].sort((first, second) => second.access_time.localeCompare(first.access_time)),
+    [...accessLogs].sort((first, second) =>
+      second.access_time.localeCompare(first.access_time),
+    ),
   );
 
   return (
@@ -26,14 +33,27 @@ export default function AdminLogsRoute() {
             <tbody>
               {sortedLogs().map((log) => (
                 <tr class="border-t border-[var(--divider)]">
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{log.user_name}</td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{roleLabel(log.role)}</td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{log.activity}</td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{formatDateTime(log.access_time)}</td>
-                  <td class="px-5 py-4">
-                    <StatusBadge value={log.status} tone={accessStatusTone(log.status)} />
+                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">
+                    {log.user_name}
                   </td>
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{log.ip_address}</td>
+                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">
+                    {roleLabel(log.role)}
+                  </td>
+                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">
+                    {log.activity}
+                  </td>
+                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">
+                    {formatDateTime(log.access_time)}
+                  </td>
+                  <td class="px-5 py-4">
+                    <StatusBadge
+                      value={log.status}
+                      tone={accessStatusTone(log.status)}
+                    />
+                  </td>
+                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">
+                    {log.ip_address}
+                  </td>
                 </tr>
               ))}
             </tbody>

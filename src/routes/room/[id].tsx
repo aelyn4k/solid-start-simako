@@ -15,11 +15,16 @@ import {
   Users,
   Wifi,
   Wind,
-  Zap
+  Zap,
 } from "lucide-solid";
 import { createEffect, createMemo, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
-import { facilityLabels, findRoomById, slugifyOwner, type RoomFacilityKey } from "~/data/rooms";
+import {
+  facilityLabels,
+  findRoomById,
+  slugifyOwner,
+  type RoomFacilityKey,
+} from "~/data/rooms";
 
 const facilityIcon = (facility: RoomFacilityKey, size = 18): JSX.Element => {
   switch (facility) {
@@ -64,7 +69,10 @@ export default function RoomDetail() {
         <>
           <section class="section-divider py-8 md:py-12">
             <div class="layout-shell">
-              <A href="/" class="inline-flex items-center gap-2 text-sm font-semibold text-red-400 transition hover:text-red-300">
+              <A
+                href="/"
+                class="inline-flex items-center gap-2 text-sm font-semibold text-red-400 transition hover:text-red-300"
+              >
                 <ArrowLeft size={16} />
                 Kembali ke Beranda
               </A>
@@ -72,7 +80,11 @@ export default function RoomDetail() {
               <div class="mt-6 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
                 <div class="space-y-4">
                   <div class="surface-card overflow-hidden">
-                    <img src={heroImage()} alt={room()!.name} class="h-[320px] w-full object-cover md:h-[470px]" />
+                    <img
+                      src={heroImage()}
+                      alt={room()!.name}
+                      class="h-[320px] w-full object-cover md:h-[470px]"
+                    />
                   </div>
                   <div class="grid grid-cols-3 gap-3">
                     {room()!.gallery.map((image, index) => (
@@ -84,7 +96,11 @@ export default function RoomDetail() {
                         onClick={() => setSelectedImage(image)}
                         aria-label={`Tampilkan foto ${index + 1}`}
                       >
-                        <img src={image} alt={`${room()!.name} ${index + 1}`} class="h-24 w-full object-cover md:h-32" />
+                        <img
+                          src={image}
+                          alt={`${room()!.name} ${index + 1}`}
+                          class="h-24 w-full object-cover md:h-32"
+                        />
                       </button>
                     ))}
                   </div>
@@ -95,15 +111,21 @@ export default function RoomDetail() {
                     <span class="eyebrow">{room()!.type}</span>
                     <span
                       class={`rounded-full px-3 py-1 text-sm font-semibold ${
-                        room()!.status === "Tersedia" ? "bg-green-500 text-white" : "bg-yellow-500 text-gray-900"
+                        room()!.status === "Tersedia"
+                          ? "bg-green-500 text-white"
+                          : "bg-yellow-500 text-gray-900"
                       }`}
                     >
                       {room()!.status}
                     </span>
                   </div>
 
-                  <h1 class="ui-heading mt-5 text-3xl font-bold leading-tight md:text-4xl">{room()!.name}</h1>
-                  <p class="mt-3 text-xl font-bold text-red-400">{room()!.price}</p>
+                  <h1 class="ui-heading mt-5 text-3xl font-bold leading-tight md:text-4xl">
+                    {room()!.name}
+                  </h1>
+                  <p class="mt-3 text-xl font-bold text-red-400">
+                    {room()!.price}
+                  </p>
                   <A
                     href={`/owner/${slugifyOwner(room()!.ownerName)}`}
                     class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-red-400 transition hover:text-red-300"
@@ -137,13 +159,18 @@ export default function RoomDetail() {
                       href="https://wa.me/6281234567890"
                       target="_blank"
                       class={`btn-primary flex-1 px-5 py-3 text-sm ${
-                        room()!.status === "Terisi" ? "pointer-events-none opacity-60" : ""
+                        room()!.status === "Terisi"
+                          ? "pointer-events-none opacity-60"
+                          : ""
                       }`}
                     >
                       <Phone size={16} />
                       Booking Sekarang
                     </A>
-                    <A href="/search" class="btn-secondary flex-1 px-5 py-3 text-sm">
+                    <A
+                      href="/search"
+                      class="btn-secondary flex-1 px-5 py-3 text-sm"
+                    >
                       Bandingkan Kamar
                     </A>
                   </div>
@@ -159,7 +186,9 @@ export default function RoomDetail() {
                 <div class="mt-6 grid gap-3 sm:grid-cols-2">
                   {room()!.facilities.map((facility) => (
                     <div class="facility-row">
-                      <span class="facility-row-icon">{facilityIcon(facility)}</span>
+                      <span class="facility-row-icon">
+                        {facilityIcon(facility)}
+                      </span>
                       <span>{facilityLabels[facility]}</span>
                     </div>
                   ))}
@@ -218,7 +247,9 @@ export default function RoomDetail() {
         <section class="layout-shell flex min-h-[62vh] items-center justify-center py-16">
           <div class="surface-card max-w-xl p-8 text-center">
             <h1 class="ui-heading text-3xl font-bold">Kamar Tidak Ditemukan</h1>
-            <p class="ui-text mt-3">Data kamar yang Anda buka tidak tersedia atau sudah dipindahkan.</p>
+            <p class="ui-text mt-3">
+              Data kamar yang Anda buka tidak tersedia atau sudah dipindahkan.
+            </p>
             <A href="/" class="btn-primary mt-6 px-6 py-3 text-sm">
               Kembali ke Beranda
             </A>

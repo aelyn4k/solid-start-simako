@@ -14,6 +14,10 @@ export default function LoginPage() {
 
     try {
       localStorage.setItem("simako-session-role", authorizedRole);
+      localStorage.setItem(
+        "simako-session-email",
+        email().trim().toLowerCase(),
+      );
     } catch {
       // Role remains available through this redirect flow even if storage is unavailable.
     }
@@ -66,7 +70,9 @@ export default function LoginPage() {
                 type="button"
                 class="input-action-button"
                 onClick={() => setShowPassword((value) => !value)}
-                aria-label={showPassword() ? "Sembunyikan password" : "Tampilkan password"}
+                aria-label={
+                  showPassword() ? "Sembunyikan password" : "Tampilkan password"
+                }
               >
                 {showPassword() ? <EyeOff size={17} /> : <Eye size={17} />}
               </button>

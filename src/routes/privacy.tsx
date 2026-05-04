@@ -1,30 +1,36 @@
-import { Database, Eye, LockKeyhole, ShieldCheck, UserCheck } from "lucide-solid";
+import {
+  Database,
+  Eye,
+  LockKeyhole,
+  ShieldCheck,
+  UserCheck,
+} from "lucide-solid";
 
 const privacySections = [
   {
     icon: <Database size={22} />,
     title: "Data yang Dikumpulkan",
     description:
-      "SIMAKO dapat menyimpan data akun seperti nama, email, nomor WhatsApp, pilihan role akun, preferensi kamar, laporan kendala, serta aktivitas booking yang Anda lakukan di platform."
+      "SIMAKO dapat menyimpan data akun seperti nama, email, nomor WhatsApp, pilihan role akun, preferensi kamar, laporan kendala, serta aktivitas booking yang Anda lakukan di platform.",
   },
   {
     icon: <Eye size={22} />,
     title: "Penggunaan Data",
     description:
-      "Data digunakan untuk menampilkan kamar, memproses booking, menghubungkan penyewa dengan pengelola, menangani kendala akun, dan meningkatkan pengalaman penggunaan SIMAKO."
+      "Data digunakan untuk menampilkan kamar, memproses booking, menghubungkan penyewa dengan pengelola, menangani kendala akun, dan meningkatkan pengalaman penggunaan SIMAKO.",
   },
   {
     icon: <LockKeyhole size={22} />,
     title: "Keamanan Akun",
     description:
-      "Kami menganjurkan pengguna menjaga password dan tidak membagikan OTP, kredensial, atau akses akun kepada pihak lain. SIMAKO tidak pernah meminta password melalui chat."
+      "Kami menganjurkan pengguna menjaga password dan tidak membagikan OTP, kredensial, atau akses akun kepada pihak lain. SIMAKO tidak pernah meminta password melalui chat.",
   },
   {
     icon: <UserCheck size={22} />,
     title: "Kontrol Pengguna",
     description:
-      "Pengguna dapat meminta pembaruan, koreksi, atau penghapusan data tertentu melalui kanal bantuan resmi selama permintaan dapat diverifikasi."
-  }
+      "Pengguna dapat meminta pembaruan, koreksi, atau penghapusan data tertentu melalui kanal bantuan resmi selama permintaan dapat diverifikasi.",
+  },
 ];
 
 export default function PrivacyPage() {
@@ -37,10 +43,13 @@ export default function PrivacyPage() {
               Cara SIMAKO menjaga dan menggunakan data Anda.
             </h1>
             <p class="ui-lead mt-5 max-w-2xl leading-8">
-              Kebijakan ini menjelaskan jenis data yang dapat diproses, tujuan penggunaannya, dan langkah yang dapat Anda lakukan ketika
+              Kebijakan ini menjelaskan jenis data yang dapat diproses, tujuan
+              penggunaannya, dan langkah yang dapat Anda lakukan ketika
               membutuhkan bantuan terkait data akun.
             </p>
-            <p class="ui-muted mt-4 text-sm">Terakhir diperbarui: 25 April 2026</p>
+            <p class="ui-muted mt-4 text-sm">
+              Terakhir diperbarui: 25 April 2026
+            </p>
           </div>
 
           <div class="surface-card p-6">
@@ -49,7 +58,8 @@ export default function PrivacyPage() {
             </div>
             <h2 class="ui-heading text-2xl font-bold">Prinsip Privasi</h2>
             <p class="ui-text mt-3 leading-7">
-              Data hanya digunakan untuk kebutuhan layanan SIMAKO seperti akun, pencarian kamar, booking, komunikasi pengelola, dan bantuan CS.
+              Data hanya digunakan untuk kebutuhan layanan SIMAKO seperti akun,
+              pencarian kamar, booking, komunikasi pengelola, dan bantuan CS.
             </p>
           </div>
         </div>
@@ -73,9 +83,12 @@ export default function PrivacyPage() {
         <div class="surface-card p-6 md:p-8">
           <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div>
-              <h2 class="ui-heading text-2xl font-bold">Butuh bantuan privasi?</h2>
+              <h2 class="ui-heading text-2xl font-bold">
+                Butuh bantuan privasi?
+              </h2>
               <p class="ui-text mt-2 leading-7">
-                Hubungi CS jika Anda ingin mengoreksi data akun, melaporkan akses tidak sah, atau menanyakan penggunaan data.
+                Hubungi CS jika Anda ingin mengoreksi data akun, melaporkan
+                akses tidak sah, atau menanyakan penggunaan data.
               </p>
             </div>
           </div>

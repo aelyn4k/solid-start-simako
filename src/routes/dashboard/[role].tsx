@@ -29,7 +29,9 @@ import {
 } from "lucide-solid";
 import { createEffect, createMemo, createSignal, onMount } from "solid-js";
 import type { Component } from "solid-js";
+import ConfirmDialog from "~/components/ConfirmDialog";
 import { rooms as roomCatalog } from "~/data/rooms";
+import OwnerDashboard from "~/pages/owner/OwnerDashboard";
 
 type RoleKey = "admin" | "pemilik" | "penyewa";
 type ThemeMode = "dark" | "light";
@@ -100,52 +102,195 @@ interface RoleConfig {
 type ResourceRows = Record<string, Record<string, string>[]>;
 
 const adminOwnerRows = [
-  { name: "Siti Aminah", email: "siti@simako.id", phone: "0812 3456 7890", kost: "Kost Melati", status: "Aktif" },
-  { name: "Rudi Hartono", email: "rudi@simako.id", phone: "0821 4455 7788", kost: "Kost Anggrek", status: "Aktif" },
-  { name: "Dewi Lestari", email: "dewi@simako.id", phone: "0857 1122 3344", kost: "Kost Purnama", status: "Pending" },
+  {
+    name: "Siti Aminah",
+    email: "siti@simako.id",
+    phone: "0812 3456 7890",
+    kost: "Kost Melati",
+    status: "Aktif",
+  },
+  {
+    name: "Rudi Hartono",
+    email: "rudi@simako.id",
+    phone: "0821 4455 7788",
+    kost: "Kost Anggrek",
+    status: "Aktif",
+  },
+  {
+    name: "Dewi Lestari",
+    email: "dewi@simako.id",
+    phone: "0857 1122 3344",
+    kost: "Kost Purnama",
+    status: "Pending",
+  },
 ];
 
 const adminTenantRows = [
-  { name: "Nadia Putri", email: "nadia@mail.com", phone: "0813 9000 1122", room: "Melati 102", status: "Aktif" },
-  { name: "Raka Pratama", email: "raka@mail.com", phone: "0822 1122 7788", room: "Melati 103", status: "Aktif" },
-  { name: "Fajar Maulana", email: "fajar@mail.com", phone: "0852 8877 2211", room: "Anggrek 201", status: "Nonaktif" },
+  {
+    name: "Nadia Putri",
+    email: "nadia@mail.com",
+    phone: "0813 9000 1122",
+    room: "Melati 102",
+    status: "Aktif",
+  },
+  {
+    name: "Raka Pratama",
+    email: "raka@mail.com",
+    phone: "0822 1122 7788",
+    room: "Melati 103",
+    status: "Aktif",
+  },
+  {
+    name: "Fajar Maulana",
+    email: "fajar@mail.com",
+    phone: "0852 8877 2211",
+    room: "Anggrek 201",
+    status: "Nonaktif",
+  },
 ];
 
 const ownerRoomRows = [
-  { room: "Kamar 101", type: "Premium", price: "Rp 1.500.000", tenant: "-", status: "Tersedia" },
-  { room: "Kamar 102", type: "Reguler", price: "Rp 1.200.000", tenant: "Nadia Putri", status: "Berpenghuni" },
-  { room: "Kamar 103", type: "Reguler", price: "Rp 1.350.000", tenant: "Raka Pratama", status: "Berpenghuni" },
+  {
+    room: "Kamar 101",
+    type: "Premium",
+    price: "Rp 1.500.000",
+    tenant: "-",
+    status: "Tersedia",
+  },
+  {
+    room: "Kamar 102",
+    type: "Reguler",
+    price: "Rp 1.200.000",
+    tenant: "Nadia Putri",
+    status: "Berpenghuni",
+  },
+  {
+    room: "Kamar 103",
+    type: "Reguler",
+    price: "Rp 1.350.000",
+    tenant: "Raka Pratama",
+    status: "Berpenghuni",
+  },
 ];
 
 const ownerTenantRows = [
-  { name: "Nadia Putri", room: "Kamar 102", startDate: "01 Okt 2025", payment: "Belum Dibayar", status: "Aktif" },
-  { name: "Raka Pratama", room: "Kamar 103", startDate: "15 Jan 2026", payment: "Pending", status: "Aktif" },
-  { name: "Aulia Rahma", room: "Kamar 108", startDate: "03 Feb 2026", payment: "Lunas", status: "Aktif" },
+  {
+    name: "Nadia Putri",
+    room: "Kamar 102",
+    startDate: "01 Okt 2025",
+    payment: "Belum Dibayar",
+    status: "Aktif",
+  },
+  {
+    name: "Raka Pratama",
+    room: "Kamar 103",
+    startDate: "15 Jan 2026",
+    payment: "Pending",
+    status: "Aktif",
+  },
+  {
+    name: "Aulia Rahma",
+    room: "Kamar 108",
+    startDate: "03 Feb 2026",
+    payment: "Lunas",
+    status: "Aktif",
+  },
 ];
 
 const ownerBillRows = [
-  { tenant: "Nadia Putri", room: "Kamar 102", amount: "Rp 1.200.000", dueDate: "30 Apr 2026", status: "Belum Dibayar" },
-  { tenant: "Raka Pratama", room: "Kamar 103", amount: "Rp 1.350.000", dueDate: "30 Apr 2026", status: "Pending" },
-  { tenant: "Aulia Rahma", room: "Kamar 108", amount: "Rp 1.500.000", dueDate: "30 Apr 2026", status: "Lunas" },
+  {
+    tenant: "Nadia Putri",
+    room: "Kamar 102",
+    amount: "Rp 1.200.000",
+    dueDate: "30 Apr 2026",
+    status: "Belum Dibayar",
+  },
+  {
+    tenant: "Raka Pratama",
+    room: "Kamar 103",
+    amount: "Rp 1.350.000",
+    dueDate: "30 Apr 2026",
+    status: "Pending",
+  },
+  {
+    tenant: "Aulia Rahma",
+    room: "Kamar 108",
+    amount: "Rp 1.500.000",
+    dueDate: "30 Apr 2026",
+    status: "Lunas",
+  },
 ];
 
 const tenantBillRows = [
-  { period: "April 2026", room: "Kamar 102", amount: "Rp 1.200.000", dueDate: "30 Apr 2026", status: "Belum Dibayar" },
-  { period: "Maret 2026", room: "Kamar 102", amount: "Rp 1.200.000", dueDate: "30 Mar 2026", status: "Lunas" },
-  { period: "Februari 2026", room: "Kamar 102", amount: "Rp 1.200.000", dueDate: "28 Feb 2026", status: "Lunas" },
+  {
+    period: "April 2026",
+    room: "Kamar 102",
+    amount: "Rp 1.200.000",
+    dueDate: "30 Apr 2026",
+    status: "Belum Dibayar",
+  },
+  {
+    period: "Maret 2026",
+    room: "Kamar 102",
+    amount: "Rp 1.200.000",
+    dueDate: "30 Mar 2026",
+    status: "Lunas",
+  },
+  {
+    period: "Februari 2026",
+    room: "Kamar 102",
+    amount: "Rp 1.200.000",
+    dueDate: "28 Feb 2026",
+    status: "Lunas",
+  },
 ];
 
 const tenantReportRows = [
-  { type: "AC", date: "22 Apr 2026", description: "AC kurang dingin", status: "Diproses" },
-  { type: "Lampu", date: "18 Mar 2026", description: "Lampu kamar mati", status: "Selesai" },
-  { type: "Air", date: "10 Feb 2026", description: "Tekanan air kecil", status: "Selesai" },
+  {
+    type: "AC",
+    date: "22 Apr 2026",
+    description: "AC kurang dingin",
+    status: "Diproses",
+  },
+  {
+    type: "Lampu",
+    date: "18 Mar 2026",
+    description: "Lampu kamar mati",
+    status: "Selesai",
+  },
+  {
+    type: "Air",
+    date: "10 Feb 2026",
+    description: "Tekanan air kecil",
+    status: "Selesai",
+  },
 ];
 
 const adminApplicantRows = [
-  { owner: "Dewi Lestari", kost: "Kost Cendana Baru", submittedAt: "04 Mei 2026", status: "Pending" },
-  { owner: "Agus Pranata", kost: "Kost Semesta", submittedAt: "03 Mei 2026", status: "Disetujui" },
-  { owner: "Maya Salsabila", kost: "Kost Pelangi", submittedAt: "02 Mei 2026", status: "Pending" },
-  { owner: "Indra Wijaya", kost: "Kost Mandiri", submittedAt: "29 Apr 2026", status: "Ditolak" },
+  {
+    owner: "Dewi Lestari",
+    kost: "Kost Cendana Baru",
+    submittedAt: "04 Mei 2026",
+    status: "Pending",
+  },
+  {
+    owner: "Agus Pranata",
+    kost: "Kost Semesta",
+    submittedAt: "03 Mei 2026",
+    status: "Disetujui",
+  },
+  {
+    owner: "Maya Salsabila",
+    kost: "Kost Pelangi",
+    submittedAt: "02 Mei 2026",
+    status: "Pending",
+  },
+  {
+    owner: "Indra Wijaya",
+    kost: "Kost Mandiri",
+    submittedAt: "29 Apr 2026",
+    status: "Ditolak",
+  },
 ];
 
 const adminRoomRows = roomCatalog.map((room) => ({
@@ -157,29 +302,79 @@ const adminRoomRows = roomCatalog.map((room) => ({
 }));
 
 const adminComplaintRows = [
-  { reporter: "Nadia Putri", title: "Air kamar mandi kecil", date: "04 Mei 2026", status: "Masuk" },
-  { reporter: "Raka Pratama", title: "Lampu lorong mati", date: "03 Mei 2026", status: "Diproses" },
-  { reporter: "Aulia Rahma", title: "Wi-Fi tidak stabil", date: "02 Mei 2026", status: "Masuk" },
-  { reporter: "Fajar Maulana", title: "Kunci kamar macet", date: "28 Apr 2026", status: "Selesai" },
+  {
+    reporter: "Nadia Putri",
+    title: "Air kamar mandi kecil",
+    date: "04 Mei 2026",
+    status: "Masuk",
+  },
+  {
+    reporter: "Raka Pratama",
+    title: "Lampu lorong mati",
+    date: "03 Mei 2026",
+    status: "Diproses",
+  },
+  {
+    reporter: "Aulia Rahma",
+    title: "Wi-Fi tidak stabil",
+    date: "02 Mei 2026",
+    status: "Masuk",
+  },
+  {
+    reporter: "Fajar Maulana",
+    title: "Kunci kamar macet",
+    date: "28 Apr 2026",
+    status: "Selesai",
+  },
 ];
 
 const adminSettingRows = [
-  { setting: "Registrasi Pemilik", value: "Manual verification", status: "Aktif" },
+  {
+    setting: "Registrasi Pemilik",
+    value: "Manual verification",
+    status: "Aktif",
+  },
   { setting: "Email Notifikasi", value: "Enabled", status: "Aktif" },
   { setting: "Maintenance Mode", value: "Disabled", status: "Nonaktif" },
 ];
 
 const adminLogRows = [
-  { time: "04 Mei 2026 09:12", user: "admin@simako.id", action: "Membuka dashboard admin", status: "Selesai" },
-  { time: "04 Mei 2026 08:44", user: "dewi@simako.id", action: "Mengirim pendaftaran kost", status: "Pending" },
-  { time: "03 Mei 2026 21:10", user: "raka@mail.com", action: "Mengirim keluhan", status: "Masuk" },
+  {
+    time: "04 Mei 2026 09:12",
+    user: "admin@simako.id",
+    action: "Membuka dashboard admin",
+    status: "Selesai",
+  },
+  {
+    time: "04 Mei 2026 08:44",
+    user: "dewi@simako.id",
+    action: "Mengirim pendaftaran kost",
+    status: "Pending",
+  },
+  {
+    time: "03 Mei 2026 21:10",
+    user: "raka@mail.com",
+    action: "Mengirim keluhan",
+    status: "Masuk",
+  },
 ];
 
 const accountFields: FormField[] = [
   { key: "name", label: "Nama", placeholder: "Nama lengkap" },
-  { key: "email", label: "Email", placeholder: "nama@email.com", type: "email" },
+  {
+    key: "email",
+    label: "Email",
+    placeholder: "nama@email.com",
+    type: "email",
+  },
   { key: "phone", label: "Nomor HP", placeholder: "08xxxxxxxxxx" },
-  { key: "status", label: "Status", placeholder: "Pilih status", type: "select", options: ["Aktif", "Pending", "Nonaktif"] },
+  {
+    key: "status",
+    label: "Status",
+    placeholder: "Pilih status",
+    type: "select",
+    options: ["Aktif", "Pending", "Nonaktif"],
+  },
 ];
 
 const roleConfigs: Record<RoleKey, RoleConfig> = {
@@ -223,7 +418,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         key: "owners",
         menuLabel: "Akun Pemilik",
         title: "CRUD Akun Pemilik",
-        description: "Admin hanya mengelola akun pemilik kost, bukan data kamar atau tagihan milik pemilik.",
+        description:
+          "Admin hanya mengelola akun pemilik kost, bukan data kamar atau tagihan milik pemilik.",
         actionLabel: "Tambah Pemilik",
         columns: [
           { key: "name", label: "Nama" },
@@ -234,7 +430,11 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         ],
         fields: [
           ...accountFields,
-          { key: "kost", label: "Nama Kost", placeholder: "Contoh: Kost Melati" },
+          {
+            key: "kost",
+            label: "Nama Kost",
+            placeholder: "Contoh: Kost Melati",
+          },
         ],
         initialRows: adminOwnerRows,
         canCreate: true,
@@ -267,7 +467,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         key: "applicants",
         menuLabel: "Pendaftar Kost",
         title: "Data Pendaftar Kost",
-        description: "Admin melihat semua pendaftaran kost yang masuk untuk proses verifikasi.",
+        description:
+          "Admin melihat semua pendaftaran kost yang masuk untuk proses verifikasi.",
         actionLabel: "Tambah Pendaftar",
         columns: [
           { key: "owner", label: "Pemilik" },
@@ -285,7 +486,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         key: "all-rooms",
         menuLabel: "Semua Kamar",
         title: "Semua Kamar Kost",
-        description: "Admin melihat semua kamar dari seluruh pemilik kost di SIMAKO.",
+        description:
+          "Admin melihat semua kamar dari seluruh pemilik kost di SIMAKO.",
         actionLabel: "Tambah Kamar",
         columns: [
           { key: "room", label: "Kamar" },
@@ -304,7 +506,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         key: "all-bills",
         menuLabel: "Tagihan",
         title: "Semua Tagihan",
-        description: "Admin melihat semua tagihan penyewa dari seluruh pemilik kost.",
+        description:
+          "Admin melihat semua tagihan penyewa dari seluruh pemilik kost.",
         actionLabel: "Buat Tagihan",
         columns: [
           { key: "tenant", label: "Penyewa" },
@@ -323,7 +526,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         key: "complaints",
         menuLabel: "Keluhan",
         title: "Semua Keluhan",
-        description: "Admin melihat semua keluhan yang masuk dari penyewa dan pemilik kost.",
+        description:
+          "Admin melihat semua keluhan yang masuk dari penyewa dan pemilik kost.",
         actionLabel: "Tambah Keluhan",
         columns: [
           { key: "reporter", label: "Pelapor" },
@@ -378,7 +582,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
     key: "pemilik",
     label: "Pemilik",
     title: "Dashboard",
-    subtitle: "Kelola kamar, penyewa, tagihan, pembayaran, dan laporan kendala kost sendiri.",
+    subtitle:
+      "Kelola kamar, penyewa, tagihan, pembayaran, dan laporan kendala kost sendiri.",
     userName: "Siti Aminah",
     userRole: "pemilik kost",
     menus: [
@@ -393,7 +598,12 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
     stats: [
       { label: "Total Kamar", value: "32", tone: "red", icon: BedDouble },
       { label: "Kamar Kosong", value: "7", tone: "green", icon: Home },
-      { label: "Tagihan Aktif", value: "18", tone: "orange", icon: ReceiptText },
+      {
+        label: "Tagihan Aktif",
+        value: "18",
+        tone: "orange",
+        icon: ReceiptText,
+      },
       { label: "Laporan Aktif", value: "3", tone: "red", icon: Wrench },
     ],
     statusTitle: "Kost Status",
@@ -412,7 +622,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         key: "rooms",
         menuLabel: "Kamar",
         title: "CRUD Data Kamar",
-        description: "Pemilik dapat menambah, mengedit, dan menghapus data kamar miliknya sendiri.",
+        description:
+          "Pemilik dapat menambah, mengedit, dan menghapus data kamar miliknya sendiri.",
         actionLabel: "Tambah Kamar",
         columns: [
           { key: "room", label: "Kamar" },
@@ -422,11 +633,31 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
           { key: "status", label: "Status" },
         ],
         fields: [
-          { key: "room", label: "Nomor Kamar", placeholder: "Contoh: Kamar 104" },
-          { key: "type", label: "Tipe", placeholder: "Pilih tipe", type: "select", options: ["Premium", "Reguler", "Ekonomis"] },
+          {
+            key: "room",
+            label: "Nomor Kamar",
+            placeholder: "Contoh: Kamar 104",
+          },
+          {
+            key: "type",
+            label: "Tipe",
+            placeholder: "Pilih tipe",
+            type: "select",
+            options: ["Premium", "Reguler", "Ekonomis"],
+          },
           { key: "price", label: "Harga", placeholder: "Rp 0" },
-          { key: "tenant", label: "Penghuni", placeholder: "Kosongkan jika belum terisi" },
-          { key: "status", label: "Status", placeholder: "Pilih status", type: "select", options: ["Tersedia", "Berpenghuni"] },
+          {
+            key: "tenant",
+            label: "Penghuni",
+            placeholder: "Kosongkan jika belum terisi",
+          },
+          {
+            key: "status",
+            label: "Status",
+            placeholder: "Pilih status",
+            type: "select",
+            options: ["Tersedia", "Berpenghuni"],
+          },
         ],
         initialRows: ownerRoomRows,
         canCreate: true,
@@ -450,8 +681,20 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
           { key: "name", label: "Nama", placeholder: "Nama penyewa" },
           { key: "room", label: "Kamar", placeholder: "Contoh: Kamar 102" },
           { key: "startDate", label: "Mulai Sewa", placeholder: "01 Mei 2026" },
-          { key: "payment", label: "Pembayaran", placeholder: "Pilih status", type: "select", options: ["Belum Dibayar", "Pending", "Lunas"] },
-          { key: "status", label: "Status", placeholder: "Pilih status", type: "select", options: ["Aktif", "Nonaktif"] },
+          {
+            key: "payment",
+            label: "Pembayaran",
+            placeholder: "Pilih status",
+            type: "select",
+            options: ["Belum Dibayar", "Pending", "Lunas"],
+          },
+          {
+            key: "status",
+            label: "Status",
+            placeholder: "Pilih status",
+            type: "select",
+            options: ["Aktif", "Nonaktif"],
+          },
         ],
         initialRows: ownerTenantRows,
         canCreate: true,
@@ -476,7 +719,13 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
           { key: "room", label: "Kamar", placeholder: "Contoh: Kamar 102" },
           { key: "amount", label: "Nominal", placeholder: "Rp 0" },
           { key: "dueDate", label: "Jatuh Tempo", placeholder: "30 Mei 2026" },
-          { key: "status", label: "Status", placeholder: "Pilih status", type: "select", options: ["Belum Dibayar", "Pending", "Lunas"] },
+          {
+            key: "status",
+            label: "Status",
+            placeholder: "Pilih status",
+            type: "select",
+            options: ["Belum Dibayar", "Pending", "Lunas"],
+          },
         ],
         initialRows: ownerBillRows,
         canCreate: true,
@@ -489,7 +738,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
     key: "penyewa",
     label: "Penyewa",
     title: "Dashboard",
-    subtitle: "Lihat kamar, tagihan, pembayaran, dan laporan kendala milik sendiri.",
+    subtitle:
+      "Lihat kamar, tagihan, pembayaran, dan laporan kendala milik sendiri.",
     userName: "Nadia Putri",
     userRole: "penyewa kost",
     menus: [
@@ -504,7 +754,12 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
     stats: [
       { label: "Kamar Saya", value: "102", tone: "red", icon: BedDouble },
       { label: "Tagihan Aktif", value: "1", tone: "orange", icon: ReceiptText },
-      { label: "Pembayaran Pending", value: "0", tone: "green", icon: CreditCard },
+      {
+        label: "Pembayaran Pending",
+        value: "0",
+        tone: "green",
+        icon: CreditCard,
+      },
       { label: "Laporan Aktif", value: "1", tone: "red", icon: Wrench },
     ],
     statusTitle: "Rental Status",
@@ -537,7 +792,13 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
           { key: "room", label: "Kamar", placeholder: "Kamar 102" },
           { key: "amount", label: "Nominal", placeholder: "Rp 0" },
           { key: "dueDate", label: "Jatuh Tempo", placeholder: "30 Apr 2026" },
-          { key: "status", label: "Status", placeholder: "Pilih status", type: "select", options: ["Belum Dibayar", "Pending", "Lunas"] },
+          {
+            key: "status",
+            label: "Status",
+            placeholder: "Pilih status",
+            type: "select",
+            options: ["Belum Dibayar", "Pending", "Lunas"],
+          },
         ],
         initialRows: tenantBillRows,
         canCreate: false,
@@ -548,7 +809,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         key: "tenant-reports",
         menuLabel: "Laporan",
         title: "Laporan Kendala Saya",
-        description: "Penyewa dapat membuat laporan kendala dan melihat status penanganannya.",
+        description:
+          "Penyewa dapat membuat laporan kendala dan melihat status penanganannya.",
         actionLabel: "Buat Laporan",
         columns: [
           { key: "type", label: "Jenis" },
@@ -559,8 +821,19 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
         fields: [
           { key: "type", label: "Jenis Kendala", placeholder: "Contoh: AC" },
           { key: "date", label: "Tanggal", placeholder: "25 Apr 2026" },
-          { key: "description", label: "Deskripsi", placeholder: "Jelaskan kendala", type: "textarea" },
-          { key: "status", label: "Status", placeholder: "Pilih status", type: "select", options: ["Pending", "Diproses", "Selesai"] },
+          {
+            key: "description",
+            label: "Deskripsi",
+            placeholder: "Jelaskan kendala",
+            type: "textarea",
+          },
+          {
+            key: "status",
+            label: "Status",
+            placeholder: "Pilih status",
+            type: "select",
+            options: ["Pending", "Diproses", "Selesai"],
+          },
         ],
         initialRows: tenantReportRows,
         canCreate: true,
@@ -574,7 +847,8 @@ const roleConfigs: Record<RoleKey, RoleConfig> = {
 const isRoleKey = (value: string | undefined): value is RoleKey =>
   value === "admin" || value === "pemilik" || value === "penyewa";
 
-const cloneRows = (rows: Record<string, string>[]) => rows.map((row) => ({ ...row }));
+const cloneRows = (rows: Record<string, string>[]) =>
+  rows.map((row) => ({ ...row }));
 
 const createInitialRows = (config: RoleConfig): ResourceRows =>
   config.resources.reduce((rows, resource) => {
@@ -656,7 +930,13 @@ const statusTone = (value: string): BadgeTone => {
     return "info";
   }
 
-  if (status.includes("aktif") || status.includes("lunas") || status.includes("selesai") || status.includes("tersedia") || status.includes("operational")) {
+  if (
+    status.includes("aktif") ||
+    status.includes("lunas") ||
+    status.includes("selesai") ||
+    status.includes("tersedia") ||
+    status.includes("operational")
+  ) {
     return "success";
   }
 
@@ -667,7 +947,9 @@ function StatusBadge(props: { value: string; tone?: BadgeTone }) {
   const tone = () => props.tone ?? statusTone(props.value);
 
   return (
-    <span class={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-bold ${badgeToneClass(tone())}`}>
+    <span
+      class={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-bold ${badgeToneClass(tone())}`}
+    >
       {props.value}
     </span>
   );
@@ -680,7 +962,9 @@ function rowMatches(row: Record<string, string>, query: string) {
     return true;
   }
 
-  return Object.values(row).some((value) => value.toLowerCase().includes(normalizedQuery));
+  return Object.values(row).some((value) =>
+    value.toLowerCase().includes(normalizedQuery),
+  );
 }
 
 export default function RoleDashboardPage() {
@@ -691,16 +975,30 @@ export default function RoleDashboardPage() {
     return <Navigate href="/admin/dashboard" />;
   }
 
-  const config = createMemo(() => (isRoleKey(params.role) ? roleConfigs[params.role] : roleConfigs.pemilik));
+  if (params.role === "pemilik") {
+    return <Navigate href="/pemilik/dashboard" />;
+  }
+
+  const config = createMemo(() =>
+    isRoleKey(params.role) ? roleConfigs[params.role] : roleConfigs.pemilik,
+  );
   const [activeMenu, setActiveMenu] = createSignal("Dashboard");
   const [sidebarOpen, setSidebarOpen] = createSignal(false);
   const [theme, setTheme] = createSignal<ThemeMode>("dark");
   const [sessionRole, setSessionRole] = createSignal<RoleKey | null>(null);
-  const [rows, setRows] = createSignal<ResourceRows>(createInitialRows(roleConfigs.pemilik));
+  const [rows, setRows] = createSignal<ResourceRows>(
+    createInitialRows(roleConfigs.pemilik),
+  );
   const [query, setQuery] = createSignal("");
   const [modalOpen, setModalOpen] = createSignal(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = createSignal(false);
   const [editingIndex, setEditingIndex] = createSignal<number | null>(null);
+  const [deleteTarget, setDeleteTarget] = createSignal<{
+    resourceKey: string;
+    resourceTitle: string;
+    index: number;
+    label: string;
+  } | null>(null);
   const [draft, setDraft] = createSignal<Record<string, string>>({});
 
   createEffect(() => {
@@ -730,7 +1028,10 @@ export default function RoleDashboardPage() {
     }
 
     const savedTheme = localStorage.getItem("simako-theme");
-    const initialTheme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : getStoredTheme();
+    const initialTheme =
+      savedTheme === "light" || savedTheme === "dark"
+        ? savedTheme
+        : getStoredTheme();
     setTheme(initialTheme);
     applyTheme(initialTheme);
   });
@@ -749,10 +1050,12 @@ export default function RoleDashboardPage() {
 
   const activeRows = createMemo(() => {
     const resource = activeResource();
-    return resource ? rows()[resource.key] ?? [] : [];
+    return resource ? (rows()[resource.key] ?? []) : [];
   });
 
-  const filteredRows = createMemo(() => activeRows().filter((row) => rowMatches(row, query())));
+  const filteredRows = createMemo(() =>
+    activeRows().filter((row) => rowMatches(row, query())),
+  );
 
   const openCreate = () => {
     const resource = activeResource();
@@ -762,7 +1065,12 @@ export default function RoleDashboardPage() {
     }
 
     setEditingIndex(null);
-    setDraft(resource.fields.reduce((value, field) => ({ ...value, [field.key]: "" }), {}));
+    setDraft(
+      resource.fields.reduce(
+        (value, field) => ({ ...value, [field.key]: "" }),
+        {},
+      ),
+    );
     setModalOpen(true);
   };
 
@@ -774,7 +1082,12 @@ export default function RoleDashboardPage() {
     }
 
     setEditingIndex(index);
-    setDraft(resource.fields.reduce((value, field) => ({ ...value, [field.key]: row[field.key] ?? "" }), {}));
+    setDraft(
+      resource.fields.reduce(
+        (value, field) => ({ ...value, [field.key]: row[field.key] ?? "" }),
+        {},
+      ),
+    );
     setModalOpen(true);
   };
 
@@ -785,12 +1098,20 @@ export default function RoleDashboardPage() {
       return;
     }
 
-    const nextRow = resource.fields.reduce((value, field) => ({ ...value, [field.key]: draft()[field.key]?.trim() ?? "" }), {});
+    const nextRow = resource.fields.reduce(
+      (value, field) => ({
+        ...value,
+        [field.key]: draft()[field.key]?.trim() ?? "",
+      }),
+      {},
+    );
     const currentRows = activeRows();
     const nextRows =
       editingIndex() === null
         ? [nextRow, ...currentRows]
-        : currentRows.map((row, index) => (index === editingIndex() ? nextRow : row));
+        : currentRows.map((row, index) =>
+            index === editingIndex() ? nextRow : row,
+          );
 
     setRows((current) => ({ ...current, [resource.key]: nextRows }));
     setModalOpen(false);
@@ -798,17 +1119,33 @@ export default function RoleDashboardPage() {
     setDraft({});
   };
 
-  const deleteRow = (index: number) => {
+  const requestDeleteRow = (row: Record<string, string>, index: number) => {
     const resource = activeResource();
 
     if (!resource || !resource.canDelete) {
       return;
     }
 
+    setDeleteTarget({
+      resourceKey: resource.key,
+      resourceTitle: resource.title,
+      index,
+      label: Object.values(row).find(Boolean) ?? "data ini",
+    });
+  };
+
+  const confirmDeleteRow = () => {
+    const target = deleteTarget();
+
+    if (!target) {
+      return;
+    }
+
     setRows((current) => ({
       ...current,
-      [resource.key]: activeRows().filter((_, rowIndex) => rowIndex !== index),
+      [target.resourceKey]: (current[target.resourceKey] ?? []).filter((_, rowIndex) => rowIndex !== target.index),
     }));
+    setDeleteTarget(null);
   };
 
   const switchMenu = (label: string) => {
@@ -816,6 +1153,7 @@ export default function RoleDashboardPage() {
     setQuery("");
     setSidebarOpen(false);
     setModalOpen(false);
+    setDeleteTarget(null);
     setDraft({});
     setEditingIndex(null);
   };
@@ -838,250 +1176,326 @@ export default function RoleDashboardPage() {
 
   return (
     <main class="min-h-screen bg-[rgb(var(--background-rgb))]">
-      <div class={logoutConfirmOpen() ? "dashboard-blur-target" : ""}>
-      {sidebarOpen() && (
-        <button
-          type="button"
-          class="fixed inset-0 z-30 bg-slate-950/70 lg:hidden"
-          aria-label="Tutup sidebar"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      <aside
-        class={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r border-[var(--surface-border)] bg-[var(--header-bg)] transition-transform lg:translate-x-0 ${
-          sidebarOpen() ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div class="flex h-[78px] items-center gap-3 border-b border-[var(--divider)] px-5">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 text-white">
-            <Building2 size={20} />
-          </div>
-          <div>
-            <A href="/" class="ui-heading text-lg font-bold">SIMAKO</A>
-            <p class="dashboard-muted text-xs">{config().label} Panel</p>
-          </div>
-        </div>
-
-        <nav class="flex-1 space-y-2 overflow-y-auto px-4 py-4">
-          {config().menus.map((item) => {
-            const Icon = item.icon;
-            const active = activeMenu() === item.label;
-
-            return (
-              <button
-                type="button"
-                class={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm font-bold transition ${
-                  active
-                    ? "bg-red-500/12 text-red-400"
-                    : "text-[rgb(var(--text-body-rgb))] hover:bg-[var(--nav-hover)] hover:text-[rgb(var(--text-strong-rgb))]"
-                }`}
-                onClick={() => switchMenu(item.label)}
-              >
-                <Icon size={18} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        <div class="border-t border-[var(--divider)] p-4">
-          <div class="flex items-center justify-between rounded-lg bg-[var(--control-bg)] p-3">
-            <div class="flex items-center gap-3">
-              <div class="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">
-                {config().userName.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <p class="ui-heading text-sm font-bold">{config().userName}</p>
-                <p class="dashboard-muted text-xs">{config().userRole}</p>
-              </div>
-            </div>
-            <button type="button" class="icon-button h-8 w-8" aria-label="Ganti tema" onClick={toggleTheme}>
-              {theme() === "dark" ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
-          </div>
+      <div>
+        {sidebarOpen() && (
           <button
             type="button"
-            class="mt-4 flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm font-bold text-red-400 hover:bg-red-500/10"
-            onClick={() => setLogoutConfirmOpen(true)}
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
-        </div>
-      </aside>
+            class="fixed inset-0 z-30 bg-slate-950/70 lg:hidden"
+            aria-label="Tutup sidebar"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
 
-      <section class="lg:pl-[260px]">
-        <div class="mx-auto max-w-[1220px] px-5 py-8 md:px-8">
-          <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div class="flex gap-3">
-              <button type="button" class="icon-button mt-1 lg:hidden" aria-label="Buka sidebar" onClick={() => setSidebarOpen(true)}>
-                <Menu size={20} />
-              </button>
-              <div>
-                <h1 class="ui-heading text-3xl font-bold md:text-4xl">{activeResource()?.title ?? config().title}</h1>
-                <p class="dashboard-muted mt-3 text-sm">{activeResource()?.description ?? config().subtitle}</p>
-              </div>
+        <aside
+          class={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r border-[var(--surface-border)] bg-[var(--header-bg)] transition-transform lg:translate-x-0 ${
+            sidebarOpen() ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div class="flex h-[78px] items-center gap-3 border-b border-[var(--divider)] px-5">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 text-white">
+              <Building2 size={20} />
             </div>
-            <div class="rounded-lg border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-2 text-xs font-bold text-[rgb(var(--text-body-rgb))]">
-              Role: <span class="text-red-400">{config().label}</span>
+            <div>
+              <A href="/" class="ui-heading text-lg font-bold">
+                SIMAKO
+              </A>
+              <p class="dashboard-muted text-xs">{config().label} Panel</p>
             </div>
           </div>
 
-          {activeResource() ? (
-            <section class="dashboard-card overflow-hidden">
-              <div class="flex flex-col gap-4 border-b border-[var(--divider)] p-5 md:flex-row md:items-center md:justify-between">
-                <div class="input-with-icon w-full md:max-w-sm">
-                  <Search class="input-icon" size={16} />
-                  <input
-                    class="form-control form-control-icon"
-                    value={query()}
-                    placeholder="Cari data"
-                    onInput={(event) => setQuery(event.currentTarget.value)}
-                  />
-                </div>
-                {activeResource()?.canCreate && (
-                  <button type="button" class="btn-primary px-4 py-2 text-sm" onClick={openCreate}>
-                    <Plus size={16} />
-                    {activeResource()?.actionLabel}
-                  </button>
-                )}
-              </div>
-              <div class="overflow-x-auto">
-                <table class="w-full min-w-[760px] text-left text-sm">
-                  <thead class="bg-[rgba(148,163,184,0.08)] text-xs uppercase text-[rgb(var(--text-muted-rgb))]">
-                    <tr>
-                      {activeResource()?.columns.map((column) => (
-                        <th class="px-5 py-3 font-bold">{column.label}</th>
-                      ))}
-                      <th class="px-5 py-3 text-right font-bold">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredRows().map((row) => {
-                      const originalIndex = activeRows().indexOf(row);
+          <nav class="flex-1 space-y-2 overflow-y-auto px-4 py-4">
+            {config().menus.map((item) => {
+              const Icon = item.icon;
+              const active = activeMenu() === item.label;
 
-                      return (
-                        <tr class="border-t border-[var(--divider)]">
-                          {activeResource()?.columns.map((column) => (
-                            <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">
-                              {column.key === "status" || column.key === "payment" ? (
-                                <StatusBadge value={row[column.key]} />
-                              ) : (
-                                row[column.key]
-                              )}
+              return (
+                <button
+                  type="button"
+                  class={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm font-bold transition ${
+                    active
+                      ? "bg-red-500/12 text-red-400"
+                      : "text-[rgb(var(--text-body-rgb))] hover:bg-[var(--nav-hover)] hover:text-[rgb(var(--text-strong-rgb))]"
+                  }`}
+                  onClick={() => switchMenu(item.label)}
+                >
+                  <Icon size={18} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          <div class="border-t border-[var(--divider)] p-4">
+            <div class="flex items-center justify-between rounded-lg bg-[var(--control-bg)] p-3">
+              <div class="flex items-center gap-3">
+                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-red-600 text-sm font-bold text-white">
+                  {config().userName.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <p class="ui-heading text-sm font-bold">
+                    {config().userName}
+                  </p>
+                  <p class="dashboard-muted text-xs">{config().userRole}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="icon-button h-8 w-8"
+                aria-label="Ganti tema"
+                onClick={toggleTheme}
+              >
+                {theme() === "dark" ? <Moon size={16} /> : <Sun size={16} />}
+              </button>
+            </div>
+            <button
+              type="button"
+              class="mt-4 flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm font-bold text-red-400 hover:bg-red-500/10"
+              onClick={() => setLogoutConfirmOpen(true)}
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
+          </div>
+        </aside>
+
+        <section class="lg:pl-[260px]">
+          <div class="mx-auto max-w-[1220px] px-5 py-8 md:px-8">
+            <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+              <div class="flex gap-3">
+                <button
+                  type="button"
+                  class="icon-button mt-1 lg:hidden"
+                  aria-label="Buka sidebar"
+                  onClick={() => setSidebarOpen(true)}
+                >
+                  <Menu size={20} />
+                </button>
+                <div>
+                  <h1 class="ui-heading text-3xl font-bold md:text-4xl">
+                    {activeResource()?.title ?? config().title}
+                  </h1>
+                  <p class="dashboard-muted mt-3 text-sm">
+                    {activeResource()?.description ?? config().subtitle}
+                  </p>
+                </div>
+              </div>
+              <div class="rounded-lg border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-2 text-xs font-bold text-[rgb(var(--text-body-rgb))]">
+                Role: <span class="text-red-400">{config().label}</span>
+              </div>
+            </div>
+
+            {activeResource() ? (
+              <section class="dashboard-card overflow-hidden">
+                <div class="flex flex-col gap-4 border-b border-[var(--divider)] p-5 md:flex-row md:items-center md:justify-between">
+                  <div class="input-with-icon w-full md:max-w-sm">
+                    <Search class="input-icon" size={16} />
+                    <input
+                      class="form-control form-control-icon"
+                      value={query()}
+                      placeholder="Cari data"
+                      onInput={(event) => setQuery(event.currentTarget.value)}
+                    />
+                  </div>
+                  {activeResource()?.canCreate && (
+                    <button
+                      type="button"
+                      class="btn-primary px-4 py-2 text-sm"
+                      onClick={openCreate}
+                    >
+                      <Plus size={16} />
+                      {activeResource()?.actionLabel}
+                    </button>
+                  )}
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full min-w-[760px] text-left text-sm">
+                    <thead class="bg-[rgba(148,163,184,0.08)] text-xs uppercase text-[rgb(var(--text-muted-rgb))]">
+                      <tr>
+                        {activeResource()?.columns.map((column) => (
+                          <th class="px-5 py-3 font-bold">{column.label}</th>
+                        ))}
+                        <th class="px-5 py-3 text-right font-bold">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredRows().map((row) => {
+                        const originalIndex = activeRows().indexOf(row);
+
+                        return (
+                          <tr class="border-t border-[var(--divider)]">
+                            {activeResource()?.columns.map((column) => (
+                              <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">
+                                {column.key === "status" ||
+                                column.key === "payment" ? (
+                                  <StatusBadge value={row[column.key]} />
+                                ) : (
+                                  row[column.key]
+                                )}
+                              </td>
+                            ))}
+                            <td class="px-5 py-4">
+                              <div class="flex justify-end gap-2">
+                                {activeResource()?.canEdit && (
+                                  <button
+                                    type="button"
+                                    class="icon-button h-8 w-8"
+                                    aria-label="Edit data"
+                                    onClick={() => openEdit(row, originalIndex)}
+                                  >
+                                    <Edit3 size={15} />
+                                  </button>
+                                )}
+                                {activeResource()?.canDelete && (
+                                  <button
+                                    type="button"
+                                    class="icon-button h-8 w-8 text-red-400"
+                                    aria-label="Hapus data"
+                                    onClick={() => requestDeleteRow(row, originalIndex)}
+                                  >
+                                    <Trash2 size={15} />
+                                  </button>
+                                )}
+                                {!activeResource()?.canEdit &&
+                                  !activeResource()?.canDelete && (
+                                    <span class="dashboard-muted text-xs font-bold">
+                                      Read only
+                                    </span>
+                                  )}
+                              </div>
                             </td>
-                          ))}
-                          <td class="px-5 py-4">
-                            <div class="flex justify-end gap-2">
-                              {activeResource()?.canEdit && (
-                                <button type="button" class="icon-button h-8 w-8" aria-label="Edit data" onClick={() => openEdit(row, originalIndex)}>
-                                  <Edit3 size={15} />
-                                </button>
-                              )}
-                              {activeResource()?.canDelete && (
-                                <button type="button" class="icon-button h-8 w-8 text-red-400" aria-label="Hapus data" onClick={() => deleteRow(originalIndex)}>
-                                  <Trash2 size={15} />
-                                </button>
-                              )}
-                              {!activeResource()?.canEdit && !activeResource()?.canDelete && (
-                                <span class="dashboard-muted text-xs font-bold">Read only</span>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          ) : (
-            <>
-              <section class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                {config().stats.map((stat) => {
-                  const Icon = stat.icon;
-
-                  return (
-                    <article class="dashboard-card min-h-[110px] p-5">
-                      <div class="flex items-start justify-between gap-4">
-                        <div>
-                          <p class="dashboard-muted text-sm">{stat.label}</p>
-                          <p class={`mt-2 text-3xl font-bold ${statTextClass(stat.tone)}`}>{stat.value}</p>
-                        </div>
-                        <div class={`flex h-10 w-10 items-center justify-center rounded-xl border ${statIconClass(stat.tone)}`}>
-                          <Icon size={18} />
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })}
-              </section>
-
-              <section class="mt-8 grid gap-6 xl:grid-cols-2">
-                <div class="dashboard-card min-h-[390px] p-6">
-                  <h2 class="ui-heading text-lg font-bold">{config().statusTitle}</h2>
-                  <div class="mt-5 space-y-3">
-                    {config().statusItems.map((item) => (
-                      <div class="flex items-center justify-between gap-3 rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-                        <div class="flex items-center gap-3">
-                          <span class="h-3 w-3 rounded-full bg-emerald-500" />
-                          <span class="ui-heading font-bold">{item.label}</span>
-                        </div>
-                        <StatusBadge value={item.value} tone={item.tone} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div class="dashboard-card min-h-[390px] p-6">
-                  <h2 class="ui-heading text-lg font-bold">Quick Stats</h2>
-                  <div class="mt-5 space-y-4">
-                    {config().quickStats.map((item) => (
-                      <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
-                        <p class="dashboard-muted text-sm">{item.label}</p>
-                        <p class={`mt-2 text-2xl font-bold ${statTextClass(item.tone)}`}>{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </section>
-            </>
-          )}
-        </div>
-      </section>
+            ) : config().key === "pemilik" ? (
+              <OwnerDashboard />
+            ) : (
+              <>
+                <section class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                  {config().stats.map((stat) => {
+                    const Icon = stat.icon;
+
+                    return (
+                      <article class="dashboard-card min-h-[110px] p-5">
+                        <div class="flex items-start justify-between gap-4">
+                          <div>
+                            <p class="dashboard-muted text-sm">{stat.label}</p>
+                            <p
+                              class={`mt-2 text-3xl font-bold ${statTextClass(stat.tone)}`}
+                            >
+                              {stat.value}
+                            </p>
+                          </div>
+                          <div
+                            class={`flex h-10 w-10 items-center justify-center rounded-xl border ${statIconClass(stat.tone)}`}
+                          >
+                            <Icon size={18} />
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </section>
+
+                <section class="mt-8 grid gap-6 xl:grid-cols-2">
+                  <div class="dashboard-card min-h-[390px] p-6">
+                    <h2 class="ui-heading text-lg font-bold">
+                      {config().statusTitle}
+                    </h2>
+                    <div class="mt-5 space-y-3">
+                      {config().statusItems.map((item) => (
+                        <div class="flex items-center justify-between gap-3 rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                          <div class="flex items-center gap-3">
+                            <span class="h-3 w-3 rounded-full bg-emerald-500" />
+                            <span class="ui-heading font-bold">
+                              {item.label}
+                            </span>
+                          </div>
+                          <StatusBadge value={item.value} tone={item.tone} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div class="dashboard-card min-h-[390px] p-6">
+                    <h2 class="ui-heading text-lg font-bold">Quick Stats</h2>
+                    <div class="mt-5 space-y-4">
+                      {config().quickStats.map((item) => (
+                        <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                          <p class="dashboard-muted text-sm">{item.label}</p>
+                          <p
+                            class={`mt-2 text-2xl font-bold ${statTextClass(item.tone)}`}
+                          >
+                            {item.value}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </>
+            )}
+          </div>
+        </section>
       </div>
 
       {modalOpen() && activeResource() && (
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
-          <section class="dashboard-card w-full max-w-2xl p-6">
+        <div class="modal-backdrop-animate fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+          <section class="dashboard-card modal-panel-animate w-full max-w-2xl p-6">
             <div class="mb-5 flex items-start justify-between gap-4">
               <div>
                 <h2 class="ui-heading text-2xl font-bold">
-                  {editingIndex() === null ? activeResource()?.actionLabel : "Edit Data"}
+                  {editingIndex() === null
+                    ? activeResource()?.actionLabel
+                    : "Edit Data"}
                 </h2>
-                <p class="ui-muted mt-1 text-sm">{activeResource()?.description}</p>
+                <p class="ui-muted mt-1 text-sm">
+                  {activeResource()?.description}
+                </p>
               </div>
-              <button type="button" class="icon-button" aria-label="Tutup modal" onClick={() => setModalOpen(false)}>
+              <button
+                type="button"
+                class="icon-button"
+                aria-label="Tutup modal"
+                onClick={() => setModalOpen(false)}
+              >
                 x
               </button>
             </div>
-            <form class="grid gap-4 md:grid-cols-2" onSubmit={(event) => event.preventDefault()}>
+            <form
+              class="grid gap-4 md:grid-cols-2"
+              onSubmit={(event) => event.preventDefault()}
+            >
               {activeResource()?.fields.map((field) => (
-                <label class={`block ${field.type === "textarea" ? "md:col-span-2" : ""}`}>
+                <label
+                  class={`block ${field.type === "textarea" ? "md:col-span-2" : ""}`}
+                >
                   <span class="form-label">{field.label}</span>
                   {field.type === "textarea" ? (
                     <textarea
                       class="form-control mt-2 min-h-28 resize-y"
                       value={draft()[field.key] ?? ""}
                       placeholder={field.placeholder}
-                      onInput={(event) => setDraft((current) => ({ ...current, [field.key]: event.currentTarget.value }))}
+                      onInput={(event) =>
+                        setDraft((current) => ({
+                          ...current,
+                          [field.key]: event.currentTarget.value,
+                        }))
+                      }
                     />
                   ) : field.type === "select" ? (
                     <select
                       class="form-control mt-2"
                       value={draft()[field.key] ?? ""}
-                      onChange={(event) => setDraft((current) => ({ ...current, [field.key]: event.currentTarget.value }))}
+                      onChange={(event) =>
+                        setDraft((current) => ({
+                          ...current,
+                          [field.key]: event.currentTarget.value,
+                        }))
+                      }
                     >
                       <option value="">{field.placeholder}</option>
                       {field.options?.map((option) => (
@@ -1094,16 +1508,29 @@ export default function RoleDashboardPage() {
                       type={field.type ?? "text"}
                       value={draft()[field.key] ?? ""}
                       placeholder={field.placeholder}
-                      onInput={(event) => setDraft((current) => ({ ...current, [field.key]: event.currentTarget.value }))}
+                      onInput={(event) =>
+                        setDraft((current) => ({
+                          ...current,
+                          [field.key]: event.currentTarget.value,
+                        }))
+                      }
                     />
                   )}
                 </label>
               ))}
               <div class="flex flex-col gap-3 md:col-span-2 sm:flex-row sm:justify-end">
-                <button type="button" class="btn-secondary px-5 py-3 text-sm" onClick={() => setModalOpen(false)}>
+                <button
+                  type="button"
+                  class="btn-secondary px-5 py-3 text-sm"
+                  onClick={() => setModalOpen(false)}
+                >
                   Batal
                 </button>
-                <button type="button" class="btn-primary px-5 py-3 text-sm" onClick={saveDraft}>
+                <button
+                  type="button"
+                  class="btn-primary px-5 py-3 text-sm"
+                  onClick={saveDraft}
+                >
                   <Database size={16} />
                   Simpan
                 </button>
@@ -1113,30 +1540,27 @@ export default function RoleDashboardPage() {
         </div>
       )}
 
+      {deleteTarget() && (
+        <ConfirmDialog
+          title="Hapus Data?"
+          message={`Data "${deleteTarget()?.label ?? ""}" dari ${deleteTarget()?.resourceTitle ?? "tabel"} akan dihapus.`}
+          confirmLabel="Hapus Data"
+          onCancel={() => setDeleteTarget(null)}
+          onConfirm={confirmDeleteRow}
+        />
+      )}
+
       {logoutConfirmOpen() && (
-        <div class="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-md">
-          <section class="dashboard-card w-full max-w-md border-sky-500/40 p-6">
-            <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-500">
-              <AlertTriangle size={24} />
-            </div>
-            <h2 class="ui-heading text-xl font-bold">Logout Confirmation</h2>
-            <p class="ui-text mt-3 leading-7">
-              Are you sure you want to logout? You will need to login again to access the dashboard panel.
-            </p>
-            <div class="mt-7 grid gap-3 sm:grid-cols-2">
-              <button
-                type="button"
-                class="btn-secondary px-5 py-3 text-sm"
-                onClick={() => setLogoutConfirmOpen(false)}
-              >
-                Cancel
-              </button>
-              <button type="button" class="btn-primary px-5 py-3 text-sm" onClick={confirmLogout}>
-                Logout
-              </button>
-            </div>
-          </section>
-        </div>
+        <ConfirmDialog
+          title="Logout Confirmation"
+          message="Are you sure you want to logout? You will need to login again to access the dashboard panel."
+          confirmLabel="Logout"
+          cancelLabel="Cancel"
+          tone="info"
+          zIndexClass="z-[60]"
+          onCancel={() => setLogoutConfirmOpen(false)}
+          onConfirm={confirmLogout}
+        />
       )}
     </main>
   );
