@@ -325,3 +325,35 @@
 [vite] program reload
 [vite] program reload
 [vite] program reload
+[2m12.39.56[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.39.56[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m12.39.59[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.39.59[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m12.42.16[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.42.16[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.46.04[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.46.04[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m12.47.24[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.47.24[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m12.51.07[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/SeoManager.tsx, /src/routes/room/[id].tsx?pick=default&pick=$css, /src/routes/index.tsx?pick=default&pick=$css, /src/routes/search.tsx?pick=default&pick=$css, /src/routes/dashboard/[role].tsx?pick=default&pick=$css, /src/pages/owner/OwnerDashboard.tsx, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.51.07[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/data/ownerData.ts[22m
+[vite] program reload
+[2m12.52.44[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerManagementPages.tsx[22m
+[2m12.52.44[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerManagementPages.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload

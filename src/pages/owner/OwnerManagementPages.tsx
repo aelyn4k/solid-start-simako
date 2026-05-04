@@ -1616,28 +1616,668 @@ function ToggleListPage<T extends { id: number; owner_id: number; status_aktif: 
 }
 
 export function OwnerRulesPage() {
+  const ownerId = getCurrentOwnerId();
+  const [rows, setRows] = createSignal<KostRule[]>(rules.filter((rule) => rule.owner_id === ownerId));
+  const [form, setForm] = createSignal({
+    judul_aturan: "",
+    isi_aturan: "",
+    status_aktif: "" as "aktif" | "nonaktif" | "",
+  });
+  const [errors, setErrors] = createSignal<Partial<Record<"judul_aturan" | "isi_aturan" | "status_aktif", string>>>({});
+  const [editingId, setEditingId] = createSignal<number | null>(null);
+  const [formOpen, setFormOpen] = createSignal(false);
+  const [detailRule, setDetailRule] = createSignal<KostRule | null>(null);
+  const [deleteRule, setDeleteRule] = createSignal<KostRule | null>(null);
+  const [statusFilter, setStatusFilter] = createSignal<"semua" | "aktif" | "nonaktif">("semua");
+  const [searchQuery, setSearchQuery] = createSignal("");
+
+  const resetForm = () => {
+    setEditingId(null);
+    setForm({ judul_aturan: "", isi_aturan: "", status_aktif: "" });
+    setErrors({});
+  };
+
+  const openAddForm = () => {
+    resetForm();
+    setFormOpen(true);
+  };
+
+  const closeForm = () => {
+    resetForm();
+    setFormOpen(false);
+  };
+
+  const filteredRows = createMemo(() => {
+    const normalizedQuery = searchQuery().trim().toLowerCase();
+
+    return rows().filter((rule) => {
+      const ruleStatus = rule.status_aktif ? "aktif" : "nonaktif";
+      const matchesStatus = statusFilter() === "semua" || ruleStatus === statusFilter();
+      const matchesSearch =
+        !normalizedQuery ||
+        rule.judul_aturan.toLowerCase().includes(normalizedQuery) ||
+        rule.isi_aturan.toLowerCase().includes(normalizedQuery);
+
+      return matchesStatus && matchesSearch;
+    });
+  });
+
+  const validateRule = () => {
+    const currentForm = form();
+    const nextErrors: Partial<Record<"judul_aturan" | "isi_aturan" | "status_aktif", string>> = {};
+
+    if (!currentForm.judul_aturan.trim()) {
+      nextErrors.judul_aturan = "Judul Aturan wajib diisi.";
+    }
+
+    if (!currentForm.isi_aturan.trim()) {
+      nextErrors.isi_aturan = "Isi Aturan wajib diisi.";
+    }
+
+    if (!currentForm.status_aktif) {
+      nextErrors.status_aktif = "Status Aktif wajib dipilih.";
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const submit = () => {
+    if (!validateRule()) {
+      return;
+    }
+
+    const existingRule = rows().find((rule) => rule.id === editingId());
+    const now = new Date().toISOString();
+    const payload: KostRule = {
+      id: editingId() ?? nextId(rows()),
+      owner_id: ownerId,
+      judul_aturan: form().judul_aturan.trim(),
+      isi_aturan: form().isi_aturan.trim(),
+      status_aktif: form().status_aktif === "aktif",
+      created_at: existingRule?.created_at ?? now,
+      updated_at: now,
+    };
+
+    setRows((items) =>
+      editingId() ? items.map((item) => (item.id === editingId() ? payload : item)) : [payload, ...items],
+    );
+    closeForm();
+  };
+
+  const editRule = (rule: KostRule) => {
+    setEditingId(rule.id);
+    setForm({
+      judul_aturan: rule.judul_aturan,
+      isi_aturan: rule.isi_aturan,
+      status_aktif: rule.status_aktif ? "aktif" : "nonaktif",
+    });
+    setErrors({});
+    setFormOpen(true);
+  };
+
+  const toggleRuleStatus = (rule: KostRule) => {
+    const now = new Date().toISOString();
+    setRows((items) =>
+      items.map((item) =>
+        item.id === rule.id ? { ...item, status_aktif: !item.status_aktif, updated_at: now } : item,
+      ),
+    );
+  };
+
+  const confirmDeleteRule = () => {
+    const rule = deleteRule();
+
+    if (!rule) {
+      return;
+    }
+
+    setRows((items) => items.filter((item) => item.id !== rule.id));
+
+    if (detailRule()?.id === rule.id) {
+      setDetailRule(null);
+    }
+
+    if (editingId() === rule.id) {
+      closeForm();
+    }
+
+    setDeleteRule(null);
+  };
+
   return (
-    <ToggleListPage<KostRule>
-      title="Aturan Kost"
-      subtitle="Daftar aturan penyewa yang hanya berlaku untuk kost milik akun ini."
-      label="Aturan"
-      textKey="aturan"
-      initialRows={rules}
-      createRow={(id, ownerId, text, active) => ({ id, owner_id: ownerId, aturan: text, status_aktif: active })}
-    />
+    <div class="grid gap-6">
+      {formOpen() && (
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-2xl p-6">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="ui-heading text-xl font-bold">{editingId() ? "Edit Aturan Kost" : "Tambah Aturan Kost"}</h2>
+                <p class="dashboard-muted mt-2 text-sm">Aturan aktif akan ditampilkan kepada penyewa.</p>
+              </div>
+              <button type="button" class="icon-button h-9 w-9" aria-label="Tutup form aturan" onClick={closeForm}>
+                <X size={17} />
+              </button>
+            </div>
+
+            <form
+              class="grid gap-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submit();
+              }}
+            >
+              <label class="block">
+                <span class="form-label">Judul Aturan</span>
+                <input
+                  class="form-control mt-2"
+                  value={form().judul_aturan}
+                  onInput={(event) => setForm({ ...form(), judul_aturan: event.currentTarget.value })}
+                  placeholder="Contoh: Jam Tamu"
+                />
+                <FieldError message={errors().judul_aturan} />
+              </label>
+
+              <label class="block">
+                <span class="form-label">Isi Aturan</span>
+                <textarea
+                  class="form-control mt-2 min-h-32 resize-y"
+                  value={form().isi_aturan}
+                  onInput={(event) => setForm({ ...form(), isi_aturan: event.currentTarget.value })}
+                  placeholder="Contoh: Jam tamu hanya diperbolehkan sampai 21.00 WIB."
+                />
+                <FieldError message={errors().isi_aturan} />
+              </label>
+
+              <label class="block">
+                <span class="form-label">Status Aktif</span>
+                <select
+                  class="form-control mt-2"
+                  value={form().status_aktif}
+                  onInput={(event) => setForm({ ...form(), status_aktif: event.currentTarget.value as "aktif" | "nonaktif" | "" })}
+                >
+                  <option value="">Pilih status</option>
+                  <option value="aktif">Aktif</option>
+                  <option value="nonaktif">Nonaktif</option>
+                </select>
+                <FieldError message={errors().status_aktif} />
+              </label>
+
+              <div class="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-end">
+                <button type="button" class="btn-secondary px-5 py-3 text-sm" onClick={closeForm}>
+                  Batal
+                </button>
+                <button type="submit" class="btn-primary px-5 py-3 text-sm">
+                  {editingId() ? <Save size={16} /> : <Plus size={16} />}
+                  {editingId() ? "Simpan Perubahan" : "Tambah Aturan"}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
+
+      {detailRule() && (
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-2xl p-6">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="ui-heading text-xl font-bold">Detail Aturan Kost</h2>
+                <p class="dashboard-muted mt-2 text-sm">{detailRule()?.judul_aturan}</p>
+              </div>
+              <button type="button" class="icon-button h-9 w-9" aria-label="Tutup detail aturan" onClick={() => setDetailRule(null)}>
+                <X size={17} />
+              </button>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Judul Aturan</p>
+                <p class="ui-heading mt-1 font-bold">{detailRule()?.judul_aturan}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Status Aktif</p>
+                <div class="mt-2">
+                  <StatusBadge value={detailRule()?.status_aktif ? "Aktif" : "Nonaktif"} tone={detailRule()?.status_aktif ? "success" : "neutral"} />
+                </div>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Dibuat</p>
+                <p class="ui-heading mt-1 font-bold">{formatDate(detailRule()?.created_at ?? "")}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Diperbarui</p>
+                <p class="ui-heading mt-1 font-bold">{formatDate(detailRule()?.updated_at ?? "")}</p>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+              <p class="dashboard-muted text-xs">Isi Aturan</p>
+              <p class="ui-heading mt-1 leading-7">{detailRule()?.isi_aturan}</p>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+              <button type="button" class="btn-secondary px-4 py-2 text-sm" onClick={() => setDetailRule(null)}>
+                Tutup Detail
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      <section class="dashboard-card overflow-hidden">
+        <div class="flex flex-col gap-4 border-b border-[var(--divider)] p-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="ui-heading text-lg font-bold">Aturan Kost</h2>
+            <p class="dashboard-muted mt-1 text-sm">Kelola aturan penyewa berdasarkan owner_id {ownerId}.</p>
+          </div>
+          <button type="button" class="btn-primary px-5 py-3 text-sm" onClick={openAddForm}>
+            <Plus size={16} />
+            Tambah Aturan
+          </button>
+        </div>
+
+        <div class="grid gap-3 border-b border-[var(--divider)] p-4 lg:grid-cols-[1fr_0.35fr]">
+          <div class="input-with-icon">
+            <Search class="input-icon" size={17} />
+            <input
+              class="form-control form-control-icon"
+              value={searchQuery()}
+              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              placeholder="Cari judul aturan atau isi aturan"
+            />
+          </div>
+          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif")}>
+            <option value="semua">Semua status</option>
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+          </select>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[980px] text-left text-sm">
+            <thead class="bg-[rgba(148,163,184,0.08)] text-xs uppercase text-[rgb(var(--text-muted-rgb))]">
+              <tr>
+                <th class="px-5 py-3 font-bold">Judul Aturan</th>
+                <th class="px-5 py-3 font-bold">Isi Aturan</th>
+                <th class="px-5 py-3 font-bold">Status Aktif</th>
+                <th class="px-5 py-3 font-bold">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRows().map((rule) => (
+                <tr class="border-t border-[var(--divider)]">
+                  <td class="px-5 py-4 font-bold text-[rgb(var(--text-body-rgb))]">{rule.judul_aturan}</td>
+                  <td class="max-w-[420px] px-5 py-4 text-[rgb(var(--text-body-rgb))]">{rule.isi_aturan}</td>
+                  <td class="px-5 py-4">
+                    <StatusBadge value={rule.status_aktif ? "Aktif" : "Nonaktif"} tone={rule.status_aktif ? "success" : "neutral"} />
+                  </td>
+                  <td class="px-5 py-4">
+                    <div class="flex flex-wrap gap-2">
+                      <button type="button" class="icon-button h-9 w-9" aria-label="Detail aturan" onClick={() => setDetailRule(rule)}>
+                        <Eye size={15} />
+                      </button>
+                      <button type="button" class="icon-button h-9 w-9" aria-label="Edit aturan" onClick={() => editRule(rule)}>
+                        <Edit3 size={15} />
+                      </button>
+                      <button type="button" class="icon-button h-9 w-9 text-red-400" aria-label="Hapus aturan" onClick={() => setDeleteRule(rule)}>
+                        <Trash2 size={15} />
+                      </button>
+                      <button type="button" class="btn-secondary px-3 py-2 text-xs" onClick={() => toggleRuleStatus(rule)}>
+                        {rule.status_aktif ? "Nonaktifkan" : "Aktifkan"}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada aturan yang cocok dengan filter." /></div>}
+      </section>
+
+      {deleteRule() && (
+        <ConfirmDialog
+          title="Hapus Aturan Kost?"
+          message={`Aturan "${deleteRule()?.judul_aturan ?? ""}" akan dihapus dari data akun ini.`}
+          confirmLabel="Hapus Aturan"
+          onCancel={() => setDeleteRule(null)}
+          onConfirm={confirmDeleteRule}
+        />
+      )}
+    </div>
   );
 }
 
 export function OwnerFacilitiesPage() {
+  const ownerId = getCurrentOwnerId();
+  const [rows, setRows] = createSignal<PublicFacility[]>(facilities.filter((facility) => facility.owner_id === ownerId));
+  const [form, setForm] = createSignal({
+    nama_fasilitas: "",
+    deskripsi_fasilitas: "",
+    status_aktif: "" as "aktif" | "nonaktif" | "",
+  });
+  const [errors, setErrors] = createSignal<Partial<Record<"nama_fasilitas" | "status_aktif", string>>>({});
+  const [editingId, setEditingId] = createSignal<number | null>(null);
+  const [formOpen, setFormOpen] = createSignal(false);
+  const [detailFacility, setDetailFacility] = createSignal<PublicFacility | null>(null);
+  const [deleteFacility, setDeleteFacility] = createSignal<PublicFacility | null>(null);
+  const [statusFilter, setStatusFilter] = createSignal<"semua" | "aktif" | "nonaktif">("semua");
+  const [searchQuery, setSearchQuery] = createSignal("");
+
+  const resetForm = () => {
+    setEditingId(null);
+    setForm({ nama_fasilitas: "", deskripsi_fasilitas: "", status_aktif: "" });
+    setErrors({});
+  };
+
+  const openAddForm = () => {
+    resetForm();
+    setFormOpen(true);
+  };
+
+  const closeForm = () => {
+    resetForm();
+    setFormOpen(false);
+  };
+
+  const filteredRows = createMemo(() => {
+    const normalizedQuery = searchQuery().trim().toLowerCase();
+
+    return rows().filter((facility) => {
+      const facilityStatus = facility.status_aktif ? "aktif" : "nonaktif";
+      const matchesStatus = statusFilter() === "semua" || facilityStatus === statusFilter();
+      const matchesSearch =
+        !normalizedQuery ||
+        facility.nama_fasilitas.toLowerCase().includes(normalizedQuery) ||
+        facility.deskripsi_fasilitas.toLowerCase().includes(normalizedQuery);
+
+      return matchesStatus && matchesSearch;
+    });
+  });
+
+  const validateFacility = () => {
+    const currentForm = form();
+    const nextErrors: Partial<Record<"nama_fasilitas" | "status_aktif", string>> = {};
+
+    if (!currentForm.nama_fasilitas.trim()) {
+      nextErrors.nama_fasilitas = "Nama Fasilitas wajib diisi.";
+    }
+
+    if (!currentForm.status_aktif) {
+      nextErrors.status_aktif = "Status Aktif wajib dipilih.";
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const submit = () => {
+    if (!validateFacility()) {
+      return;
+    }
+
+    const existingFacility = rows().find((facility) => facility.id === editingId());
+    const now = new Date().toISOString();
+    const payload: PublicFacility = {
+      id: editingId() ?? nextId(rows()),
+      owner_id: ownerId,
+      nama_fasilitas: form().nama_fasilitas.trim(),
+      deskripsi_fasilitas: form().deskripsi_fasilitas.trim(),
+      status_aktif: form().status_aktif === "aktif",
+      created_at: existingFacility?.created_at ?? now,
+      updated_at: now,
+    };
+
+    setRows((items) =>
+      editingId() ? items.map((item) => (item.id === editingId() ? payload : item)) : [payload, ...items],
+    );
+    closeForm();
+  };
+
+  const editFacility = (facility: PublicFacility) => {
+    setEditingId(facility.id);
+    setForm({
+      nama_fasilitas: facility.nama_fasilitas,
+      deskripsi_fasilitas: facility.deskripsi_fasilitas,
+      status_aktif: facility.status_aktif ? "aktif" : "nonaktif",
+    });
+    setErrors({});
+    setFormOpen(true);
+  };
+
+  const toggleFacilityStatus = (facility: PublicFacility) => {
+    const now = new Date().toISOString();
+    setRows((items) =>
+      items.map((item) =>
+        item.id === facility.id ? { ...item, status_aktif: !item.status_aktif, updated_at: now } : item,
+      ),
+    );
+  };
+
+  const confirmDeleteFacility = () => {
+    const facility = deleteFacility();
+
+    if (!facility) {
+      return;
+    }
+
+    setRows((items) => items.filter((item) => item.id !== facility.id));
+
+    if (detailFacility()?.id === facility.id) {
+      setDetailFacility(null);
+    }
+
+    if (editingId() === facility.id) {
+      closeForm();
+    }
+
+    setDeleteFacility(null);
+  };
+
   return (
-    <ToggleListPage<PublicFacility>
-      title="Fasilitas Umum"
-      subtitle="Fasilitas umum yang tampil hanya untuk data kost pemilik login."
-      label="Fasilitas"
-      textKey="nama_fasilitas"
-      initialRows={facilities}
-      createRow={(id, ownerId, text, active) => ({ id, owner_id: ownerId, nama_fasilitas: text, status_aktif: active })}
-    />
+    <div class="grid gap-6">
+      {formOpen() && (
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-2xl p-6">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="ui-heading text-xl font-bold">{editingId() ? "Edit Fasilitas Umum" : "Tambah Fasilitas Umum"}</h2>
+                <p class="dashboard-muted mt-2 text-sm">Fasilitas aktif akan ditampilkan pada landing page.</p>
+              </div>
+              <button type="button" class="icon-button h-9 w-9" aria-label="Tutup form fasilitas" onClick={closeForm}>
+                <X size={17} />
+              </button>
+            </div>
+
+            <form
+              class="grid gap-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submit();
+              }}
+            >
+              <label class="block">
+                <span class="form-label">Nama Fasilitas</span>
+                <input
+                  class="form-control mt-2"
+                  value={form().nama_fasilitas}
+                  onInput={(event) => setForm({ ...form(), nama_fasilitas: event.currentTarget.value })}
+                  placeholder="Contoh: Wi-Fi"
+                />
+                <FieldError message={errors().nama_fasilitas} />
+              </label>
+
+              <label class="block">
+                <span class="form-label">Deskripsi Fasilitas</span>
+                <textarea
+                  class="form-control mt-2 min-h-32 resize-y"
+                  value={form().deskripsi_fasilitas}
+                  onInput={(event) => setForm({ ...form(), deskripsi_fasilitas: event.currentTarget.value })}
+                  placeholder="Contoh: Akses internet tersedia untuk area kamar dan ruang bersama."
+                />
+                <p class="dashboard-muted mt-2 text-xs">Opsional.</p>
+              </label>
+
+              <label class="block">
+                <span class="form-label">Status Aktif</span>
+                <select
+                  class="form-control mt-2"
+                  value={form().status_aktif}
+                  onInput={(event) => setForm({ ...form(), status_aktif: event.currentTarget.value as "aktif" | "nonaktif" | "" })}
+                >
+                  <option value="">Pilih status</option>
+                  <option value="aktif">Aktif</option>
+                  <option value="nonaktif">Nonaktif</option>
+                </select>
+                <FieldError message={errors().status_aktif} />
+              </label>
+
+              <div class="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-end">
+                <button type="button" class="btn-secondary px-5 py-3 text-sm" onClick={closeForm}>
+                  Batal
+                </button>
+                <button type="submit" class="btn-primary px-5 py-3 text-sm">
+                  {editingId() ? <Save size={16} /> : <Plus size={16} />}
+                  {editingId() ? "Simpan Perubahan" : "Tambah Fasilitas"}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
+
+      {detailFacility() && (
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-2xl p-6">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="ui-heading text-xl font-bold">Detail Fasilitas Umum</h2>
+                <p class="dashboard-muted mt-2 text-sm">{detailFacility()?.nama_fasilitas}</p>
+              </div>
+              <button type="button" class="icon-button h-9 w-9" aria-label="Tutup detail fasilitas" onClick={() => setDetailFacility(null)}>
+                <X size={17} />
+              </button>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Nama Fasilitas</p>
+                <p class="ui-heading mt-1 font-bold">{detailFacility()?.nama_fasilitas}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Status Aktif</p>
+                <div class="mt-2">
+                  <StatusBadge value={detailFacility()?.status_aktif ? "Aktif" : "Nonaktif"} tone={detailFacility()?.status_aktif ? "success" : "neutral"} />
+                </div>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Dibuat</p>
+                <p class="ui-heading mt-1 font-bold">{formatDate(detailFacility()?.created_at ?? "")}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Diperbarui</p>
+                <p class="ui-heading mt-1 font-bold">{formatDate(detailFacility()?.updated_at ?? "")}</p>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+              <p class="dashboard-muted text-xs">Deskripsi Fasilitas</p>
+              <p class="ui-heading mt-1 leading-7">{detailFacility()?.deskripsi_fasilitas || "-"}</p>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+              <button type="button" class="btn-secondary px-4 py-2 text-sm" onClick={() => setDetailFacility(null)}>
+                Tutup Detail
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      <section class="dashboard-card overflow-hidden">
+        <div class="flex flex-col gap-4 border-b border-[var(--divider)] p-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="ui-heading text-lg font-bold">Fasilitas Umum</h2>
+            <p class="dashboard-muted mt-1 text-sm">Kelola fasilitas umum berdasarkan owner_id {ownerId}.</p>
+          </div>
+          <button type="button" class="btn-primary px-5 py-3 text-sm" onClick={openAddForm}>
+            <Plus size={16} />
+            Tambah Fasilitas
+          </button>
+        </div>
+
+        <div class="grid gap-3 border-b border-[var(--divider)] p-4 lg:grid-cols-[1fr_0.35fr]">
+          <div class="input-with-icon">
+            <Search class="input-icon" size={17} />
+            <input
+              class="form-control form-control-icon"
+              value={searchQuery()}
+              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              placeholder="Cari nama fasilitas atau deskripsi fasilitas"
+            />
+          </div>
+          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif")}>
+            <option value="semua">Semua status</option>
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+          </select>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[980px] text-left text-sm">
+            <thead class="bg-[rgba(148,163,184,0.08)] text-xs uppercase text-[rgb(var(--text-muted-rgb))]">
+              <tr>
+                <th class="px-5 py-3 font-bold">Nama Fasilitas</th>
+                <th class="px-5 py-3 font-bold">Deskripsi Fasilitas</th>
+                <th class="px-5 py-3 font-bold">Status Aktif</th>
+                <th class="px-5 py-3 font-bold">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRows().map((facility) => (
+                <tr class="border-t border-[var(--divider)]">
+                  <td class="px-5 py-4 font-bold text-[rgb(var(--text-body-rgb))]">{facility.nama_fasilitas}</td>
+                  <td class="max-w-[420px] px-5 py-4 text-[rgb(var(--text-body-rgb))]">{facility.deskripsi_fasilitas || "-"}</td>
+                  <td class="px-5 py-4">
+                    <StatusBadge value={facility.status_aktif ? "Aktif" : "Nonaktif"} tone={facility.status_aktif ? "success" : "neutral"} />
+                  </td>
+                  <td class="px-5 py-4">
+                    <div class="flex flex-wrap gap-2">
+                      <button type="button" class="icon-button h-9 w-9" aria-label="Detail fasilitas" onClick={() => setDetailFacility(facility)}>
+                        <Eye size={15} />
+                      </button>
+                      <button type="button" class="icon-button h-9 w-9" aria-label="Edit fasilitas" onClick={() => editFacility(facility)}>
+                        <Edit3 size={15} />
+                      </button>
+                      <button type="button" class="icon-button h-9 w-9 text-red-400" aria-label="Hapus fasilitas" onClick={() => setDeleteFacility(facility)}>
+                        <Trash2 size={15} />
+                      </button>
+                      <button type="button" class="btn-secondary px-3 py-2 text-xs" onClick={() => toggleFacilityStatus(facility)}>
+                        {facility.status_aktif ? "Nonaktifkan" : "Aktifkan"}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada fasilitas yang cocok dengan filter." /></div>}
+      </section>
+
+      {deleteFacility() && (
+        <ConfirmDialog
+          title="Hapus Fasilitas Umum?"
+          message={`Fasilitas "${deleteFacility()?.nama_fasilitas ?? ""}" akan dihapus dari data akun ini.`}
+          confirmLabel="Hapus Fasilitas"
+          onCancel={() => setDeleteFacility(null)}
+          onConfirm={confirmDeleteFacility}
+        />
+      )}
+    </div>
   );
 }
 
@@ -1650,22 +2290,118 @@ export function OwnerBankAccountsPage() {
     nama_bank: "",
     nomor_rekening: "",
     nama_pemilik_rekening: "",
-    status_aktif: true,
+    catatan_pembayaran: "",
+    status_aktif: "" as "aktif" | "nonaktif" | "",
   });
+  const [errors, setErrors] = createSignal<Partial<Record<"nama_bank" | "nomor_rekening" | "nama_pemilik_rekening" | "status_aktif", string>>>({});
   const [editingId, setEditingId] = createSignal<number | null>(null);
+  const [formOpen, setFormOpen] = createSignal(false);
+  const [detailAccount, setDetailAccount] = createSignal<BankAccount | null>(null);
   const [deleteAccount, setDeleteAccount] = createSignal<BankAccount | null>(null);
+  const [statusFilter, setStatusFilter] = createSignal<"semua" | "aktif" | "nonaktif">("semua");
+  const [searchQuery, setSearchQuery] = createSignal("");
 
   const resetForm = () => {
     setEditingId(null);
-    setForm({ nama_bank: "", nomor_rekening: "", nama_pemilik_rekening: "", status_aktif: true });
+    setForm({ nama_bank: "", nomor_rekening: "", nama_pemilik_rekening: "", catatan_pembayaran: "", status_aktif: "" });
+    setErrors({});
+  };
+
+  const openAddForm = () => {
+    resetForm();
+    setFormOpen(true);
+  };
+
+  const closeForm = () => {
+    resetForm();
+    setFormOpen(false);
+  };
+
+  const filteredRows = createMemo(() => {
+    const normalizedQuery = searchQuery().trim().toLowerCase();
+
+    return rows().filter((account) => {
+      const accountStatus = account.status_aktif ? "aktif" : "nonaktif";
+      const matchesStatus = statusFilter() === "semua" || accountStatus === statusFilter();
+      const matchesSearch =
+        !normalizedQuery ||
+        account.nama_bank.toLowerCase().includes(normalizedQuery) ||
+        account.nomor_rekening.toLowerCase().includes(normalizedQuery) ||
+        account.nama_pemilik_rekening.toLowerCase().includes(normalizedQuery);
+
+      return matchesStatus && matchesSearch;
+    });
+  });
+
+  const validateAccount = () => {
+    const currentForm = form();
+    const nextErrors: Partial<Record<"nama_bank" | "nomor_rekening" | "nama_pemilik_rekening" | "status_aktif", string>> = {};
+
+    if (!currentForm.nama_bank.trim()) {
+      nextErrors.nama_bank = "Nama Bank wajib diisi.";
+    }
+
+    if (!currentForm.nomor_rekening.trim()) {
+      nextErrors.nomor_rekening = "Nomor Rekening wajib diisi.";
+    }
+
+    if (!currentForm.nama_pemilik_rekening.trim()) {
+      nextErrors.nama_pemilik_rekening = "Nama Pemilik Rekening wajib diisi.";
+    }
+
+    if (!currentForm.status_aktif) {
+      nextErrors.status_aktif = "Status Aktif wajib dipilih.";
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
   const submit = () => {
-    const payload: BankAccount = { ...form(), id: editingId() ?? nextId(rows()), owner_id: ownerId };
+    if (!validateAccount()) {
+      return;
+    }
+
+    const existingAccount = rows().find((account) => account.id === editingId());
+    const now = new Date().toISOString();
+    const payload: BankAccount = {
+      id: editingId() ?? nextId(rows()),
+      owner_id: ownerId,
+      nama_bank: form().nama_bank.trim(),
+      nomor_rekening: form().nomor_rekening.trim(),
+      nama_pemilik_rekening: form().nama_pemilik_rekening.trim(),
+      catatan_pembayaran: form().catatan_pembayaran.trim(),
+      status_aktif: form().status_aktif === "aktif",
+      created_at: existingAccount?.created_at ?? now,
+      updated_at: now,
+    };
+
     setRows((items) =>
       editingId() ? items.map((item) => (item.id === editingId() ? payload : item)) : [payload, ...items],
     );
-    resetForm();
+    closeForm();
+  };
+
+  const editAccount = (account: BankAccount) => {
+    setEditingId(account.id);
+    setForm({
+      nama_bank: account.nama_bank,
+      nomor_rekening: account.nomor_rekening,
+      nama_pemilik_rekening: account.nama_pemilik_rekening,
+      catatan_pembayaran: account.catatan_pembayaran,
+      status_aktif: account.status_aktif ? "aktif" : "nonaktif",
+    });
+    setErrors({});
+    setFormOpen(true);
+  };
+
+  const toggleAccountStatus = (account: BankAccount) => {
+    const now = new Date().toISOString();
+    setRows((items) =>
+      items.map((item) =>
+        item.id === account.id ? { ...item, status_aktif: !item.status_aktif, updated_at: now } : item,
+      ),
+    );
   };
 
   const confirmDeleteAccount = () => {
@@ -1677,81 +2413,231 @@ export function OwnerBankAccountsPage() {
 
     setRows((items) => items.filter((item) => item.id !== account.id));
 
+    if (detailAccount()?.id === account.id) {
+      setDetailAccount(null);
+    }
+
     if (editingId() === account.id) {
-      resetForm();
+      closeForm();
     }
 
     setDeleteAccount(null);
   };
 
   return (
-    <div class="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
-      <section class="dashboard-card p-6">
-        <SectionHeader title={editingId() ? "Edit Rekening" : "Tambah Rekening"} subtitle={`Rekening pembayaran untuk owner_id ${ownerId}.`} />
-        <form
-          class="grid gap-4"
-          onSubmit={(event) => {
-            event.preventDefault();
-            submit();
-          }}
-        >
-          <label class="block">
-            <span class="form-label">Nama bank</span>
-            <input class="form-control mt-2" value={form().nama_bank} onInput={(event) => setForm({ ...form(), nama_bank: event.currentTarget.value })} required />
-          </label>
-          <label class="block">
-            <span class="form-label">Nomor rekening</span>
-            <input class="form-control mt-2" value={form().nomor_rekening} onInput={(event) => setForm({ ...form(), nomor_rekening: event.currentTarget.value })} required />
-          </label>
-          <label class="block">
-            <span class="form-label">Nama pemilik rekening</span>
-            <input class="form-control mt-2" value={form().nama_pemilik_rekening} onInput={(event) => setForm({ ...form(), nama_pemilik_rekening: event.currentTarget.value })} required />
-          </label>
-          <label class="block">
-            <span class="form-label">Status</span>
-            <select class="form-control mt-2" value={form().status_aktif ? "aktif" : "nonaktif"} onInput={(event) => setForm({ ...form(), status_aktif: event.currentTarget.value === "aktif" })}>
-              <option value="aktif">Aktif</option>
-              <option value="nonaktif">Nonaktif</option>
-            </select>
-          </label>
-          <div class="flex flex-wrap gap-3 pt-2">
-            <button type="submit" class="btn-primary px-5 py-3 text-sm">
-              {editingId() ? <Save size={16} /> : <Plus size={16} />}
-              {editingId() ? "Simpan Perubahan" : "Tambah Rekening"}
-            </button>
-            {editingId() && <button type="button" class="btn-secondary px-5 py-3 text-sm" onClick={resetForm}>Batal</button>}
-          </div>
-        </form>
-      </section>
+    <div class="grid gap-6">
+      {formOpen() && (
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-2xl p-6">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="ui-heading text-xl font-bold">{editingId() ? "Edit Rekening Pembayaran" : "Tambah Rekening Pembayaran"}</h2>
+                <p class="dashboard-muted mt-2 text-sm">Rekening aktif akan dilihat penyewa untuk pembayaran.</p>
+              </div>
+              <button type="button" class="icon-button h-9 w-9" aria-label="Tutup form rekening" onClick={closeForm}>
+                <X size={17} />
+              </button>
+            </div>
+
+            <form
+              class="grid gap-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submit();
+              }}
+            >
+              <label class="block">
+                <span class="form-label">Nama Bank</span>
+                <input
+                  class="form-control mt-2"
+                  value={form().nama_bank}
+                  onInput={(event) => setForm({ ...form(), nama_bank: event.currentTarget.value })}
+                  placeholder="Contoh: BCA"
+                />
+                <FieldError message={errors().nama_bank} />
+              </label>
+
+              <label class="block">
+                <span class="form-label">Nomor Rekening</span>
+                <input
+                  class="form-control mt-2"
+                  value={form().nomor_rekening}
+                  onInput={(event) => setForm({ ...form(), nomor_rekening: event.currentTarget.value })}
+                  placeholder="Contoh: 1234567890"
+                />
+                <FieldError message={errors().nomor_rekening} />
+              </label>
+
+              <label class="block">
+                <span class="form-label">Nama Pemilik Rekening</span>
+                <input
+                  class="form-control mt-2"
+                  value={form().nama_pemilik_rekening}
+                  onInput={(event) => setForm({ ...form(), nama_pemilik_rekening: event.currentTarget.value })}
+                  placeholder="Contoh: Siti Aminah"
+                />
+                <FieldError message={errors().nama_pemilik_rekening} />
+              </label>
+
+              <label class="block">
+                <span class="form-label">Catatan Pembayaran</span>
+                <textarea
+                  class="form-control mt-2 min-h-28 resize-y"
+                  value={form().catatan_pembayaran}
+                  onInput={(event) => setForm({ ...form(), catatan_pembayaran: event.currentTarget.value })}
+                  placeholder="Contoh: Cantumkan nama dan nomor kamar pada berita transfer."
+                />
+                <p class="dashboard-muted mt-2 text-xs">Opsional.</p>
+              </label>
+
+              <label class="block">
+                <span class="form-label">Status Aktif</span>
+                <select
+                  class="form-control mt-2"
+                  value={form().status_aktif}
+                  onInput={(event) => setForm({ ...form(), status_aktif: event.currentTarget.value as "aktif" | "nonaktif" | "" })}
+                >
+                  <option value="">Pilih status</option>
+                  <option value="aktif">Aktif</option>
+                  <option value="nonaktif">Nonaktif</option>
+                </select>
+                <FieldError message={errors().status_aktif} />
+              </label>
+
+              <div class="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-end">
+                <button type="button" class="btn-secondary px-5 py-3 text-sm" onClick={closeForm}>
+                  Batal
+                </button>
+                <button type="submit" class="btn-primary px-5 py-3 text-sm">
+                  {editingId() ? <Save size={16} /> : <Plus size={16} />}
+                  {editingId() ? "Simpan Perubahan" : "Tambah Rekening"}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
+
+      {detailAccount() && (
+        <div class="modal-backdrop-animate fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/75 p-4 backdrop-blur-md">
+          <section class="dashboard-card modal-panel-animate my-6 w-full max-w-2xl p-6">
+            <div class="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <h2 class="ui-heading text-xl font-bold">Detail Rekening Pembayaran</h2>
+                <p class="dashboard-muted mt-2 text-sm">{detailAccount()?.nama_bank} - {detailAccount()?.nomor_rekening}</p>
+              </div>
+              <button type="button" class="icon-button h-9 w-9" aria-label="Tutup detail rekening" onClick={() => setDetailAccount(null)}>
+                <X size={17} />
+              </button>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Nama Bank</p>
+                <p class="ui-heading mt-1 font-bold">{detailAccount()?.nama_bank}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Nomor Rekening</p>
+                <p class="ui-heading mt-1 font-bold">{detailAccount()?.nomor_rekening}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Nama Pemilik Rekening</p>
+                <p class="ui-heading mt-1 font-bold">{detailAccount()?.nama_pemilik_rekening}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Status Aktif</p>
+                <div class="mt-2">
+                  <StatusBadge value={detailAccount()?.status_aktif ? "Aktif" : "Nonaktif"} tone={detailAccount()?.status_aktif ? "success" : "neutral"} />
+                </div>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Dibuat</p>
+                <p class="ui-heading mt-1 font-bold">{formatDate(detailAccount()?.created_at ?? "")}</p>
+              </div>
+              <div class="rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+                <p class="dashboard-muted text-xs">Diperbarui</p>
+                <p class="ui-heading mt-1 font-bold">{formatDate(detailAccount()?.updated_at ?? "")}</p>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl border border-[var(--surface-border)] bg-[var(--control-bg)] p-4">
+              <p class="dashboard-muted text-xs">Catatan Pembayaran</p>
+              <p class="ui-heading mt-1 leading-7">{detailAccount()?.catatan_pembayaran || "-"}</p>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+              <button type="button" class="btn-secondary px-4 py-2 text-sm" onClick={() => setDetailAccount(null)}>
+                Tutup Detail
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
 
       <section class="dashboard-card overflow-hidden">
+        <div class="flex flex-col gap-4 border-b border-[var(--divider)] p-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="ui-heading text-lg font-bold">Rekening Pembayaran</h2>
+            <p class="dashboard-muted mt-1 text-sm">Kelola rekening pembayaran berdasarkan owner_id {ownerId}.</p>
+          </div>
+          <button type="button" class="btn-primary px-5 py-3 text-sm" onClick={openAddForm}>
+            <Plus size={16} />
+            Tambah Rekening
+          </button>
+        </div>
+
+        <div class="grid gap-3 border-b border-[var(--divider)] p-4 lg:grid-cols-[1fr_0.35fr]">
+          <div class="input-with-icon">
+            <Search class="input-icon" size={17} />
+            <input
+              class="form-control form-control-icon"
+              value={searchQuery()}
+              onInput={(event) => setSearchQuery(event.currentTarget.value)}
+              placeholder="Cari nama bank, nomor rekening, atau nama pemilik"
+            />
+          </div>
+          <select class="form-control" value={statusFilter()} onInput={(event) => setStatusFilter(event.currentTarget.value as "semua" | "aktif" | "nonaktif")}>
+            <option value="semua">Semua status</option>
+            <option value="aktif">Aktif</option>
+            <option value="nonaktif">Nonaktif</option>
+          </select>
+        </div>
+
         <div class="overflow-x-auto">
-          <table class="w-full min-w-[760px] text-left text-sm">
+          <table class="w-full min-w-[1120px] text-left text-sm">
             <thead class="bg-[rgba(148,163,184,0.08)] text-xs uppercase text-[rgb(var(--text-muted-rgb))]">
               <tr>
-                <th class="px-5 py-3 font-bold">Bank</th>
-                <th class="px-5 py-3 font-bold">Nomor</th>
-                <th class="px-5 py-3 font-bold">Atas Nama</th>
-                <th class="px-5 py-3 font-bold">Status</th>
+                <th class="px-5 py-3 font-bold">Nama Bank</th>
+                <th class="px-5 py-3 font-bold">Nomor Rekening</th>
+                <th class="px-5 py-3 font-bold">Nama Pemilik Rekening</th>
+                <th class="px-5 py-3 font-bold">Catatan Pembayaran</th>
+                <th class="px-5 py-3 font-bold">Status Aktif</th>
                 <th class="px-5 py-3 font-bold">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {rows().map((account) => (
+              {filteredRows().map((account) => (
                 <tr class="border-t border-[var(--divider)]">
-                  <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{account.nama_bank}</td>
+                  <td class="px-5 py-4 font-bold text-[rgb(var(--text-body-rgb))]">{account.nama_bank}</td>
                   <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{account.nomor_rekening}</td>
                   <td class="px-5 py-4 text-[rgb(var(--text-body-rgb))]">{account.nama_pemilik_rekening}</td>
+                  <td class="max-w-[300px] px-5 py-4 text-[rgb(var(--text-body-rgb))]">{account.catatan_pembayaran || "-"}</td>
                   <td class="px-5 py-4">
                     <StatusBadge value={account.status_aktif ? "Aktif" : "Nonaktif"} tone={account.status_aktif ? "success" : "neutral"} />
                   </td>
                   <td class="px-5 py-4">
-                    <div class="flex gap-2">
-                      <button type="button" class="icon-button h-9 w-9" aria-label="Edit rekening" onClick={() => { setEditingId(account.id); setForm({ nama_bank: account.nama_bank, nomor_rekening: account.nomor_rekening, nama_pemilik_rekening: account.nama_pemilik_rekening, status_aktif: account.status_aktif }); }}>
+                    <div class="flex flex-wrap gap-2">
+                      <button type="button" class="icon-button h-9 w-9" aria-label="Detail rekening" onClick={() => setDetailAccount(account)}>
+                        <Eye size={15} />
+                      </button>
+                      <button type="button" class="icon-button h-9 w-9" aria-label="Edit rekening" onClick={() => editAccount(account)}>
                         <Edit3 size={15} />
                       </button>
                       <button type="button" class="icon-button h-9 w-9 text-red-400" aria-label="Hapus rekening" onClick={() => setDeleteAccount(account)}>
                         <Trash2 size={15} />
+                      </button>
+                      <button type="button" class="btn-secondary px-3 py-2 text-xs" onClick={() => toggleAccountStatus(account)}>
+                        {account.status_aktif ? "Nonaktifkan" : "Aktifkan"}
                       </button>
                     </div>
                   </td>
@@ -1760,6 +2646,8 @@ export function OwnerBankAccountsPage() {
             </tbody>
           </table>
         </div>
+
+        {filteredRows().length === 0 && <div class="p-5"><EmptyState text="Tidak ada rekening yang cocok dengan filter." /></div>}
       </section>
 
       {deleteAccount() && (

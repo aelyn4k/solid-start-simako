@@ -59,15 +59,21 @@ export interface RoomBill {
 export interface KostRule {
   id: number;
   owner_id: number;
-  aturan: string;
+  judul_aturan: string;
+  isi_aturan: string;
   status_aktif: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface PublicFacility {
   id: number;
   owner_id: number;
   nama_fasilitas: string;
+  deskripsi_fasilitas: string;
   status_aktif: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface BankAccount {
@@ -76,7 +82,10 @@ export interface BankAccount {
   nama_bank: string;
   nomor_rekening: string;
   nama_pemilik_rekening: string;
+  catatan_pembayaran: string;
   status_aktif: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export const ownerRooms: OwnerRoom[] = [
@@ -288,23 +297,133 @@ export const roomBills: RoomBill[] = [
 ];
 
 export const rules: KostRule[] = [
-  { id: 401, owner_id: 2, aturan: "Jam tamu sampai 21.00 WIB", status_aktif: true },
-  { id: 402, owner_id: 2, aturan: "Tidak membawa hewan peliharaan", status_aktif: true },
-  { id: 403, owner_id: 2, aturan: "Pembayaran sebelum tanggal 10", status_aktif: true },
-  { id: 404, owner_id: 2, aturan: "Tidak merokok di area kamar", status_aktif: false },
-  { id: 405, owner_id: 3, aturan: "Jaga kebersihan area bersama", status_aktif: true },
+  {
+    id: 401,
+    owner_id: 2,
+    judul_aturan: "Jam Tamu",
+    isi_aturan: "Jam tamu hanya diperbolehkan sampai 21.00 WIB.",
+    status_aktif: true,
+    created_at: "2026-05-01T09:00:00+07:00",
+    updated_at: "2026-05-01T09:00:00+07:00",
+  },
+  {
+    id: 402,
+    owner_id: 2,
+    judul_aturan: "Hewan Peliharaan",
+    isi_aturan: "Penyewa tidak diperbolehkan membawa hewan peliharaan ke area kost.",
+    status_aktif: true,
+    created_at: "2026-05-01T09:10:00+07:00",
+    updated_at: "2026-05-01T09:10:00+07:00",
+  },
+  {
+    id: 403,
+    owner_id: 2,
+    judul_aturan: "Pembayaran",
+    isi_aturan: "Pembayaran sewa wajib dilakukan sebelum tanggal 10 setiap periode tagihan.",
+    status_aktif: true,
+    created_at: "2026-05-01T09:20:00+07:00",
+    updated_at: "2026-05-01T09:20:00+07:00",
+  },
+  {
+    id: 404,
+    owner_id: 2,
+    judul_aturan: "Area Bebas Rokok",
+    isi_aturan: "Merokok tidak diperbolehkan di dalam kamar dan koridor kost.",
+    status_aktif: false,
+    created_at: "2026-05-01T09:30:00+07:00",
+    updated_at: "2026-05-01T09:30:00+07:00",
+  },
+  {
+    id: 405,
+    owner_id: 3,
+    judul_aturan: "Kebersihan Bersama",
+    isi_aturan: "Penyewa wajib menjaga kebersihan dapur, kamar mandi, dan area bersama.",
+    status_aktif: true,
+    created_at: "2026-05-01T09:40:00+07:00",
+    updated_at: "2026-05-01T09:40:00+07:00",
+  },
 ];
 
 export const facilities: PublicFacility[] = [
-  { id: 501, owner_id: 2, nama_fasilitas: "Wi-Fi", status_aktif: true },
-  { id: 502, owner_id: 2, nama_fasilitas: "Dapur Bersama", status_aktif: true },
-  { id: 503, owner_id: 2, nama_fasilitas: "Area Parkir", status_aktif: true },
-  { id: 504, owner_id: 2, nama_fasilitas: "CCTV", status_aktif: true },
-  { id: 505, owner_id: 3, nama_fasilitas: "Laundry", status_aktif: true },
+  {
+    id: 501,
+    owner_id: 2,
+    nama_fasilitas: "Wi-Fi",
+    deskripsi_fasilitas: "Akses internet untuk penghuni di area kamar dan ruang bersama.",
+    status_aktif: true,
+    created_at: "2026-05-01T10:00:00+07:00",
+    updated_at: "2026-05-01T10:00:00+07:00",
+  },
+  {
+    id: 502,
+    owner_id: 2,
+    nama_fasilitas: "Dapur Bersama",
+    deskripsi_fasilitas: "Dapur bersama dengan kompor, wastafel, dan area penyimpanan sederhana.",
+    status_aktif: true,
+    created_at: "2026-05-01T10:10:00+07:00",
+    updated_at: "2026-05-01T10:10:00+07:00",
+  },
+  {
+    id: 503,
+    owner_id: 2,
+    nama_fasilitas: "Area Parkir",
+    deskripsi_fasilitas: "Area parkir motor untuk penghuni kost.",
+    status_aktif: true,
+    created_at: "2026-05-01T10:20:00+07:00",
+    updated_at: "2026-05-01T10:20:00+07:00",
+  },
+  {
+    id: 504,
+    owner_id: 2,
+    nama_fasilitas: "CCTV",
+    deskripsi_fasilitas: "Pemantauan area pintu masuk dan area bersama selama 24 jam.",
+    status_aktif: true,
+    created_at: "2026-05-01T10:30:00+07:00",
+    updated_at: "2026-05-01T10:30:00+07:00",
+  },
+  {
+    id: 505,
+    owner_id: 3,
+    nama_fasilitas: "Laundry",
+    deskripsi_fasilitas: "Layanan laundry mitra untuk penghuni kost.",
+    status_aktif: true,
+    created_at: "2026-05-01T10:40:00+07:00",
+    updated_at: "2026-05-01T10:40:00+07:00",
+  },
 ];
 
 export const bankAccounts: BankAccount[] = [
-  { id: 601, owner_id: 2, nama_bank: "BCA", nomor_rekening: "1234567890", nama_pemilik_rekening: "Siti Aminah", status_aktif: true },
-  { id: 602, owner_id: 2, nama_bank: "BRI", nomor_rekening: "9876543210", nama_pemilik_rekening: "Siti Aminah", status_aktif: true },
-  { id: 603, owner_id: 3, nama_bank: "Mandiri", nomor_rekening: "1122334455", nama_pemilik_rekening: "Rudi Hartono", status_aktif: true },
+  {
+    id: 601,
+    owner_id: 2,
+    nama_bank: "BCA",
+    nomor_rekening: "1234567890",
+    nama_pemilik_rekening: "Siti Aminah",
+    catatan_pembayaran: "Cantumkan nama dan nomor kamar pada berita transfer.",
+    status_aktif: true,
+    created_at: "2026-05-01T11:00:00+07:00",
+    updated_at: "2026-05-01T11:00:00+07:00",
+  },
+  {
+    id: 602,
+    owner_id: 2,
+    nama_bank: "BRI",
+    nomor_rekening: "9876543210",
+    nama_pemilik_rekening: "Siti Aminah",
+    catatan_pembayaran: "Kirim bukti transfer melalui WhatsApp pemilik kost.",
+    status_aktif: true,
+    created_at: "2026-05-01T11:10:00+07:00",
+    updated_at: "2026-05-01T11:10:00+07:00",
+  },
+  {
+    id: 603,
+    owner_id: 3,
+    nama_bank: "Mandiri",
+    nomor_rekening: "1122334455",
+    nama_pemilik_rekening: "Rudi Hartono",
+    catatan_pembayaran: "Pembayaran diverifikasi maksimal 1x24 jam.",
+    status_aktif: true,
+    created_at: "2026-05-01T11:20:00+07:00",
+    updated_at: "2026-05-01T11:20:00+07:00",
+  },
 ];
