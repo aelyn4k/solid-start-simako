@@ -1,15 +1,15 @@
 import ProtectedRoute from "~/components/ProtectedRoute";
 import DashboardLayout from "~/components/layout/DashboardLayout";
-import OwnerComplaints from "~/pages/owner/OwnerComplaints";
+import OwnerSettings from "~/pages/owner/OwnerSettings";
 
-export default function OwnerTenantComplaintsRoute() {
+export default function OwnerSettingsRoute() {
   return (
     <ProtectedRoute allowedRoles={["pemilik_kost"]}>
       <DashboardLayout
-        title="Keluhan Penyewa"
-        subtitle="Pantau dan proses keluhan dari penyewa yang tinggal di kamar milik akun ini."
+        title="Settings"
+        subtitle="Pengaturan keamanan akun pemilik kost."
       >
-        <OwnerComplaints />
+        <OwnerSettings />
       </DashboardLayout>
     </ProtectedRoute>
   );

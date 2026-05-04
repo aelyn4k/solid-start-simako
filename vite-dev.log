@@ -518,3 +518,62 @@
 [vite] program reload
 [vite] program reload
 [vite] program reload
+[2m14.01.13[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerDashboard.tsx[22m
+[2m14.01.13[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerDashboard.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m14.04.10[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/layout/OwnerSidebar.tsx, /src/routes/login.tsx?pick=default&pick=$css, /src/components/layout/Sidebar.tsx[22m
+[2m14.04.10[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/utils/roleAccess.ts[22m
+[vite] program reload
+[2m14.04.14[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/layout/OwnerSidebar.tsx, /src/routes/login.tsx?pick=default&pick=$css, /src/components/layout/Sidebar.tsx[22m
+[2m14.04.14[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/utils/roleAccess.ts[22m
+[2m14.04.35[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m14.04.35[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/pemilik/list-penyewa.tsx?pick=default&pick=$css[22m
+[2m14.04.35[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/pemilik/list-penyewa.tsx[22m
+[2m14.04.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m14.04.41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/routes/pemilik/keluhan-penyewa.tsx?pick=default&pick=$css[22m
+[2m14.04.41[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/pemilik/keluhan-penyewa.tsx[22m
+[2m14.04.44[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m14.04.44[22m [36m[1m[vite][22m[39m server restarted.
+[vite] connected.
+[2m14.04.49[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m14.04.49[22m [36m[1m[vite][22m[39m server restarted.
+[2m14.04.51[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m14.04.51[22m [36m[1m[vite][22m[39m server restarted.
+[vite] connected.
+[2m14.04.53[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m14.04.53[22m [36m[1m[vite][22m[39m server restarted.
+[2m14.04.58[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m14.04.58[22m [36m[1m[vite][22m[39m server restarted.
+[vite] connected.
+[2m14.05.01[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m14.05.01[22m [36m[1m[vite][22m[39m server restarted.
+[2m14.05.04[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[2m14.05.04[22m [36m[1m[vite][22m[39m server restarted.
+[vite] connected.
+[2m14.05.31[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/components/ProtectedRoute.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m14.09.49[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/pages/owner/OwnerSettings.tsx[22m
+[2m14.09.49[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/pages/owner/OwnerSettings.tsx[22m
+[vite] program reload
+[2m14.09.50[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.tsx[22m
+[2m14.09.50[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css[22m
+[2m14.09.50[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/routes/admin/settings.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[2m14.14.08[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app.css, /src/components/ProtectedRoute.tsx[22m
+[2m14.14.08[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2msrc/components/ProtectedRoute.tsx[22m
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload
+[vite] program reload

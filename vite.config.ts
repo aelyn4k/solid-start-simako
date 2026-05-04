@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   server: {
-    allowedHosts: ["tup.web.id"],
+    allowedHosts: ["tup.web.id", "simako.vercel.app"],
   },
   plugins: [solidStart(), tailwindcss(), nitro()],
 });

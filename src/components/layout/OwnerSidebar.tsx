@@ -5,6 +5,7 @@ import {
   ClipboardList,
   CreditCard,
   Home,
+  KeyRound,
   LogOut,
   MapPinned,
   Menu,
@@ -35,6 +36,7 @@ const ownerMenu = [
   { href: "/pemilik/aturan-kost", label: "Aturan Kost", icon: ClipboardList },
   { href: "/pemilik/fasilitas-umum", label: "Fasilitas Umum", icon: Settings },
   { href: "/pemilik/rekening-pembayaran", label: "Rekening Pembayaran", icon: Banknote },
+  { href: "/pemilik/settings", label: "Settings", icon: KeyRound },
 ];
 
 const getStoredTheme = (): ThemeMode => {
