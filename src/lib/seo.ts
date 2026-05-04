@@ -81,6 +81,17 @@ const staticSeo: Record<string, Omit<SeoData, "canonical" | "jsonLd">> = {
   }
 };
 
+const dashboardSeo: Omit<SeoData, "canonical" | "jsonLd"> = {
+  title: "Sistem Manajement Kost | SIMAKO",
+  description:
+    "Dashboard SIMAKO untuk mengelola data kost, kamar, penyewa, booking, tagihan, dan pengaturan akun.",
+  image: defaultImage,
+  type: "website",
+  keywords: "SIMAKO, sistem manajement kost, dashboard kost, manajemen kost"
+};
+
+const isDashboardPath = (path: string) => /^\/(?:dashboard|admin|pemilik)(?:\/|$)/.test(path);
+
 const baseJsonLd = (path: string) => ({
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -180,13 +191,17 @@ export const getSeoForPath = (pathname: string): SeoData => {
     }
   }
 
-  const pageSeo = staticSeo[normalizedPath] ?? {
-    title: "Halaman Tidak Ditemukan | SIMAKO",
-    description: "Halaman yang Anda cari tidak ditemukan. Kembali ke SIMAKO untuk mencari kamar kost atau menghubungi CS.",
-    image: defaultImage,
-    type: "website" as const,
-    keywords: "SIMAKO, halaman tidak ditemukan"
-  };
+  const pageSeo =
+    staticSeo[normalizedPath] ??
+    (isDashboardPath(normalizedPath)
+      ? dashboardSeo
+      : {
+          title: "Halaman Tidak Ditemukan | SIMAKO",
+          description: "Halaman yang Anda cari tidak ditemukan. Kembali ke SIMAKO untuk mencari kamar kost atau menghubungi CS.",
+          image: defaultImage,
+          type: "website" as const,
+          keywords: "SIMAKO, halaman tidak ditemukan"
+        });
 
   return {
     ...pageSeo,
